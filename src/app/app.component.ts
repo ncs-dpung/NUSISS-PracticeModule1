@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,10 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'advanced-inventory-management-system';
+
+  constructor(private router: Router) {} 
+
+  navigate(path: string): void {
+    this.router.navigate([path]); 
+  }
 }

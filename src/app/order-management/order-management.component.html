@@ -1,0 +1,98 @@
+<div class="dashboard">
+    <aside class="sidebar">
+        <!-- Sidebar: Filter Section -->
+        <div class="filter-section">
+            <h3>Filter Products</h3>
+            <input type="text" placeholder="Search by name">
+            <!-- Category Dropdown -->
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="all">All Categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Accessories</option>
+                <option value="apparel">Apparel</option>
+                <!-- Add more categories as needed -->
+            </select>
+
+            <!-- Condition Radio Buttons -->
+            <fieldset>
+                <legend>Condition:</legend>
+                <label>
+                    <input type="radio" name="condition" value="new" checked> New
+                </label>
+                <label>
+                    <input type="radio" name="condition" value="used"> Used
+                </label>
+                <label>
+                    <input type="radio" name="condition" value="refurbished"> Refurbished
+                </label>
+            </fieldset>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-category">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+                <option value="all">All categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Accessories</option>
+                <option value="apparel">Apparel</option>
+                <!-- Add other categories as needed -->
+            </select>
+        </div>
+
+        <!-- Date Filter -->
+        <div class="filter-date">
+            <label for="fromDate">From</label>
+            <input type="date" id="fromDate" name="fromDate">
+
+            <label for="toDate">To</label>
+            <input type="date" id="toDate" name="toDate">
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- Main Content: Top Bar -->
+        <div class="top-bar">
+            <div class="tab">
+                <button (click)="navigate('inventory-management')" >Inventory</button>
+                <button (click)="navigate('order-management')" class="active">Orders</button>
+                <button (click)="navigate('reporting')">Report</button>
+                <button (click)="navigate('user-access-management')">Access</button>
+            </div>
+            <div class="user-info">Username</div>
+        </div>
+
+        <!-- Main Content: Product Listing -->
+        <div class="product-list">
+            <div class="list-header">
+                <h2>Order Management</h2>
+                <button class="add-new-btn">Add New</button>
+            </div>
+            <!-- Table of Products -->
+            <table>
+                <tr>
+                    <th><input type="checkbox" class="select-item"></th> 
+                    <th>NAME</th>
+                    <th>CONDITION</th>
+                    <th>AVAILABLE</th>
+                    <th>RESERVED</th>
+                    <th>PRICE</th>
+                    <th>MODIFIED</th>
+                </tr>
+                <!-- Example Product Row -->
+                <tr>
+                    <td><input type="checkbox" class="select-item"></td> 
+                    <td>128GB SD card</td>
+                    <td>New</td>
+                    <td>3,546</td>
+                    <td>3,354</td>
+                    <td>$10.13</td>
+                    <td>03/13/2017</td>
+                </tr>
+
+                <!-- Repeat rows for each product -->
+            </table>
+        </div>
+    </main>
+</div>
