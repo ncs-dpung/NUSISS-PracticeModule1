@@ -1,6 +1,7 @@
 # NUSISS-PracticeModule1
 Practice Module for Graduate Certificate in Designing Modern Software Systems
 =======
+=======
 # AdvancedInventoryManagementSystem
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.0.
