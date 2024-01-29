@@ -1,0 +1,13 @@
+# Ignore doc folder
+doc/
+
+# Ignore IntelliJ IDEA files
+.idea/
+
+# Ignore Eclipse files
+.classpath
+.project
+.settings/
+
+# Ignore Visual Studio Code files
+.vscode/

@@ -1,0 +1,32 @@
+# Spring Boot Application Configuration
+spring:
+  application:
+    name: backend
+  profiles:
+    active: development
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /backend
+
+# Datasource Configuration (MySQL)
+datasource:
+  url: jdbc:mysql://localhost:3306/mydb
+  username: admin
+  password: password123
+jpa:
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+
+# Logging Configuration
+logging:
+  level:
+    com.nusiss.inventory.backend: DEBUG
+  file: /var/log/application.log
+
+# Custom Application Properties
+myapp:
+  custom-property: custom-value
