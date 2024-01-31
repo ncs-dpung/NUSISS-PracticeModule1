@@ -1,10 +1,9 @@
 package com.nusiss.inventory.backend.dto;
 
+import com.nusiss.inventory.backend.entity.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,5 +12,5 @@ public class UserDto {
     private Long id;
     private String username;
     private String email;
-    private List<String> roles;
+    private Role role;
 }

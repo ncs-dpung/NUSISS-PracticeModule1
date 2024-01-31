@@ -5,11 +5,10 @@ services:
   db:
     image: mysql:8.0.36  # Use the official MySQL
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: inventory-db
-      MYSQL_USER: root
+      MYSQL_USER: user123
       MYSQL_PASSWORD: password123
-    hostname: db
     ports:
       - "3306:3306"  # Map host port 3306 to container port 3306
     volumes:

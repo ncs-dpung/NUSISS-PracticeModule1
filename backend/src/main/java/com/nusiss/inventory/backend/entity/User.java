@@ -5,7 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,27 +19,33 @@ import java.util.Collection;
 @ToString
 @Entity
 @Table(name = "tbl_user")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    @Column(name = "user_id")
+    @Column(name = "UserID")
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "UserName")
     private String username;
-    @Column(name = "user_email")
+    @Column(name = "UserEmail")
     private String email;
-    @Column(name = "user_password")
+    @Column(name = "UserPassword")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"), // Column in the join table that references User
-            inverseJoinColumns = @JoinColumn(name = "role_id") // Column in the join table that references Role
-    )
-    private Collection<Role> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "RoleID")
+    private Role role;
+
+    @Column(updatable = false, nullable = false)
+    @CreatedDate
+    private LocalDateTime createdTime;
+
+    @Column(nullable = false)
+    @LastModifiedDate
+    private LocalDateTime updatedTime;
+
 }
 
 

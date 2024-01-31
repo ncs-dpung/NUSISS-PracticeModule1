@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
-        userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
+        userDto.setRole(user.getRole());
         return userDto;
     }
 
