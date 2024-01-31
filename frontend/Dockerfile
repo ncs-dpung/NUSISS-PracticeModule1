@@ -15,11 +15,11 @@ RUN npm install
 # Build the Angular application for production
 RUN ng build
 
-# Use the Nginx base image for serving the built Angular app
-# FROM nginx:1.21
-
-# Copy the Nginx configuration file
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# Copy the built Angular app from the builder stage to the Nginx directory
-# COPY --from=builder /app/dist/advanced-inventory-management-system /usr/share/nginx/html
+## Use the Nginx base image for serving the built Angular app
+#FROM nginx:1.21
+#
+## Copy the Nginx configuration file
+#COPY nginx.conf /etc/nginx/conf.d/default.conf
+#
+## Copy the built Angular app from the builder stage to the Nginx directory
+#COPY --from=builder /app/dist/advanced-inventory-management-system /usr/share/nginx/html

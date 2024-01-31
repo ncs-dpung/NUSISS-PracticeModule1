@@ -1,29 +1,35 @@
 version: '3'
 
 services:
-  frontend:
-    build:
-      context: ./frontend  # Path to the frontend Dockerfile
-    ports:
-      - "80:80"  # Map host port 80 to container port 80
-
-  backend:
-    build:
-      context: ./backend  # Path to the backend Dockerfile
-    ports:
-      - "8080:8080"  # Map host port 8080 to container port 8080
-    depends_on:
-      - db  # Ensure the backend container starts after the database
 
   db:
-    image: mysql:latest  # Use the official MySQL image
+    image: mysql:8.0.36  # Use the official MySQL
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: Inventory-db
-      MYSQL_USER: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: inventory-db
+      MYSQL_USER: root
       MYSQL_PASSWORD: password123
+    hostname: db
     ports:
       - "3306:3306"  # Map host port 3306 to container port 3306
     volumes:
       - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
 
+  backend:
+    image: backend:latest
+    container_name: backend
+    build:
+      context: ./backend  # Path to the backend Dockerfile
+    command: [ "./wait-for-it.sh", "db:3306", "--", "mvn", "-f", "/usr/src/app/pom.xml", "clean", "package" ]
+    ports:
+        - "8080:8080"  # Map host port 8080 to container port 8080
+    depends_on:
+        - db  # Ensure the backend container starts after the database
+
+  frontend:
+    image: frontend:latest
+    container_name: frontend
+    build:
+      context: ./frontend  # Path to the frontend Dockerfile
+    ports:
+      - "4200:80"  # Map host port 4200 to container port 80

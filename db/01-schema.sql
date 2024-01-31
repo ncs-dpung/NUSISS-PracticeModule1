@@ -1,11 +1,11 @@
 -- Create Role Table
-CREATE TABLE Role (
+CREATE TABLE tbl_role (
     RoleID INT PRIMARY KEY AUTO_INCREMENT,
     RoleName VARCHAR(255) NOT NULL
 );
 
 -- Create User Table
-CREATE TABLE User (
+CREATE TABLE tbl_user (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(255) NOT NULL,
     Email VARCHAR(255) NOT NULL,
@@ -15,13 +15,13 @@ CREATE TABLE User (
 );
 
 -- Create Category Table
-CREATE TABLE Category (
+CREATE TABLE tbl_category (
     CategoryID INT PRIMARY KEY AUTO_INCREMENT,
     CategoryName VARCHAR(255) NOT NULL
 );
 
 -- Create Supplier Table
-CREATE TABLE Supplier (
+CREATE TABLE tbl_supplier (
     SupplierID INT PRIMARY KEY AUTO_INCREMENT,
     SupplierName VARCHAR(255) NOT NULL,
     ContactInfo VARCHAR(255),
@@ -29,7 +29,7 @@ CREATE TABLE Supplier (
 );
 
 -- Create Product Table
-CREATE TABLE Product (
+CREATE TABLE tbl_product (
     ProductID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
     CategoryID INT,
@@ -40,7 +40,7 @@ CREATE TABLE Product (
 );
 
 -- Create Inventory Table
-CREATE TABLE Inventory (
+CREATE TABLE tbl_inventory (
     InventoryID INT PRIMARY KEY AUTO_INCREMENT,
     ProductID INT,
     QuantityAvailable INT NOT NULL,
@@ -49,20 +49,20 @@ CREATE TABLE Inventory (
 );
 
 -- Create Customer Table
-CREATE TABLE Customer (
+CREATE TABLE tbl_customer (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
     ContactInfo VARCHAR(255)
 );
 
 -- Create Order Status Table
-CREATE TABLE OrderStatus (
+CREATE TABLE tbl_order_status (
     OrderStatusID INT PRIMARY KEY AUTO_INCREMENT,
     StatusName VARCHAR(255) NOT NULL,
 );
 
 -- Create Order Table
-CREATE TABLE Order (
+CREATE TABLE tbl_order (
     OrderID INT PRIMARY KEY AUTO_INCREMENT,
     UserID INT,
     DatePlaced DATETIME NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE Order (
 );
 
 -- Create Sales Table
-CREATE TABLE Sales (
+CREATE TABLE tbl_sales (
     SalesID INT PRIMARY KEY AUTO_INCREMENT,
     OrderID INT,
     SalesDate DATETIME NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE Sales (
 );
 
 -- Junction Table for Many-to-Many relationship between Orders and Products
-CREATE TABLE Order_Details (
+CREATE TABLE tbl_order_details (
     OrderID INT,
     ProductID INT,
     PRIMARY KEY (OrderID, ProductID),
@@ -91,7 +91,7 @@ CREATE TABLE Order_Details (
 );
 
 -- Junction Table for Many-to-Many relationship between Suppliers and Products
-CREATE TABLE Supplier_Products (
+CREATE TABLE tbl_supplier_products (
     SupplierID INT,
     ProductID INT,
     PRIMARY KEY (SupplierID, ProductID),

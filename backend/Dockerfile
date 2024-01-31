@@ -1,16 +1,3 @@
-# Build Stage
-#FROM maven:3.9.3-openjdk-17 AS build
-#WORKDIR /app
-#COPY pom.xml .
-#COPY src ./src
-#RUN mvn clean install -DskipTests
-#
-## Run Stage
-#FROM openjdk:17
-#WORKDIR /app
-#COPY target/backend-0.0.1-SNAPSHOT.jar .
-#CMD ["java", "-jar", "backend-0.0.1-SNAPSHOT.jar"]
-
 FROM maven:3.8-openjdk-17 AS build
 COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app

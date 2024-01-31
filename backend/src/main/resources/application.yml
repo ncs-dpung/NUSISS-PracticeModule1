@@ -13,13 +13,14 @@ server:
 
 # Datasource Configuration (MySQL)
 datasource:
-  url: jdbc:mysql://localhost:3306/mydb
-  username: admin
+  url: jdbc:mysql://db:3306/inventory-db
+  username: user123
   password: password123
-jpa:
-  hibernate:
-    ddl-auto: update
-  show-sql: true
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
 # Logging Configuration
 logging:
@@ -27,6 +28,8 @@ logging:
     com.nusiss.inventory.backend: DEBUG
   file: /var/log/application.log
 
-# Custom Application Properties
-myapp:
-  custom-property: custom-value
+# springfox.documentation.swagger-ui.enabled
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
