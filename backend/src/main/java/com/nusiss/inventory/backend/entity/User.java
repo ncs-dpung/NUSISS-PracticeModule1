@@ -15,7 +15,6 @@ import java.util.Collection;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "tbl_user")
@@ -23,19 +22,18 @@ import java.util.Collection;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @EqualsAndHashCode.Include
-    @Column(name = "UserID")
+    @Column(name = "userid")
     private Long id;
 
-    @Column(name = "UserName")
+    @Column(name = "user_name")
     private String username;
-    @Column(name = "UserEmail")
+    @Column(name = "email")
     private String email;
-    @Column(name = "UserPassword")
+    @Column(name = "password")
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "RoleID")
+    @JoinColumn(name = "roleiD")
     private Role role;
 
     @Column(updatable = false, nullable = false)

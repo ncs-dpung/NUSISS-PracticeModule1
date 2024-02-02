@@ -1,34 +1,45 @@
 version: '3'
 
 services:
-
-  db:
-    image: mysql:8.0.36  # Use the official MySQL
-    environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: inventory-db
-      MYSQL_USER: user123
-      MYSQL_PASSWORD: password123
-    ports:
-      - "3306:3306"  # Map host port 3306 to container port 3306
-    volumes:
-      - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
-
   backend:
     image: backend:latest
     container_name: backend
     build:
       context: ./backend  # Path to the backend Dockerfile
-    command: [ "./wait-for-it.sh", "db:3306", "--", "mvn", "-f", "/usr/src/app/pom.xml", "clean", "package" ]
     ports:
-        - "8080:8080"  # Map host port 8080 to container port 8080
+      - "8080:8080"
+    restart: always
+    networks:
+      - springapimysql-net
+    environment:
+      - spring.datasource.url=jdbc:mysql://db:3306/inventory_db
+    command: [ "mvn", "-f", "/usr/src/app/pom.xml", "clean", "package", "Dspring.profiles.active=test" ]
     depends_on:
         - db  # Ensure the backend container starts after the database
 
-  frontend:
-    image: frontend:latest
-    container_name: frontend
-    build:
-      context: ./frontend  # Path to the frontend Dockerfile
+  db:
+    image: mysql:8.0.36  # Use the official MySQL
+    restart: always
     ports:
-      - "4200:80"  # Map host port 4200 to container port 80
+      - "3306:3306"
+    networks:
+      - springapimysql-net
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd123
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: user123
+      MYSQL_PASSWORD: pwd123
+      MYSQL_INITDB_SKIP_TZINFO: true
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
+
+#  frontend:
+#    image: frontend:latest
+#    container_name: frontend
+#    build:
+#      context: ./frontend  # Path to the frontend Dockerfile
+#    ports:
+#      - "4200:80"  # Map host port 4200 to container port 80
+
+networks:
+    springapimysql-net:

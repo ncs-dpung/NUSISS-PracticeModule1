@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "tbl_role")
@@ -18,10 +17,10 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    @Column(name = "RoleID")
+    @Column(name = "roleid")
     private Long id;
 
-    @Column(name = "RoleName")
+    @Column(name = "role_name")
     private String name;
 //
 //    @OneToMany(mappedBy = "UserRole")

@@ -1,55 +1,55 @@
 -- Insert Roles
-INSERT INTO tbl_role (RoleName) VALUES ('Administrator');
-INSERT INTO tbl_role (RoleName) VALUES ('Warehouse Manager');
-INSERT INTO tbl_role (RoleName) VALUES ('Procurement Officer');
-INSERT INTO tbl_role (RoleName) VALUES ('Salesperson');
+INSERT INTO tbl_role (role_name) VALUES ('Administrator');
+INSERT INTO tbl_role (role_name) VALUES ('Warehouse Manager');
+INSERT INTO tbl_role (role_name) VALUES ('Procurement Officer');
+INSERT INTO tbl_role (role_name) VALUES ('Salesperson');
 
 -- Insert Users (passwords are just placeholders, ensure to use hashed passwords in production)
-INSERT INTO tbl_user (Username, Email, Password, RoleID) VALUES ('admin', 'admin@example.com', 'adminpassword', 1);
-INSERT INTO tbl_user (Username, Email, Password, RoleID) VALUES ('warehouse', 'warehouse@example.com', 'warehousepassword', 2);
-INSERT INTO tbl_user (Username, Email, Password, RoleID) VALUES ('procurement', 'procurement@example.com', 'procurementpassword', 3);
-INSERT INTO tbl_user (Username, Email, Password, RoleID) VALUES ('sales', 'sales@example.com', 'salespassword', 4);
+INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('admin', 'admin@example.com', 'adminpassword', 1);
+INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('warehouse', 'warehouse@example.com', 'warehousepassword', 2);
+INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('procurement', 'procurement@example.com', 'procurementpassword', 3);
+INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('sales', 'sales@example.com', 'salespassword', 4);
 
 -- Insert Categories
-INSERT INTO tbl_category (CategoryName) VALUES ('Normal Dolls');
-INSERT INTO tbl_category (CategoryName) VALUES ('Series Dolls');
-INSERT INTO tbl_category (CategoryName) VALUES ('Customize Dolls');
+INSERT INTO tbl_category (category_name) VALUES ('Normal Dolls');
+INSERT INTO tbl_category (category_name) VALUES ('Series Dolls');
+INSERT INTO tbl_category (category_name) VALUES ('Customize Dolls');
 
 -- Insert Suppliers
-INSERT INTO tbl_supplier (SupplierName, ContactInfo, Address, AdditionalNotes) VALUES ('Supplier A', 'contact@suppliera.com', 'Address A');
-INSERT INTO tbl_supplier (SupplierName, ContactInfo, Address, AdditionalNotes) VALUES ('Supplier B', 'contact@supplierb.com', 'Address B');
+INSERT INTO tbl_supplier (supplier_name, contact_info, address) VALUES ('Supplier A', 'contact@suppliera.com', 'Address A');
+INSERT INTO tbl_supplier (supplier_name, contact_info, address) VALUES ('Supplier B', 'contact@supplierb.com', 'Address B');
 
 -- Insert Products
-INSERT INTO tbl_product (Name, CategoryID, Price, batchNo) VALUES ('Rebbe Doll', 1, 29.99, 'DOLL12345');
-INSERT INTO tbl_product (Name, CategoryID, Price, batchNo) VALUES ('Collector Esther Doll', 3, 59.99, 'DOLL67890');
+INSERT INTO tbl_product (name, categoryid, price, batch_no) VALUES ('Rebbe Doll', 1, 29.99, 'DOLL12345');
+INSERT INTO tbl_product (name, categoryid, price, batch_no) VALUES ('Collector Esther Doll', 3, 59.99, 'DOLL67890');
 
 -- Insert Inventory Records
-INSERT INTO tbl_inventory (ProductID, QuantityAvailable, ReorderLevel) VALUES (1, 100, 20);
-INSERT INTO tbl_inventory (ProductID, QuantityAvailable, ReorderLevel) VALUES (2, 20, 50);
+INSERT INTO tbl_inventory (productid, quantity_available, reorder_level) VALUES (1, 100, 20);
+INSERT INTO tbl_inventory (productid, quantity_available, reorder_level) VALUES (2, 20, 50);
 
 -- Insert Customers
-INSERT INTO tbl_customer (Name, ContactInfo) VALUES ('John Doe', 'john.doe@example.com');
-INSERT INTO tbl_customer (Name, ContactInfo) VALUES ('Jane Smith', 'jane.smith@example.com');
+INSERT INTO tbl_customer (name, contact_info) VALUES ('John Doe', 'john.doe@example.com');
+INSERT INTO tbl_customer (name, contact_info) VALUES ('Jane Smith', 'jane.smith@example.com');
 
 -- Insert OrderStatus
-INSERT INTO tbl_order_status (StatusName) VALUES ('Pending');
-INSERT INTO tbl_order_status (StatusName) VALUES ('Processed');
-INSERT INTO tbl_order_status (StatusName) VALUES ('Shipped');
-INSERT INTO tbl_order_status (StatusName) VALUES ('Delivered');
+INSERT INTO tbl_order_status (status_name) VALUES ('Pending');
+INSERT INTO tbl_order_status (status_name) VALUES ('Processed');
+INSERT INTO tbl_order_status (status_name) VALUES ('Shipped');
+INSERT INTO tbl_order_status (status_name) VALUES ('Delivered');
 
 -- Insert Orders
-INSERT INTO tbl_order (UserID, DatePlaced, OrderStatusID) VALUES (4, NOW(), 1);
-INSERT INTO tbl_order (UserID, DatePlaced, OrderStatusID) VALUES (4, NOW(), 4);
+INSERT INTO tbl_order (userid, date_placed, order_statusid) VALUES (4, NOW(), 1);
+INSERT INTO tbl_order (userid, date_placed, order_statusid) VALUES (4, NOW(), 4);
 
 -- Insert Sales Records
-INSERT INTO tbl_sales (OrderID, SalesDate, Quantity, TotalAmount) VALUES (1, NOW(), 2, 59.98);
-INSERT INTO tbl_sales (OrderID, SalesDate, Quantity, TotalAmount) VALUES (2, NOW(), 1, 59.99);
+INSERT INTO tbl_sales (orderid, sales_date, quantity, total_amount) VALUES (1, NOW(), 2, 59.98);
+INSERT INTO tbl_sales (orderid, sales_date, quantity, total_amount) VALUES (2, NOW(), 1, 59.99);
 
 -- Insert into Junction Tables for Many-to-Many Relationships
 -- Link Products to Suppliers
-INSERT INTO tbl_supplier_products (SupplierID, ProductID) VALUES (1, 1);
-INSERT INTO tbl_supplier_products (SupplierID, ProductID) VALUES (2, 2);
+INSERT INTO tbl_supplier_products (supplierid, productid) VALUES (1, 1);
+INSERT INTO tbl_supplier_products (supplierid, productid) VALUES (2, 2);
 
 -- Link Products to Orders
-INSERT INTO tbl_order_details (OrderID, ProductID) VALUES (1, 1);
-INSERT INTO tbl_order_details (OrderID, ProductID) VALUES (2, 2);
+INSERT INTO tbl_order_details (orderid, productid) VALUES (1, 1);
+INSERT INTO tbl_order_details (orderid, productid) VALUES (2, 2);
