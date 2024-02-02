@@ -16,12 +16,11 @@
 
 2. Eclipse / STS
 - https://projectlombok.org/setup/eclipse
-- Any issue, pls find stackoverflow
 
 
 ### Run Backend Application in Local
-
-1. Build and run SpringBoot Application
+1. [Setup Hibernate Database](#setup-and-access-hibernate-database)
+2. Build and run SpringBoot Application
 ```agsl
     cd backend
     mvn clean install -DskipTests
@@ -47,7 +46,21 @@ Example log: Using default security password: ce6c3d39-8f20-4a41-8e01-803166bb99
 ### API Endpoint Documentation - Swagger
  - http://localhost:8080/swagger-ui.html
 
-### Access Hibernate Database
+### Setup and Access Hibernate Database
+1. Navigate to backend > src > main > resources > application.properties
+2. Uncommented
+
+```agsl
+#spring.datasource.url=jdbc:h2:mem:testdb
+#spring.datasource.driverClassName=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=password
+#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#spring.h2.console.enabled=true
+#spring.h2.console.path=/h2-console
+```
+3. Commented properties under database configuration section
+4. To access the database, http://localhost:8080/h2-console
 
 ### Reference Documentation
 For further reference, please consider the following sections:
