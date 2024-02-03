@@ -33,6 +33,18 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
 
+  dev-fe:
+    container_name: dev_fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+    command: ng serve
+    # depends_on:
+
 #  frontend:
 #    image: frontend:latest
 #    container_name: frontend
