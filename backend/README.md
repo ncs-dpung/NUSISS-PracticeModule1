@@ -31,32 +31,32 @@
 
    - A. Option 1: Use database design tools with GUI, e.g. MySQL Workbench, DBeaver, etc.
    ```
-   ...Default settings...
+      ...Default settings...
    
-   Host: 127.0.0.1
-   database: inventory_db
-   username: user123
-   password: pwd124
+      Host: 127.0.0.1
+      database: inventory_db
+      username: user123
+      password: pwd124
    ```
    - B. Option 2: Use Docker Desktop
    
    ```
-   STEP 1:
-   Select Containers> Unfold nusiss-practicemodule1 container> Select the db container> Select Exec
-   
-   STEP 2: 
-   mysql -u user123 -p inventory_db
-   Enter password: pwd123
-   ...
-   exit
+      STEP 1:
+      Select Containers> Unfold nusiss-practicemodule1 container> Select the db container> Select Exec
+      
+      STEP 2: 
+      mysql -u user123 -p inventory_db
+      Enter password: pwd123
+      ...
+      exit
    ```
    - C. Option3: Use command line.
    ```
-   docker exec -it <db-container-name> sh
-   mysql -u user123 -p inventory_db
-   Enter password: pwd123
-   ...
-   exit
+      docker exec -it <db-container-name> sh
+      mysql -u user123 -p inventory_db
+      Enter password: pwd123
+      ...
+      exit
    ```
   
 ### Access API
