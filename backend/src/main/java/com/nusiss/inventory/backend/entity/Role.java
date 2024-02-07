@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "tbl_role")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     @Column(name = "roleid")
     private Long id;

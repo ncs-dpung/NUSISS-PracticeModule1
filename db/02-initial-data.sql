@@ -20,8 +20,8 @@ INSERT INTO tbl_supplier (supplier_name, contact_info, address) VALUES ('Supplie
 INSERT INTO tbl_supplier (supplier_name, contact_info, address) VALUES ('Supplier B', 'contact@supplierb.com', 'Address B');
 
 -- Insert Products
-INSERT INTO tbl_product (name, categoryid, price, batch_no) VALUES ('Rebbe Doll', 1, 29.99, 'DOLL12345');
-INSERT INTO tbl_product (name, categoryid, price, batch_no) VALUES ('Collector Esther Doll', 3, 59.99, 'DOLL67890');
+INSERT INTO tbl_product (name, categoryid, price, quantity, batch_no) VALUES ('Rebbe Doll', 1, 29.99, 106, 'DOLL12345');
+INSERT INTO tbl_product (name, categoryid, price, quantity, batch_no) VALUES ('Collector Esther Doll', 3, 59.99, 32, 'DOLL67890');
 
 -- Insert Inventory Records
 INSERT INTO tbl_inventory (productid, quantity_available, reorder_level) VALUES (1, 100, 20);

@@ -21,7 +21,6 @@ import java.util.Collection;
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userid")
     private Long id;
 
