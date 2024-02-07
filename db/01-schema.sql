@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS inventory-db;
-CREATE DATABASE inventory-db;
-USE inventory-db;
+DROP DATABASE IF EXISTS inventory_db;
+CREATE DATABASE inventory_db;
+USE inventory_db;
 
 -- Create Role Table
 CREATE TABLE IF NOT EXISTS tbl_role (

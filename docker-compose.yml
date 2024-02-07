@@ -28,11 +28,10 @@ services:
       MYSQL_DATABASE: inventory_db
       MYSQL_USER: user123
       MYSQL_PASSWORD: pwd123
-      MYSQL_INITDB_SKIP_TZINFO: true
     volumes:
       - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "$$MYSQL_USER", "--password=$$MYSQL_PASSWORD" ]
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1", "-u", "$$MYSQL_USER", "--password=$$MYSQL_PASSWORD" ]
       timeout: 10s
       retries: 10
 
