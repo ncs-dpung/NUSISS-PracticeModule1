@@ -3,8 +3,8 @@ name: BackEnd Java Project
 on:
   push:
     paths:
-      - ./backend/**
-      - ./.github/workflows/**
+      - backend/**
+      - .github/workflows/**
 
 jobs:
   ci:

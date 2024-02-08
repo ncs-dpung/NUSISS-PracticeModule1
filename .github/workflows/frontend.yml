@@ -3,8 +3,8 @@ name: FrontEnd Angular Project
 on:
   push:
     paths:
-      - ./frontend/**
-      - ./.github/workflows/**
+      - frontend/**
+      - .github/workflows/**
 
 jobs:
   ci:
