@@ -5,3 +5,9 @@ RUN npm install -g @angular/cli
 
 # Set the working directory in the container
 WORKDIR /app
+
+ADD ./package.json .
+
+RUN npm i
+
+ADD ./*.json .
