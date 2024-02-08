@@ -45,7 +45,7 @@ services:
       - "4200:4200"
     volumes:
       - ./frontend:/app
-    command: ng serve
+    command: ng serve --host 0.0.0.0
     # depends_on:
 
 #  frontend:
