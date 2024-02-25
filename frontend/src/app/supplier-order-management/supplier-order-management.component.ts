@@ -5,17 +5,16 @@ import {FormsModule} from "@angular/forms";
 
 
 @Component({
-  selector: 'app-user-access-management',
+  selector: 'app-supplier-order-management',
   standalone: true,
   imports: [
-      NgClass,
+  NgClass,
       FormsModule],
-  templateUrl: './user-access-management.component.html',
-  styleUrl: './user-access-management.component.scss'
+  templateUrl: './supplier-order-management.component.html',
+  styleUrl: './supplier-order-management.component.scss'
 })
-export class UserAccessManagementComponent {
-
-  showModal: boolean = false;
+export class SupplierOrderManagementComponent {
+ showModal: boolean = false;
   newItem: any = {
     name: '',
     condition: 'new',
@@ -59,4 +58,5 @@ export class UserAccessManagementComponent {
     console.log(this.selectedItem);
     this.toggleUpdateModal(false); // Hide modal after update
   }
+
 }

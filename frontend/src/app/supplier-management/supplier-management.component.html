@@ -46,9 +46,9 @@
         <button (click)="navigate('inventory-management')" >Inventory</button>
         <button (click)="navigate('order-management')">Orders</button>
         <button (click)="navigate('reporting')">Report</button>
-        <button (click)="navigate('user-access-management')" class="active">Access</button>
+        <button (click)="navigate('user-access-management')">Access</button>
         <button (click)="navigate('customer-management')">Customer</button>
-        <button (click)="navigate('supplier-management')">Supplier</button>
+        <button (click)="navigate('supplier-management')" class="active">Supplier</button>
         <button (click)="navigate('supplier-order-management')">Supply Order</button>
       </div>
       <div class="user-info">Display Username</div>
@@ -57,7 +57,7 @@
     <!-- Main Content: Product Listing -->
     <div class="product-list">
       <div class="list-header">
-        <h2>Access</h2>
+        <h2>Supplier Management</h2>
         <button class="add-new-btn" (click)="toggleModal()">Add New</button>
       </div>
 

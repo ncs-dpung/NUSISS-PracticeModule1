@@ -1,89 +1,195 @@
+<script src="inventory-management.component.ts"></script>
 <div class="dashboard">
-    <aside class="sidebar">
-      <!-- Sidebar: Filter Section -->
-      <div class="filter-section">
-        <h3>Filter Products</h3>
-        <input type="text" placeholder="Search by name">
-  
-        <!-- Category Dropdown -->
-        <label for="category">Category:</label>
-        <select id="category" name="category">
-          <option value="all">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="accessories">Accessories</option>
-          <option value="apparel">Apparel</option>
-          <!-- Add more categories as needed -->
-        </select>
-  
-        <!-- Condition Radio Buttons -->
-        <fieldset class="filter-section">
-          <legend>Condition:</legend>
-          <label class="radio-group">
-            <input type="radio" name="condition" value="new" checked> New
-          </label>
-          <label class="radio-group">
-            <input type="radio" name="condition" value="used"> Used
-          </label>
-          <label class="radio-group">
-            <input type="radio" name="condition" value="refurbished"> Refurbished
-          </label>
-        </fieldset>
-  
-        <!-- Date Filter -->
-        <label for="fromDate">From</label>
-        <input type="date" id="fromDate" name="fromDate">
-  
-        <label for="toDate">To</label>
-        <input type="date" id="toDate" name="toDate">
+  <aside class="sidebar">
+    <!-- Sidebar: Filter Section -->
+    <div class="filter-section">
+      <h3>Filter Products</h3>
+      <input type="text" placeholder="Search by name">
+
+      <!-- Category Dropdown -->
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="all">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="accessories">Accessories</option>
+        <option value="apparel">Apparel</option>
+        <!-- Add more categories as needed -->
+      </select>
+
+      <!-- Condition Radio Buttons -->
+      <fieldset class="filter-section">
+        <legend>Condition:</legend>
+        <label class="radio-group">
+          <input type="radio" name="condition" value="new" checked> New
+        </label>
+        <label class="radio-group">
+          <input type="radio" name="condition" value="used"> Used
+        </label>
+        <label class="radio-group">
+          <input type="radio" name="condition" value="refurbished"> Refurbished
+        </label>
+      </fieldset>
+
+      <!-- Date Filter -->
+      <label for="fromDate">From</label>
+      <input type="date" id="fromDate" name="fromDate">
+
+      <label for="toDate">To</label>
+      <input type="date" id="toDate" name="toDate">
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- Main Content: Top Bar -->
+    <div class="top-bar">
+      <div class="tab">
+        <button (click)="navigate('inventory-management')" >Inventory</button>
+        <button (click)="navigate('order-management')" class="active">Orders</button>
+        <button (click)="navigate('reporting')">Report</button>
+        <button (click)="navigate('user-access-management')">Access</button>
+        <button (click)="navigate('customer-management')">Customer</button>
+        <button (click)="navigate('supplier-management')">Supplier</button>
+        <button (click)="navigate('supplier-order-management')">Supply Order</button>
       </div>
-    </aside>
-  
-    <main class="main-content">
-      <!-- Main Content: Top Bar -->
-      <div class="top-bar">
-        <div class="tab">
-          <button (click)="navigate('inventory-management')" >Inventory</button>
-          <button (click)="navigate('order-management')" class="active">Orders</button>
-          <button (click)="navigate('reporting')">Report</button>
-          <button (click)="navigate('user-access-management')">Access</button>
+      <div class="user-info">Display Username</div>
+    </div>
+
+    <!-- Main Content: Product Listing -->
+    <div class="product-list">
+      <div class="list-header">
+        <h2>Order Management</h2>
+        <button class="add-new-btn" (click)="toggleModal()">Add New</button>
+      </div>
+
+      <!-- Add New Inventory Item Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleModal()">&times;</span>
+          <h2>Add New Inventory Item</h2>
+          <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemName">Name:</label>
+                <input type="text" id="itemName" [(ngModel)]="newItem.name" name="name" placeholder="Item Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemCondition">Condition:</label>
+                <select id="itemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                  <option value="new">New</option>
+                  <option value="used">Used</option>
+                  <option value="refurbished">Refurbished</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAvailable">Available:</label>
+                <input type="number" id="itemAvailable" [(ngModel)]="newItem.available" name="available" required>
+              </div>
+              <div class="form-group">
+                <label for="itemReserved">Reserved:</label>
+                <input type="number" id="itemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Price:</label>
+                <input type="text" id="itemPrice" [(ngModel)]="newItem.price" name="price" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified">Modified:</label>
+                <input type="date" id="itemModified" [(ngModel)]="newItem.modified" name="modified" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-add">Add Item</button>
+          </form>
         </div>
-        <div class="user-info">Display Username</div>
       </div>
-  
-      <!-- Main Content: Product Listing -->
-      <div class="product-list">
-        <div class="list-header">
-          <h2>Order Management</h2>
-          <button class="add-new-btn">Add New</button>
+
+
+      <!-- Update Inventory Item Modal -->
+      <div class="modal" [class.show-modal]="showUpdateModal">
+        <div class="modal-content">
+          <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
+          <h2>Update Inventory Item</h2>
+          <form (submit)="onUpdateItem()">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateItemName">Name:</label>
+                <input type="text" id="updateItemName" [(ngModel)]="selectedItem.name" name="name" placeholder="Item Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemCondition">Condition:</label>
+                <select id="upDateItemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                  <option value="new">New</option>
+                  <option value="used">Used</option>
+                  <option value="refurbished">Refurbished</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAvailable">Available:</label>
+                <input type="number" id="updateItemAvailable" [(ngModel)]="newItem.available" name="available" required>
+              </div>
+              <div class="form-group">
+                <label for="itemReserved">Reserved:</label>
+                <input type="number" id="updateItemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Price:</label>
+                <input type="text" id="updateItemPrice" [(ngModel)]="newItem.price" name="price" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified">Modified:</label>
+                <input type="date" id="updateItemModified" [(ngModel)]="newItem.modified" name="modified" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-add">Update Item</button>
+          </form>
         </div>
-        <!-- Table of Products -->
-        <table>
-          <thead>
-            <tr>
-              <th><input type="checkbox"></th> 
-              <th>NAME</th>
-              <th>CONDITION</th>
-              <th>AVAILABLE</th>
-              <th>RESERVED</th>
-              <th>PRICE</th>
-              <th>MODIFIED</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Example Product Row -->
-            <tr>
-              <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-              <td>128GB SD card</td>
-              <td>New</td>
-              <td>3,546</td>
-              <td>3,354</td>
-              <td>$10.13</td>
-              <td>03/13/2017</td>
-            </tr>
-            <!-- Repeat rows for each product -->
-          </tbody>
-        </table>
       </div>
-    </main>
-  </div>
-  
+
+
+      <!-- Table of Products -->
+      <table>
+        <thead>
+        <tr>
+          <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
+          <th>NAME</th>
+          <th>CONDITION</th>
+          <th>AVAILABLE</th>
+          <th>RESERVED</th>
+          <th>PRICE</th>
+          <th>MODIFIED</th>
+          <th>ACTIONS</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Example Product Row -->
+        <tr>
+          <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
+          <td>128GB SD card</td>
+          <td>New</td>
+          <td>3,546</td>
+          <td>3,354</td>
+          <td>$10.13</td>
+          <td>03/13/2017</td>
+          <td>
+            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
+            <button class="btn-action delete-btn">Delete</button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

@@ -4,7 +4,7 @@
       <div class="filter-section">
         <h3>Filter Products</h3>
         <input type="text" placeholder="Search by name">
-  
+
         <!-- Category Dropdown -->
         <label for="category">Category:</label>
         <select id="category" name="category">
@@ -14,7 +14,7 @@
           <option value="apparel">Apparel</option>
           <!-- Add more categories as needed -->
         </select>
-  
+
         <!-- Condition Radio Buttons -->
         <fieldset class="filter-section">
           <legend>Condition:</legend>
@@ -28,16 +28,16 @@
             <input type="radio" name="condition" value="refurbished"> Refurbished
           </label>
         </fieldset>
-  
+
         <!-- Date Filter -->
         <label for="fromDate">From</label>
         <input type="date" id="fromDate" name="fromDate">
-  
+
         <label for="toDate">To</label>
         <input type="date" id="toDate" name="toDate">
       </div>
     </aside>
-  
+
     <main class="main-content">
       <!-- Main Content: Top Bar -->
       <div class="top-bar">
@@ -46,10 +46,13 @@
           <button (click)="navigate('order-management')">Orders</button>
           <button (click)="navigate('reporting')" class="active">Report</button>
           <button (click)="navigate('user-access-management')">Access</button>
+          <button (click)="navigate('customer-management')">Customer</button>
+          <button (click)="navigate('supplier-management')">Supplier</button>
+          <button (click)="navigate('supplier-order-management')">Supply Order</button>
         </div>
         <div class="user-info">Display Username</div>
       </div>
-  
+
       <!-- Main Content: Product Listing -->
       <div class="product-list">
         <div class="list-header">
@@ -86,4 +89,3 @@
       </div>
     </main>
   </div>
-  

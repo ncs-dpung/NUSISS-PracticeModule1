@@ -7,6 +7,9 @@ import { InventoryManagementComponent } from './inventory-management/inventory-m
 import { LoginPageComponent } from './login-page/login-page.component';
 import { OrderManagementComponent } from './order-management/order-management.component';
 import { ReportingComponent } from './reporting/reporting.component';
+import { SupplierManagementComponent } from './supplier-management/supplier-management.component';
+import { SupplierOrderManagementComponent } from './supplier-order-management/supplier-order-management.component';
+import { CustomerManagementComponent } from './customer-management/customer-management.component';
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
 
 import { routes } from './app.routes';
@@ -19,6 +22,9 @@ import { routes } from './app.routes';
     OrderManagementComponent,
     ReportingComponent,
     UserAccessManagementComponent,
+    SupplierManagementComponent,
+    SupplierOrderManagementComponent,
+    CustomerManagementComponent
   ],
   imports: [
     BrowserModule,
