@@ -7,6 +7,8 @@ import com.nusiss.inventory.backend.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto getUserById(Long id) {
-    User user = userDao.findById(id);
+    User user = userDao.findById(id).orElse(null);
     return convertToDto(user);
   }
 
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto updateUser(Long id, UserDto userDto) {
-    User user = userDao.findById(id);
+    User user = userDao.findById(id).orElse(null);
     if (user != null) {
       user.setUsername(userDto.getUsername());
       user.setEmail(userDto.getEmail());
@@ -65,5 +67,12 @@ public class UserServiceImpl implements UserService {
     user.setEmail(userDto.getEmail());
     // set roles or other fields
     return user;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userDao
+        .findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException("username is invalid"));
   }
 }
