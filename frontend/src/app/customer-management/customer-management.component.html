@@ -1,4 +1,4 @@
-<script src="inventory-management.component.ts"></script>
+
 <div class="dashboard">
   <aside class="sidebar">
     <!-- Sidebar: Filter Section -->
@@ -58,104 +58,157 @@
     <div class="product-list">
       <div class="list-header">
         <h2>Customer Management</h2>
-        <button class="add-new-btn" (click)="toggleModal()">Add New</button>
+        <button class="add-new-btn" (click)="toggleCustomerModal()">Add New</button>
       </div>
 
       <!-- Add New Inventory Item Modal -->
-      <div class="modal" [ngClass]="{'show-modal': showModal}">
+      <div class="modal" [ngClass]="{'show-modal': showCustomerModal}">
         <div class="modal-content">
-          <span class="close" (click)="toggleModal()">&times;</span>
-          <h2>Add New Inventory Item</h2>
-          <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
+          <span class="close" (click)="toggleCustomerModal()">&times;</span>
+          <h2>Add New Customer Profile</h2>
+          <form (ngSubmit)="onSubmitCustomer()" #addItemForm="ngForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="itemName">Name:</label>
-                <input type="text" id="itemName" [(ngModel)]="newItem.name" name="name" placeholder="Item Name" required>
+                <label for="itemName">Customer Name:</label>
+                <input type="text" id="itemName" [(ngModel)]="newUser.userName" name="name" placeholder="User Name" required>
               </div>
               <div class="form-group">
-                <label for="itemCondition">Condition:</label>
-                <select id="itemCondition" [(ngModel)]="newItem.condition" name="condition" required>
-                  <option value="new">New</option>
-                  <option value="used">Used</option>
-                  <option value="refurbished">Refurbished</option>
+                <label for="itemCondition">Cutomer Type:</label>
+                <select id="itemCondition" [(ngModel)]="newUser.role" name="condition" required>
+                  <option value="new">Individual</option>
+                  <option value="new">Corporate</option>
+
                 </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemAvailable">Available:</label>
-                <input type="number" id="itemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <label for="itemAvailable">Email:</label>
+                <input type="text" id="itemAvailable" [(ngModel)]="newUser.email" name="email" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Reserved:</label>
-                <input type="number" id="itemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <label for="itemReserved">Contact:</label>
+                <input type="text" id="itemReserved" [(ngModel)]="newUser.contact" name="contact" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemPrice">Price:</label>
-                <input type="text" id="itemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <label for="itemPrice">Mailing Address:</label>
+                <input type="text" id="itemPrice" [(ngModel)]="newUser.address" name="price" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Modified:</label>
-                <input type="date" id="itemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <input type="date" id="itemModified" [(ngModel)]="newUser.address" name="modified" required>
               </div>
             </div>
 
-            <button type="submit" class="btn-add">Add Item</button>
+            <button type="submit" class="btn-add">Add Customer</button>
           </form>
         </div>
       </div>
 
 
-      <!-- Update Inventory Item Modal -->
+      <!-- Update User Modal -->
       <div class="modal" [class.show-modal]="showUpdateModal">
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
-          <h2>Update Inventory Item</h2>
-          <form (submit)="onUpdateItem()">
+          <h2>Update Customer Profile</h2>
+          <form (submit)="onUpdateUser()" #updateUserForm="ngForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="updateItemName">Name:</label>
-                <input type="text" id="updateItemName" [(ngModel)]="selectedItem.name" name="name" placeholder="Item Name" required>
+                <label for="updateUserName">Customer Name:</label>
+                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.userName" name="userName" placeholder="User Name" required>
               </div>
               <div class="form-group">
-                <label for="itemCondition">Condition:</label>
-                <select id="upDateItemCondition" [(ngModel)]="newItem.condition" name="condition" required>
-                  <option value="new">New</option>
-                  <option value="used">Used</option>
-                  <option value="refurbished">Refurbished</option>
+                <label for="updateUserRole">Cutomer Type:</label>
+                <select id="updateUserRole" [(ngModel)]="selectedUser.role" name="role" required>
+                  <option value="new">Individual</option>
+                  <option value="new">Corporate</option>
                 </select>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemAvailable">Available:</label>
-                <input type="number" id="updateItemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <label for="updateUserEmail">Email:</label>
+                <input type="text" id="updateUserEmail" [(ngModel)]="selectedUser.email" name="email" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Reserved:</label>
-                <input type="number" id="updateItemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <label for="updateUserContact">Contact:</label>
+                <input type="text" id="updateUserContact" [(ngModel)]="selectedUser.contact" name="contact" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemPrice">Price:</label>
-                <input type="text" id="updateItemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <label for="updateUserAddress">Mailing Address:</label>
+                <input type="text" id="updateUserAddress" [(ngModel)]="selectedUser.address" name="address" required>
               </div>
               <div class="form-group">
-                <label for="itemModified">Modified:</label>
-                <input type="date" id="updateItemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <label for="updateUserModified">Last Modified:</label>
+                <input type="date" id="updateUserModified" [(ngModel)]="selectedUser.modified" name="modified" required>
               </div>
             </div>
-            <button type="submit" class="btn-add">Update Item</button>
+            <button type="submit" class="btn-add">Update User</button>
           </form>
         </div>
       </div>
+
+      <!-- View Order History Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showOrderHistoryModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleOrderHistoryModal()">&times;</span>
+          <h2>Order History</h2>
+          <table>
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product List</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Complete Date</th>
+              <th>Total Amount (SGD)</th>
+              <th>Process Manager</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Fake Data Entries -->
+            <tr>
+              <td>ORD001</td>
+              <td>Product A, Product B</td>
+              <td>Completed</td>
+              <td>2023-01-01</td>
+              <td>2023-01-05</td>
+              <td>150.00</td>
+              <td>John Doe</td>
+            </tr>
+            <tr>
+              <td>ORD002</td>
+              <td>Product C</td>
+              <td>In Progress</td>
+              <td>2023-02-01</td>
+              <td>-</td>
+              <td>200.00</td>
+              <td>Jane Smith</td>
+            </tr>
+            <!-- Repeat for more fake entries -->
+            <tr>
+              <td>ORD003</td>
+              <td>Product D, Product E</td>
+              <td>Completed</td>
+              <td>2023-02-15</td>
+              <td>2023-02-20</td>
+              <td>100.00</td>
+              <td>Alice Johnson</td>
+            </tr>
+            <!-- Add more rows as needed to make 9 entries in total -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
 
 
       <!-- Table of Products -->
@@ -163,12 +216,12 @@
         <thead>
         <tr>
           <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
-          <th>NAME</th>
-          <th>CONDITION</th>
-          <th>AVAILABLE</th>
-          <th>RESERVED</th>
-          <th>PRICE</th>
-          <th>MODIFIED</th>
+          <th>No.</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Current Order ID</th>
+          <th>Status</th>
+          <th>Note</th>
           <th>ACTIONS</th>
         </tr>
         </thead>
@@ -176,14 +229,15 @@
         <!-- Example Product Row -->
         <tr>
           <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-          <td>128GB SD card</td>
-          <td>New</td>
-          <td>3,546</td>
-          <td>3,354</td>
-          <td>$10.13</td>
-          <td>03/13/2017</td>
+          <td>1</td>
+          <td>NCS Pte Ltd</td>
+          <td>Corporate</td>
+          <td>SGD109940384</td>
+          <td>Pending</td>
+          <td>Prioritised</td>
           <td>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
+            <button class="btn-action view-btn" (click)="toggleOrderHistoryModal()">History</button>
+            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Profile</button>
             <button class="btn-action delete-btn">Delete</button>
           </td>
         </tr>

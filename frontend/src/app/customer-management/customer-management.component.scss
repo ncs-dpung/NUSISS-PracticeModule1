@@ -237,6 +237,15 @@ body {
   background-color: #c9302c; /* Darker shade for hover */
 }
 
+.product-list .view-btn {
+  background-color: #007bff; /* Bootstrap's btn-warning color */
+  color: white;
+}
+
+.product-list .view-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}
+
 .product-list .update-btn {
   background-color: #f0ad4e; /* Bootstrap's btn-warning color */
   color: white;

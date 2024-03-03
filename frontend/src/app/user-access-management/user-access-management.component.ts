@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
-
 @Component({
   selector: 'app-user-access-management',
   standalone: true,
@@ -15,48 +14,60 @@ import {FormsModule} from "@angular/forms";
 })
 export class UserAccessManagementComponent {
 
-  showModal: boolean = false;
-  newItem: any = {
-    name: '',
-    condition: 'new',
-    available: 0,
-    reserved: 0,
-    price: '',
-    modified: new Date().toISOString().split('T')[0]
-  }; // Replace with your item model
-  showUpdateModal = false;
-  selectedItem: any = {};
+  showUserModal = false;
+    newUser = {
+      userName: '',
+      email: '',
+      contact: '',
+      address: '',
+      role: 'user' // Default role
+    };
 
+   toggleUserModal(): void {
+      this.showUserModal = !this.showUserModal;
+    }
 
-  toggleModal() {
-    this.showModal = !this.showModal;
-  }
-
-  onSubmit() {
-    // Here you'd handle adding the new item to your inventory list
-    console.log('New item:', this.newItem);
-    // Close the modal
-    this.showModal = false;
-    // Reset the new item or do whatever is needed post-submission
-    this.newItem = {};
-  }
   constructor(private router: Router) {}
 
   navigate(path: string): void {
     this.router.navigate([path]);
   }
-
-  toggleUpdateModal(show: boolean) {
-    this.showUpdateModal = show;
-    if (show) {
-      //this.selectedItem = {...item}; // Assuming `item` is the item to update
+    onSubmitUser(): void {
+      // Here you would typically make a service call to your backend to save the new user
+      console.log('User data to submit:', this.newUser);
+      // After submission, you might want to close the modal and clear the form
+      this.showUserModal = false;
+      this.newUser = {
+        userName: '',
+        email: '',
+        contact: '',
+        address: '',
+        role: 'user'
+      };
     }
 
-  }
+    // In your user-management.component.ts
+    selectedUser = {
+      userName: '',
+      role: '',
+      email: '',
+      contact: '',
+      address: '',
+      modified: '' // This could be the date the user was last updated
+    };
 
-  onUpdateItem() {
-    // Implement update logic here, such as making an HTTP request to update the item in the backend
-    console.log(this.selectedItem);
-    this.toggleUpdateModal(false); // Hide modal after update
-  }
+    showUpdateModal = false;
+
+    toggleUpdateModal(show: boolean): void {
+      this.showUpdateModal = show;
+    }
+
+    onUpdateUser(): void {
+      // Implement your logic to update the user here, such as calling a service to update the user data on the server
+      console.log('Updated user data:', this.selectedUser);
+      // After updating, you might want to close the modal
+      this.showUpdateModal = false;
+    }
+
+
 }
