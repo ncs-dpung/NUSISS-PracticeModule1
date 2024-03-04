@@ -1,30 +1,35 @@
 package com.nusiss.inventory.backend.entity;
 
+import com.nusiss.inventory.backend.dto.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
 @Table(name = "tbl_user")
 @EntityListeners(AuditingEntityListener.class)
+@AllArgsConstructor
 public class User implements UserDetails {
   @Id
-  @Column(name = "userid")
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "user_id")
   private Long id;
 
   @Column(name = "user_name")
@@ -36,37 +41,49 @@ public class User implements UserDetails {
   @Column(name = "password")
   private String password;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "roleiD")
-  private Role role;
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "user_role_junction",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id")})
+  private Set<Role> roles;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+  public User() {
+    super();
+    this.roles = new HashSet<Role>();
+  }
+
+  public UserDto toDto() {
+    UserDto dto = new UserDto();
+    dto.setId(id);
+    dto.setUsername(username);
+    dto.setEmail(email);
+    dto.setRoles(roles.stream().map(Role::toDto).collect(Collectors.toSet()));
+    return dto;
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
+    return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isCredentialsNonExpired'");
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
+    return true;
+  }
+
+  @Override
+  public Collection<Role> getAuthorities() {
+    return roles;
   }
 }

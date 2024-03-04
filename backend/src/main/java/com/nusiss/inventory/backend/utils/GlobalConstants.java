@@ -2,7 +2,7 @@ package com.nusiss.inventory.backend.utils;
 
 public class GlobalConstants {
   public static final String ROLE_ADMIN = "ADMIN";
-  public static final String ROLE_STAFF = "STAFF";
+  public static final String ROLE_USER = "USER";
 
   public static final String AUT_CREATE_STAFF = "C_STAFF";
   public static final String AUT_READ_STAFF = "R_STAFF";
