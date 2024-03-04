@@ -1,14 +1,14 @@
 -- Insert Roles
-INSERT INTO tbl_role (role_name) VALUES ('Administrator');
-INSERT INTO tbl_role (role_name) VALUES ('Warehouse Manager');
-INSERT INTO tbl_role (role_name) VALUES ('Procurement Officer');
-INSERT INTO tbl_role (role_name) VALUES ('Salesperson');
-
--- Insert Users (passwords are just placeholders, ensure to use hashed passwords in production)
-INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('admin', 'admin@example.com', 'adminpassword', 1);
-INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('warehouse', 'warehouse@example.com', 'warehousepassword', 2);
-INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('procurement', 'procurement@example.com', 'procurementpassword', 3);
-INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('sales', 'sales@example.com', 'salespassword', 4);
+-- INSERT INTO tbl_role (role_name) VALUES ('Administrator');
+-- INSERT INTO tbl_role (role_name) VALUES ('Warehouse Manager');
+-- INSERT INTO tbl_role (role_name) VALUES ('Procurement Officer');
+-- INSERT INTO tbl_role (role_name) VALUES ('Salesperson');
+--
+-- -- Insert Users (passwords are just placeholders, ensure to use hashed passwords in production)
+-- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('admin', 'admin@example.com', 'adminpassword', 1);
+-- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('warehouse', 'warehouse@example.com', 'warehousepassword', 2);
+-- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('procurement', 'procurement@example.com', 'procurementpassword', 3);
+-- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('sales', 'sales@example.com', 'salespassword', 4);
 
 -- Insert Categories
 INSERT INTO tbl_category (category_name) VALUES ('Normal Dolls');
