@@ -4,11 +4,11 @@
 - **Yarn**
 - **Crochet Hooks**
 
-## Brands
+## Brands and Variations
 - **Yarn Colours**
-  - Lion - Charcoal, Cream, Denim
-  - Red Heart - Cherry Red, Aran, Soft Navy
-  - Bernat - Baby Blue, Light Gray, Pale Pink
+  - Lion - 24/7 Ecru (098), 24/7 White (100), 24/7 Pink (101)
+  - Sirdar - Cotton DK Midnight (500), Cotton DK Island White (501), Cotton DK Vanilla (502)
+  - Cori Cori Yarn - White (PP001), Off-White (PP002), Light Warm Grey (PP003)
   
 
 - **Crochet Hook Size**
