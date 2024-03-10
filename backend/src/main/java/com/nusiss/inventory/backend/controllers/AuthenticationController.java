@@ -1,7 +1,7 @@
 package com.nusiss.inventory.backend.controllers;
 
-import com.nusiss.inventory.backend.dto.LoginRequestDto;
-import com.nusiss.inventory.backend.dto.LoginResponseDto;
+import com.nusiss.inventory.backend.dto.LoginReqDto;
+import com.nusiss.inventory.backend.dto.LoginResDto;
 import com.nusiss.inventory.backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class AuthenticationController {
   @Autowired private AuthenticationService authenticationService;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto body) {
+  public ResponseEntity<LoginResDto> loginUser(@RequestBody LoginReqDto body) {
     return ResponseEntity.ok(
         authenticationService.loginUser(body.getUsername(), body.getPassword()));
   }

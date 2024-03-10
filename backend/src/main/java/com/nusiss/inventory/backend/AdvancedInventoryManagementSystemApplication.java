@@ -33,8 +33,7 @@ public class AdvancedInventoryManagementSystemApplication {
     return args -> {
       if (roleDao.findByName(GlobalConstants.ROLE_ADMIN).isPresent()) return;
 
-      Role adminRole = roleDao.saveRole(new Role(GlobalConstants.ROLE_ADMIN));
-      roleDao.saveRole(new Role(GlobalConstants.ROLE_USER));
+      Role adminRole = new Role(GlobalConstants.ROLE_ADMIN);
 
       Set<Role> roles = new HashSet<>();
       roles.add(adminRole);
@@ -43,9 +42,10 @@ public class AdvancedInventoryManagementSystemApplication {
       admin.setEmail("admin@email.com");
       admin.setUsername("admin");
       admin.setPassword(passwordEncoder.encode("password"));
-      admin.setRoles(roles);
+      admin.getRoles().add(adminRole);
 
       userDao.saveUser(admin);
+      roleDao.saveRole(new Role(GlobalConstants.ROLE_USER));
     };
   }
 }

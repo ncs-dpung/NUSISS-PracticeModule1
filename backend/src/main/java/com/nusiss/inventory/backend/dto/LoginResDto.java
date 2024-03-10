@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LoginResponseDto {
+public class LoginResDto {
   private UserDto user;
   private String jwt;
 }

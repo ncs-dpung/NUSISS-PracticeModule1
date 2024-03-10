@@ -2,7 +2,7 @@ package com.nusiss.inventory.backend.service.impl;
 
 import com.nusiss.inventory.backend.dao.RoleDao;
 import com.nusiss.inventory.backend.dao.UserDao;
-import com.nusiss.inventory.backend.dto.LoginResponseDto;
+import com.nusiss.inventory.backend.dto.LoginResDto;
 import com.nusiss.inventory.backend.dto.UserDto;
 import com.nusiss.inventory.backend.entity.Role;
 import com.nusiss.inventory.backend.entity.User;
@@ -59,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     return userDao.saveUser(user).toDto();
   }
 
-  public LoginResponseDto loginUser(String username, String password) {
+  public LoginResDto loginUser(String username, String password) {
     try {
       Authentication auth =
           authenticationManager.authenticate(
@@ -67,9 +67,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
       String token = tokenService.generateJwt(auth);
 
-      return new LoginResponseDto(userDao.findByUsername(username).get().toDto(), token);
+      return new LoginResDto(userDao.findByUsername(username).get().toDto(), token);
     } catch (AuthenticationException e) {
-      return new LoginResponseDto(null, "");
+      return new LoginResDto(null, "");
     }
   }
 }

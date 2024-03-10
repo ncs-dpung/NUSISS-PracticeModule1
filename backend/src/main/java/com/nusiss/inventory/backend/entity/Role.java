@@ -26,6 +26,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Role implements GrantedAuthority {
 
   @Id
@@ -37,7 +38,13 @@ public class Role implements GrantedAuthority {
   @Column(name = "role_name")
   private String name;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @EqualsAndHashCode.Exclude
+  @ManyToMany(mappedBy = "roles")
+  private Set<User> users;
+
+  @ManyToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "role_action_junction",
       joinColumns = {@JoinColumn(name = "role_id")},

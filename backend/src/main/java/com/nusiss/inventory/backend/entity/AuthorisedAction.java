@@ -6,9 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,6 +20,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class AuthorisedAction implements GrantedAuthority {
 
   @Id
@@ -25,6 +29,10 @@ public class AuthorisedAction implements GrantedAuthority {
   private Long id;
 
   private String authority;
+
+  @EqualsAndHashCode.Exclude
+  @ManyToMany(mappedBy = "actions")
+  private Set<Role> roles;
 
   public AuthorisedAction(String authority) {
     this.authority = authority;

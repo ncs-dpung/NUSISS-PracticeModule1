@@ -1,6 +1,8 @@
 package com.nusiss.inventory.backend.utils;
 
 public class GlobalConstants {
+  public static final Integer DEFAULT_PW_LENGTH = 8;
+
   public static final String ROLE_ADMIN = "ADMIN";
   public static final String ROLE_USER = "USER";
 

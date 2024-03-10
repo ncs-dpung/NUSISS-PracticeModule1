@@ -56,9 +56,7 @@ public class SecurityConfiguration {
             auth -> {
               auth.requestMatchers("/api/healthcheck").permitAll();
               auth.requestMatchers("/auth/**").permitAll();
-              auth.requestMatchers("/admin/**").hasRole(GlobalConstants.ROLE_ADMIN);
-              auth.requestMatchers("/user/**")
-                  .hasAnyRole(GlobalConstants.ROLE_ADMIN, GlobalConstants.ROLE_USER);
+              auth.requestMatchers("/api/staff/**").hasRole(GlobalConstants.ROLE_ADMIN);
               auth.anyRequest().authenticated();
             })
         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

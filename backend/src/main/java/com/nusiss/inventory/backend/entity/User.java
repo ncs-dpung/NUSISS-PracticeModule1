@@ -1,6 +1,7 @@
 package com.nusiss.inventory.backend.entity;
 
 import com.nusiss.inventory.backend.dto.UserDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,13 +29,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "tbl_user")
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
+@EqualsAndHashCode
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "user_id")
   private Long id;
 
-  @Column(name = "user_name")
+  @Column(name = "user_name", unique = true)
   private String username;
 
   @Column(name = "email")
@@ -41,7 +45,13 @@ public class User implements UserDetails {
   @Column(name = "password")
   private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @OneToOne
+  @JoinColumn(name = "staff_id")
+  private Staff staff;
+
+  @ManyToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "user_role_junction",
       joinColumns = {@JoinColumn(name = "user_id")},
@@ -50,6 +60,14 @@ public class User implements UserDetails {
 
   public User() {
     super();
+    this.roles = new HashSet<Role>();
+  }
+
+  public User(String username, String password, String email) {
+    super();
+    this.username = username;
+    this.password = password;
+    this.email = email;
     this.roles = new HashSet<Role>();
   }
 

@@ -15,3 +15,38 @@ POST http://localhost:8080/auth/login
 HTTP 200
 [Captures]
 jwt: jsonpath "$.jwt"
+
+# Admin Get Staff
+GET http://localhost:8080/staff
+Authorization: Bearer {{jwt}}
+
+HTTP 200
+
+# Admin Create Staff
+POST http://localhost:8080/staff
+Authorization: Bearer {{jwt}}
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "user": {
+    "username": "john.doe",
+    "email": "john@email.com",
+    "roles": []
+  }
+}
+
+HTTP 200
+[Captures]
+staff_id: jsonpath "$.staff.id"
+
+# Admin Get Staff
+GET http://localhost:8080/staff/{{staff_id}}
+Authorization: Bearer {{jwt}}
+
+HTTP 200
+
+# Admin Delete Staff
+DELETE http://localhost:8080/staff/{{staff_id}}
+Authorization: Bearer {{jwt}}
+
+HTTP 204

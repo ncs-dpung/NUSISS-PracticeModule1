@@ -13,7 +13,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-  @Autowired private UserDao userDao;
+  private final UserDao userDao;
+
+  @Autowired
+  public UserServiceImpl(UserDao userDao) {
+    this.userDao = userDao;
+  }
 
   @Override
   public UserDto getUserById(Long id) {
@@ -22,9 +27,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto createUser(UserDto userDto) {
-    User savedUser = userDao.saveUser(userDto.toEntity());
-    return savedUser.toDto();
+  public UserDto createUser(User user) {
+    return userDao.saveUser(user).toDto();
   }
 
   @Override
@@ -34,6 +38,17 @@ public class UserServiceImpl implements UserService {
       user.setUsername(userDto.getUsername());
       user.setEmail(userDto.getEmail());
       // update roles or other fields
+      User updatedUser = userDao.saveUser(user);
+      return updatedUser.toDto();
+    }
+    return null;
+  }
+
+  @Override
+  public UserDto updateUserPassword(Long id, String encodedPassword) {
+    User user = userDao.findById(id).orElse(null);
+    if (user != null) {
+      user.setPassword(encodedPassword);
       User updatedUser = userDao.saveUser(user);
       return updatedUser.toDto();
     }
