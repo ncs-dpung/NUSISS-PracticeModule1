@@ -13,6 +13,7 @@ import { CustomerManagementComponent } from './customer-management/customer-mana
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
 
 import { routes } from './app.routes';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { routes } from './app.routes';
   ],
   imports: [
     BrowserModule,
-    routes
+    routes,
+    ChartsModule
 
   ],
   providers: [],

@@ -41,7 +41,7 @@ body {
 }
 
 .filter-section fieldset {
-  margin-top: 2px; 
+  margin-top: 2px;
 }
 
 .filter-section .radio-group {
@@ -107,6 +107,31 @@ body {
   background-color: #0056b3;
 }
 
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust gap as needed */
+}
+
+.list-header select {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.date-selectors {
+  display: flex; /* Aligns the dropdowns horizontally */
+  gap: 10px; /* Adds some space between the dropdowns */
+}
+
+
+
 .product-list table {
   width: 100%;
   border-collapse: collapse;
@@ -123,9 +148,37 @@ body {
   background-color: #eee;
 }
 
-.list-header {
+
+/* Chart Section Styles */
+.chart-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.bar-chart-container {
+  width: 90% ;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.pie-chart-container {
+
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.bar-chart-container h3,
+.pie-chart-container h3 {
   margin-bottom: 20px;
+}
+
+/* Canvas defaults to block, but it's inline here for flexibility */
+canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
 }

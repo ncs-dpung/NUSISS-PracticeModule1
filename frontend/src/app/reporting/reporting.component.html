@@ -57,35 +57,72 @@
       <div class="product-list">
         <div class="list-header">
           <h2>Reporting</h2>
-          <button class="add-new-btn">Add New</button>
+          <div class="header-controls">
+          <!-- Container for Month and Year Dropdowns -->
+          <div class="date-selectors">
+            <select [(ngModel)]="selectedMonth" (change)="updateDateHeader()">
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="02">June</option>
+              <option value="12">December</option>
+            </select>
+
+            <select [(ngModel)]="selectedYear" (change)="updateDateHeader()">
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+            <!-- Display Selected Month and Year -->
+            <div class="selected-date-display">
+              <!--<h3>{{selectedMonth | date: 'MMMM'}} {{selectedYear}}</h3>-->
+              <h2>June 2024</h2>
+            </div>
         </div>
+        </div>
+
+
         <!-- Table of Products -->
         <table>
           <thead>
             <tr>
-              <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
-              <th>NAME</th>
-              <th>CONDITION</th>
-              <th>AVAILABLE</th>
-              <th>RESERVED</th>
-              <th>PRICE</th>
-              <th>MODIFIED</th>
+              <th>Total Order</th>
+              <th>Revenue</th>
+              <th>Profit</th>
+              <th>Total Purchase</th>
+              <th>Total Cost</th>
+              <th>Other</th>
             </tr>
           </thead>
           <tbody>
             <!-- Example Product Row -->
             <tr>
-              <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-              <td>128GB SD card</td>
-              <td>New</td>
-              <td>3,546</td>
-              <td>3,354</td>
-              <td>$10.13</td>
+              <td>128</td>
+              <td>$7674</td>
+              <td>$3,546</td>
+              <td>$3,354</td>
+              <td>$965</td>
               <td>03/13/2017</td>
             </tr>
             <!-- Repeat rows for each product -->
           </tbody>
         </table>
       </div>
+
+      <!-- Additional sections for charts -->
+      <section class="chart-section">
+        <div class="bar-chart-container">
+          <h3>Product Categories Overview</h3>
+          <canvas id="barChart"></canvas>
+        </div>
+
+        <div class="pie-chart-container">
+          <h3>Revenue Distribution</h3>
+          <canvas id="pieChart"></canvas>
+        </div>
+
+
+        <!-- Include more chart containers as needed -->
+      </section>
     </main>
   </div>
