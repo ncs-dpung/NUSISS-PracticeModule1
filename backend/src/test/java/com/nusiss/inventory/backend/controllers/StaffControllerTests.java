@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.nusiss.inventory.backend.dto.StaffDto;
 import com.nusiss.inventory.backend.dto.StaffRegResDto;
+import com.nusiss.inventory.backend.dto.StaffUpdateDto;
 import com.nusiss.inventory.backend.entity.Staff;
 import com.nusiss.inventory.backend.entity.User;
 import java.util.List;
@@ -28,7 +29,7 @@ public class StaffControllerTests {
   }
 
   @Test
-  public void testCreateDeleteStaff() {
+  public void testCreateUpdateDeleteStaff() {
     Staff toCreate = new Staff();
     toCreate.setFirstName("John");
     toCreate.setLastName("Doe");
@@ -48,6 +49,14 @@ public class StaffControllerTests {
     assertEquals(listResponse.getBody().size(), 1);
 
     Staff staff = listResponse.getBody().get(0).toEntity();
+    String newFirstName = "Buck";
+    StaffUpdateDto updates = new StaffUpdateDto();
+    updates.setFirstName(newFirstName);
+    ResponseEntity<StaffDto> updResponse = staffController.updateStaff(staff.getId(), updates);
+    assertEquals(updResponse.getStatusCodeValue(), 200);
+    assertNotNull(updResponse.getBody());
+    assertEquals(updResponse.getBody().getFirstName(), newFirstName);
+
     ResponseEntity response = staffController.deleteStaff(staff.getId());
     assertEquals(response.getStatusCodeValue(), 204);
   }

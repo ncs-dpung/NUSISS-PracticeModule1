@@ -45,6 +45,18 @@ Authorization: Bearer {{jwt}}
 
 HTTP 200
 
+# Admin Update Staff
+PATCH http://localhost:8080/staff/{{staff_id}}
+Authorization: Bearer {{jwt}}
+{
+  "firstName": "Buck",
+  "lastName": "Doe"
+}
+
+HTTP 200
+[Asserts]
+jsonpath "$.firstName" == "Buck"
+
 # Admin Delete Staff
 DELETE http://localhost:8080/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}

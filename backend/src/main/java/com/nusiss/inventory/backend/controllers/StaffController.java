@@ -2,11 +2,13 @@ package com.nusiss.inventory.backend.controllers;
 
 import com.nusiss.inventory.backend.dto.StaffDto;
 import com.nusiss.inventory.backend.dto.StaffRegResDto;
+import com.nusiss.inventory.backend.dto.StaffUpdateDto;
 import com.nusiss.inventory.backend.service.StaffService;
 import com.nusiss.inventory.backend.service.UserService;
 import com.nusiss.inventory.backend.utils.GlobalConstants;
 import com.nusiss.inventory.backend.utils.PasswordGeneratorUtil;
 import io.swagger.annotations.*;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +60,7 @@ public class StaffController {
       value = "Create a new staff",
       authorizations = {@Authorization(value = "Bearer")})
   @PostMapping
+  @Transactional
   public ResponseEntity<StaffRegResDto> createStaff(
       @ApiParam(value = "Staff data", required = true) @RequestBody StaffDto staffDto) {
     StaffDto createdStaff = staffService.createStaff(staffDto);
@@ -74,11 +77,11 @@ public class StaffController {
   @ApiOperation(
       value = "Update an existing staff",
       authorizations = {@Authorization(value = "Bearer")})
-  @PutMapping("/{id}")
+  @PatchMapping("/{id}")
   public ResponseEntity<StaffDto> updateStaff(
       @ApiParam(value = "Staff ID", required = true) @PathVariable Long id,
-      @ApiParam(value = "Staff data", required = true) @RequestBody StaffDto staffDto) {
-    StaffDto updatedStaff = staffService.updateStaff(id, staffDto);
+      @ApiParam(value = "Staff data", required = true) @RequestBody StaffUpdateDto updateDto) {
+    StaffDto updatedStaff = staffService.updateStaff(id, updateDto);
     return ResponseEntity.ok(updatedStaff);
   }
 

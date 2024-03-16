@@ -1,9 +1,10 @@
 package com.nusiss.inventory.backend.service.impl;
 
-import com.nusiss.inventory.backend.dao.RoleDao;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nusiss.inventory.backend.dao.StaffDao;
-import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.dto.StaffDto;
+import com.nusiss.inventory.backend.dto.StaffUpdateDto;
 import com.nusiss.inventory.backend.entity.Staff;
 import com.nusiss.inventory.backend.service.StaffService;
 import java.util.List;
@@ -14,19 +15,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaffServiceImpl implements StaffService {
   private final StaffDao staffDao;
-  private final UserDao userDao;
-  private final RoleDao roleDao;
+  private final ObjectMapper objectMapper;
 
   @Autowired
-  public StaffServiceImpl(StaffDao staffDao, UserDao userDao, RoleDao roleDao) {
+  public StaffServiceImpl(StaffDao staffDao, ObjectMapper objectMapper) {
     this.staffDao = staffDao;
-    this.userDao = userDao;
-    this.roleDao = roleDao;
+    this.objectMapper = objectMapper;
   }
 
   @Override
   public StaffDto getStaffById(Long id) {
     Staff staff = staffDao.findById(id).orElse(null);
+    if (staff == null) return null;
+
     return staff.toDto();
   }
 
@@ -36,18 +37,19 @@ public class StaffServiceImpl implements StaffService {
   }
 
   @Override
-  public StaffDto updateStaff(Long id, StaffDto staffDto) {
-    Staff staff = staffDao.findById(id).orElse(null);
-    if (staff != null) {
-      staff.setId(staffDto.getId());
-      staff.setFirstName(staffDto.getFirstName());
-      staff.setLastName(staffDto.getLastName());
-      staff.setUser(staffDto.getUser().toEntity());
-      // update roles or other fields
+  public StaffDto updateStaff(Long id, StaffUpdateDto updateDto) {
+    Staff staff =
+        staffDao
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("staff with id [" + id + "] does not exist"));
+
+    try {
+      objectMapper.updateValue(staff, updateDto);
       Staff updatedStaff = staffDao.saveStaff(staff);
       return updatedStaff.toDto();
+    } catch (JsonMappingException e) {
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
   }
 
   @Override

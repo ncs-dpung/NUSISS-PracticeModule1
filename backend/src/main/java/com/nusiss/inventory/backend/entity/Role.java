@@ -4,7 +4,6 @@ import com.nusiss.inventory.backend.dto.RoleDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,9 +41,7 @@ public class Role implements GrantedAuthority {
   @ManyToMany(mappedBy = "roles")
   private Set<User> users;
 
-  @ManyToMany(
-      fetch = FetchType.EAGER,
-      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(
       name = "role_action_junction",
       joinColumns = {@JoinColumn(name = "role_id")},

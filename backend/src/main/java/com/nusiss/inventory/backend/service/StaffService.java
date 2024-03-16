@@ -1,6 +1,7 @@
 package com.nusiss.inventory.backend.service;
 
 import com.nusiss.inventory.backend.dto.StaffDto;
+import com.nusiss.inventory.backend.dto.StaffUpdateDto;
 import java.util.List;
 
 public interface StaffService {
@@ -8,7 +9,7 @@ public interface StaffService {
 
   StaffDto createStaff(StaffDto staffDto);
 
-  StaffDto updateStaff(Long id, StaffDto staffDto);
+  StaffDto updateStaff(Long id, StaffUpdateDto staffDto);
 
   void deleteStaffById(Long id);
 
