@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserUpdateDto {
-  private String password;
   private String email;
   private Set<RoleDto> roles;
 }

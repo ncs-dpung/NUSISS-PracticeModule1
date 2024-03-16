@@ -2,22 +2,27 @@ package com.nusiss.inventory.backend.service.impl;
 
 import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.dto.UserDto;
+import com.nusiss.inventory.backend.dto.UserPasswordUpdateDto;
 import com.nusiss.inventory.backend.entity.User;
 import com.nusiss.inventory.backend.service.UserService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
   private final UserDao userDao;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserServiceImpl(UserDao userDao) {
+  public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
     this.userDao = userDao;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -45,14 +50,17 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto updateUserPassword(Long id, String encodedPassword) {
+  @Transactional
+  public UserDto updateUserPassword(Long id, UserPasswordUpdateDto updateDto) {
     User user = userDao.findById(id).orElse(null);
-    if (user != null) {
-      user.setPassword(encodedPassword);
-      User updatedUser = userDao.saveUser(user);
-      return updatedUser.toDto();
+    if (user == null) throw new RuntimeException("user with id [" + id + "] not found");
+    if (user.getPassword() != null
+        && !passwordEncoder.matches(updateDto.getOldPassword(), user.getPassword())) {
+      throw new RuntimeException("old password does not match");
     }
-    return null;
+    user.setPassword(passwordEncoder.encode(updateDto.getNewPassword()));
+    User updatedUser = userDao.saveUser(user);
+    return updatedUser.toDto();
   }
 
   @Override

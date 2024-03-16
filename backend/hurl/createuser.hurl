@@ -49,8 +49,7 @@ HTTP 200
 PATCH http://localhost:8080/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}
 {
-  "firstName": "Buck",
-  "lastName": "Doe"
+  "firstName": "Buck"
 }
 
 HTTP 200
