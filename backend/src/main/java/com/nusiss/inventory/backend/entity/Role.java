@@ -26,7 +26,7 @@ import org.springframework.security.core.GrantedAuthority;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Role implements GrantedAuthority {
+public class Role extends BaseAuditEntity implements GrantedAuthority {
 
   @Id
   @EqualsAndHashCode.Include

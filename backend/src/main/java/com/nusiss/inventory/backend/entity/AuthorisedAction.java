@@ -21,7 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class AuthorisedAction implements GrantedAuthority {
+public class AuthorisedAction extends BaseAuditEntity implements GrantedAuthority {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

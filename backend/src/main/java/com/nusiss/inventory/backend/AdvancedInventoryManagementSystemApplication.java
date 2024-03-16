@@ -34,6 +34,7 @@ public class AdvancedInventoryManagementSystemApplication {
       if (roleDao.findByName(GlobalConstants.ROLE_ADMIN).isPresent()) return;
 
       Role adminRole = new Role(GlobalConstants.ROLE_ADMIN);
+      Role userRole = new Role(GlobalConstants.ROLE_USER);
 
       Set<Role> roles = new HashSet<>();
       roles.add(adminRole);
@@ -43,9 +44,8 @@ public class AdvancedInventoryManagementSystemApplication {
       admin.setUsername("admin");
       admin.setPassword(passwordEncoder.encode("password"));
       admin.getRoles().add(adminRole);
-
       userDao.saveUser(admin);
-      roleDao.saveRole(new Role(GlobalConstants.ROLE_USER));
+      roleDao.saveRole(userRole);
     };
   }
 }

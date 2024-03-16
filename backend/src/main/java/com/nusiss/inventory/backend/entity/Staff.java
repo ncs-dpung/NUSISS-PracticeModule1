@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Staff {
+public class Staff extends BaseAuditEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "staff_id")

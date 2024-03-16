@@ -30,7 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class User implements UserDetails {
+public class User extends BaseAuditEntity implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "user_id")
