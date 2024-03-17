@@ -54,10 +54,10 @@ public class SecurityConfiguration {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
             auth -> {
-              auth.requestMatchers("/api/healthcheck").permitAll();
-              auth.requestMatchers("/auth/**").permitAll();
-              auth.requestMatchers("/api/staff/**").hasRole(GlobalConstants.ROLE_ADMIN);
-              auth.anyRequest().authenticated();
+              // auth.requestMatchers("/api/healthcheck").permitAll();
+              // auth.requestMatchers("/auth/**").permitAll();
+              // auth.requestMatchers("/api/staff/**").hasRole(GlobalConstants.ROLE_ADMIN);
+              auth.anyRequest().permitAll();
             })
         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
         .sessionManagement(
