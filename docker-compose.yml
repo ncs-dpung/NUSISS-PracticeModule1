@@ -61,8 +61,8 @@ services:
         condition: service_healthy
     healthcheck:
       test: curl --fail http://localhost:8080/api/healthcheck || exit 1
-      timeout: 10s
-      retries: 10
+      timeout: 15s
+      retries: 20
 
   dev-fe:
     container_name: dev_fe
