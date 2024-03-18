@@ -150,12 +150,13 @@ body {
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 40px;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: auto;
-  max-width: 600px;
+  max-width: 800px;
 }
+
 
 .close {
   color: #aaa;
@@ -163,6 +164,23 @@ body {
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.modal-number-input {
+  width: 60px; /* Adjust this value based on your design and font size */
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid #ccc; /* Example border, adjust as needed */
+  border-radius: 4px; /* Adds rounded corners */
+  text-align: left; /* Centers the text/digits inside the input */
+}
+.modal-total-input {
+  width: 170px; /* Adjust this value based on your design and font size */
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid #ccc; /* Example border, adjust as needed */
+  border-radius: 4px; /* Adds rounded corners */
+  text-align: left; /* Centers the text/digits inside the input */
 }
 
 .close:hover,
@@ -226,6 +244,25 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.product-list .view-btn {
+  background-color: #007bff; /* Bootstrap's btn-warning color */
+  color: white;
+}
+
+.product-list .view-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}
+
+
+.product-list .history-button {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.product-list .history-button:hover {
+  background-color: #4cae4c;
 }
 
 .product-list .delete-btn {

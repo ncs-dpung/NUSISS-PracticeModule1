@@ -60,4 +60,17 @@ export class SupplierManagementComponent {
     this.toggleUpdateModal(false); // Hide modal after update
   }
 
+      showOrderModal = false;
+
+        toggleOrderModal(): void {
+          this.showOrderModal = !this.showOrderModal;
+        }
+
+        showHistoryModal = false;
+
+
+                toggleHistoryModal(): void {
+                  this.showHistoryModal = !this.showHistoryModal;
+                }
+
 }

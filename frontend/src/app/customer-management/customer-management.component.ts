@@ -64,8 +64,7 @@ export class CustomerManagementComponent {
     }
 
     onUpdateUser(): void {
-      // Implement your logic to update the user here, such as calling a service to update the user data on the server
-      console.log('Updated user data:', this.selectedUser);
+
       // After updating, you might want to close the modal
       this.showUpdateModal = false;
     }
@@ -82,7 +81,7 @@ export class CustomerManagementComponent {
           totalAmount: '100.00',
           processManager: 'Manager Name'
         }
-        // Add more orders as needed
+
       ];
 
       toggleOrderHistoryModal(): void {

@@ -157,6 +157,111 @@
         </div>
       </div>
 
+      <!-- Supply Order  Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showOrderModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleOrderModal()">&times;</span>
+          <h2>Supply Order</h2>
+          <table>
+            <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Measurement</th>
+              <th>Standard</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total Amount (SGD)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Fake Data Entries -->
+            <tr>
+              <td>ORD001</td>
+              <td>Product A</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>67</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            <tr>
+              <td>ORD002</td>
+              <td>Product C</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>18</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            <!-- Repeat for more fake entries -->
+            <tr>
+              <td>ORD003</td>
+              <td>Product D</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>36</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- View Order History Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showHistoryModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleHistoryModal()">&times;</span>
+          <h2>Order History</h2>
+          <table>
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product List</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Complete Date</th>
+              <th>Total Amount (SGD)</th>
+              <th>Process Manager</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Fake Data Entries -->
+            <tr>
+              <td>ORD001</td>
+              <td>Product A, Product B</td>
+              <td>Completed</td>
+              <td>2023-01-01</td>
+              <td>2023-01-05</td>
+              <td>150.00</td>
+              <td>John Doe</td>
+            </tr>
+            <tr>
+              <td>ORD002</td>
+              <td>Product C</td>
+              <td>In Progress</td>
+              <td>2023-02-01</td>
+              <td>-</td>
+              <td>200.00</td>
+              <td>Jane Smith</td>
+            </tr>
+            <!-- Repeat for more fake entries -->
+            <tr>
+              <td>ORD003</td>
+              <td>Product D, Product E</td>
+              <td>Completed</td>
+              <td>2023-02-15</td>
+              <td>2023-02-20</td>
+              <td>100.00</td>
+              <td>Alice Johnson</td>
+            </tr>
+            <!-- Add more rows as needed to make 9 entries in total -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
 
       <!-- Table of Products -->
       <table>
@@ -164,12 +269,10 @@
         <tr>
           <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
           <th>No.</th>
-          <th>NAME</th>
-          <th>CONDITION</th>
-          <th>AVAILABLE</th>
-          <th>RESERVED</th>
-          <th>PRICE</th>
-          <th>MODIFIED</th>
+          <th>Corporate Name</th>
+          <th>Total Order</th>
+          <th>Status</th>
+          <th>Last Order</th>
           <th>ACTIONS</th>
         </tr>
         </thead>
@@ -178,14 +281,14 @@
         <tr>
           <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
           <td>1</td>
-          <td>128GB SD card</td>
-          <td>New</td>
-          <td>3,546</td>
-          <td>3,354</td>
-          <td>$10.13</td>
+          <td>HRC Cotton Supply</td>
+          <td>67</td>
+          <td>Transporting</td>
           <td>03/13/2017</td>
           <td>
+            <button class="btn-action view-btn" (click)="toggleOrderModal()">Order</button>
             <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
+            <button class="btn-action history-button" (click)="toggleHistoryModal()">History</button>
             <button class="btn-action delete-btn">Delete</button>
           </td>
         </tr>
