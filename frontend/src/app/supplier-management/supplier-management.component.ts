@@ -73,4 +73,7 @@ export class SupplierManagementComponent {
                   this.showHistoryModal = !this.showHistoryModal;
                 }
 
+                placeOrder(){
+                }
+
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import { InventoryService } from '../inventory.service';
 
 @Component({
   selector: 'app-inventory-management',
