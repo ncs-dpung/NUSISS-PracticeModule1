@@ -28,6 +28,8 @@ import org.springframework.security.core.GrantedAuthority;
 @EqualsAndHashCode
 public class Role extends BaseAuditEntity implements GrantedAuthority {
 
+  private final String ROLE_PREFIX = "ROLE_";
+
   @Id
   @EqualsAndHashCode.Include
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,15 +53,13 @@ public class Role extends BaseAuditEntity implements GrantedAuthority {
   public Role(String name) {
     this.name = name;
     this.actions = new HashSet<>();
-    AuthorisedAction baseAction = new AuthorisedAction(name);
-    actions.add(baseAction);
   }
 
   @Override
   public String getAuthority() {
-    String scope =
-        actions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
-    return scope;
+    String authority = ROLE_PREFIX + name;
+    System.out.println("Authority: " + authority);
+    return authority;
   }
 
   public RoleDto toDto() {
