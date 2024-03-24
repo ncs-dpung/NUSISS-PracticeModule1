@@ -1,4 +1,3 @@
-
 <div class="dashboard">
   <aside class="sidebar">
     <!-- Sidebar: Filter Section -->
@@ -43,7 +42,7 @@
     <!-- Main Content: Top Bar -->
     <div class="top-bar">
       <div class="tab">
-        <button (click)="navigate('inventory-management')" >Inventory</button>
+        <button (click)="navigate('inventory-management')">Inventory</button>
         <button (click)="navigate('order-management')">Orders</button>
         <button (click)="navigate('reporting')">Report</button>
         <button (click)="navigate('user-access-management')">Access</button>
@@ -70,7 +69,8 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">Customer Name:</label>
-                <input type="text" id="itemName" [(ngModel)]="newUser.userName" name="name" placeholder="User Name" required>
+                <input type="text" id="itemName" [(ngModel)]="newUser.userName" name="name" placeholder="User Name"
+                  required>
               </div>
               <div class="form-group">
                 <label for="itemCondition">Cutomer Type:</label>
@@ -119,7 +119,8 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserName">Customer Name:</label>
-                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.userName" name="userName" placeholder="User Name" required>
+                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.userName" name="userName"
+                  placeholder="User Name" required>
               </div>
               <div class="form-group">
                 <label for="updateUserRole">Cutomer Type:</label>
@@ -163,47 +164,47 @@
           <h2>Order History</h2>
           <table>
             <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Product List</th>
-              <th>Status</th>
-              <th>Order Date</th>
-              <th>Complete Date</th>
-              <th>Total Amount (SGD)</th>
-              <th>Process Manager</th>
-            </tr>
+              <tr>
+                <th>Order ID</th>
+                <th>Product List</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Complete Date</th>
+                <th>Total Amount (SGD)</th>
+                <th>Process Manager</th>
+              </tr>
             </thead>
             <tbody>
-            <!-- Fake Data Entries -->
-            <tr>
-              <td>ORD001</td>
-              <td>Product A, Product B</td>
-              <td>Completed</td>
-              <td>2023-01-01</td>
-              <td>2023-01-05</td>
-              <td>150.00</td>
-              <td>John Doe</td>
-            </tr>
-            <tr>
-              <td>ORD002</td>
-              <td>Product C</td>
-              <td>In Progress</td>
-              <td>2023-02-01</td>
-              <td>-</td>
-              <td>200.00</td>
-              <td>Jane Smith</td>
-            </tr>
-            <!-- Repeat for more fake entries -->
-            <tr>
-              <td>ORD003</td>
-              <td>Product D, Product E</td>
-              <td>Completed</td>
-              <td>2023-02-15</td>
-              <td>2023-02-20</td>
-              <td>100.00</td>
-              <td>Alice Johnson</td>
-            </tr>
-            <!-- Add more rows as needed to make 9 entries in total -->
+              <!-- Fake Data Entries -->
+              <tr>
+                <td>ORD001</td>
+                <td>Product A, Product B</td>
+                <td>Completed</td>
+                <td>2023-01-01</td>
+                <td>2023-01-05</td>
+                <td>150.00</td>
+                <td>John Doe</td>
+              </tr>
+              <tr>
+                <td>ORD002</td>
+                <td>Product C</td>
+                <td>In Progress</td>
+                <td>2023-02-01</td>
+                <td>-</td>
+                <td>200.00</td>
+                <td>Jane Smith</td>
+              </tr>
+              <!-- Repeat for more fake entries -->
+              <tr>
+                <td>ORD003</td>
+                <td>Product D, Product E</td>
+                <td>Completed</td>
+                <td>2023-02-15</td>
+                <td>2023-02-20</td>
+                <td>100.00</td>
+                <td>Alice Johnson</td>
+              </tr>
+              <!-- Add more rows as needed to make 9 entries in total -->
             </tbody>
           </table>
         </div>
@@ -214,33 +215,39 @@
       <!-- Table of Products -->
       <table>
         <thead>
-        <tr>
-          <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
-          <th>No.</th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Current Order ID</th>
-          <th>Status</th>
-          <th>Note</th>
-          <th>ACTIONS</th>
-        </tr>
+          <tr>
+            <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
+            <th>No.</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Current Order ID</th>
+            <th>Status</th>
+            <th>Note</th>
+            <th>ACTIONS</th>
+          </tr>
         </thead>
         <tbody>
-        <!-- Example Product Row -->
-        <tr>
+          <!-- Example Product Row -->
+          <!--<tr>
           <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
           <td>1</td>
           <td>NCS Pte Ltd</td>
-          <td>Corporate</td>
-          <td>SGD109940384</td>
-          <td>Pending</td>
-          <td>Prioritised</td>
-          <td>
-            <button class="btn-action view-btn" (click)="toggleOrderHistoryModal()">History</button>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Profile</button>
-            <button class="btn-action delete-btn">Delete</button>
-          </td>
-        </tr>
+        -->
+
+          <tr *ngFor="let customer of customers; let i = index">
+            <td><input type="checkbox" name="selectedItem" [value]="customer.id"></td>
+            <td>{{ i + 1 }}</td>
+            <td>{{ customer.customerName }}</td>
+            <td>{{ customer.customerContact }}</td>
+            <td>SGD109940384</td>
+            <td>Pending</td>
+            <td>Prioritised</td>
+            <td>
+              <button class="btn-action view-btn" (click)="toggleOrderHistoryModal()">History</button>
+              <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Profile</button>
+              <button class="btn-action delete-btn">Delete</button>
+            </td>
+          </tr>
 
         </tbody>
       </table>

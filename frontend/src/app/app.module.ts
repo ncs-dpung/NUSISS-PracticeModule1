@@ -11,10 +11,11 @@ import { SupplierManagementComponent } from './supplier-management/supplier-mana
 import { SupplierOrderManagementComponent } from './supplier-order-management/supplier-order-management.component';
 import { CustomerManagementComponent } from './customer-management/customer-management.component';
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
-
+import { HttpClientModule } from '@angular/common/http';
 import { routes } from './app.routes';
 import { ChartsModule } from 'ng2-charts';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule }    from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -29,10 +30,11 @@ import { HttpClientModule } from '@angular/common/http';
     CustomerManagementComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     routes,
-    ChartsModule,
-    HttpClientModule
+    FormsModule,
+    ChartsModule
 
   ],
   providers: [],

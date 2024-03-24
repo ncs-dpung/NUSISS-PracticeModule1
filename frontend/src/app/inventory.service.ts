@@ -1,17 +1,47 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
-  private baseUrl = 'http://your-api-base-url.com/api'; // Replace with your API's base URL
+private apiUrl = 'http://localhost:8080/inventory'; 
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) { }
+  /*
+ // Create (POST)
+ createItem(ItemData: any): Observable<any> {
+  return this.http.post<any>(this.apiUrl, ItemData, this.httpOptions);
+}
 
-  fetchData(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/your-endpoint`); // Replace '/your-endpoint' with actual endpoint
-  }
+// Read (GET)
+getAllItem(): Observable<any[]> {
+  return this.http.get<any[]>(this.apiUrl);
+}
+
+// Read single item (GET)
+getItemById(id: string): Observable<any> {
+  const url = `${this.apiUrl}/${id}`;
+  return this.http.get<any>(url);
+}
+
+// Update (PUT)
+updateItem(id: string, supplierData: any): Observable<any> {
+  const url = `${this.apiUrl}/${id}`;
+  return this.http.put<any>(url, supplierData, this.httpOptions);
+}
+
+// Delete (DELETE)
+deleteItem(id: string): Observable<any> {
+  const url = `${this.apiUrl}/${id}`;
+  return this.http.delete<any>(url, this.httpOptions);
+}*/
 
 }
