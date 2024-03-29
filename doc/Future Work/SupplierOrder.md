@@ -1,3 +1,11 @@
+ # Supplier Order (Future Feature)
+ 
+ 1. Make supplier and product many-to-many relationship
+ 2. Incorporate with redis to implement SSE for restocking notification
+ 
+ 
+ 
+ 
  --  -- Create Product Table
  -- CREATE TABLE IF NOT EXISTS tbl_product (
  --     product_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
