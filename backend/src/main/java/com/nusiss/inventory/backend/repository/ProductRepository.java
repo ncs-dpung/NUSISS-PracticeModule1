@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -14,5 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.quantityAvailable <= p.reorderLevel")
     List<Product> findProductsNeedingReorder();
+
+    long countBySupplierId(Long supplierId);
+
+    List<Product> findByIdIn(Set<Long> ids);
 }
 
