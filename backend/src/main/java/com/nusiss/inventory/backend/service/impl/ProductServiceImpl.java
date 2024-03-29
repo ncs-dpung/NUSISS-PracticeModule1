@@ -18,12 +18,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
+
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private SupplierRepository supplierRepository;
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
+    }
 
     @Override
     @Transactional
@@ -61,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
         if (product.getQuantityAvailable() != 0) {
-            throw new RuntimeException("Cannot delete product with quantity more than 0.");
+            throw new IllegalStateException("Cannot delete product with quantity more than 0.");
         }
 
         productRepository.deleteById(productId);

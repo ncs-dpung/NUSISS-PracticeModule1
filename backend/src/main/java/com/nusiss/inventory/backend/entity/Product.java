@@ -1,7 +1,6 @@
 package com.nusiss.inventory.backend.entity;
 
-import com.nusiss.inventory.backend.dto.ProductDto;
-import com.nusiss.inventory.backend.enums.StockLevel;
+import com.nusiss.inventory.backend.enums.StockLevelEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,6 +46,6 @@ public class Product {
 
     @Transient
     public String getStockLevel() {
-        return quantityAvailable > reorderLevel ? StockLevel.SUFFICIENT.name() : StockLevel.LOW.name();
+        return quantityAvailable > reorderLevel ? StockLevelEnum.SUFFICIENT.name() : StockLevelEnum.LOW.name();
     }
 }

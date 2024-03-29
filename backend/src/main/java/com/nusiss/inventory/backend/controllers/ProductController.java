@@ -2,6 +2,7 @@ package com.nusiss.inventory.backend.controllers;
 
 import com.nusiss.inventory.backend.dto.ProductDto;
 import com.nusiss.inventory.backend.entity.Product;
+import com.nusiss.inventory.backend.service.OrderService;
 import com.nusiss.inventory.backend.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,8 +19,12 @@ import java.util.List;
 @Api(value = "Product Management System")
 public class ProductController {
 
+    private final ProductService productService;
+
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @ApiOperation(value = "View a list of available products", response = List.class)
     @ApiResponses(value = {

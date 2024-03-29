@@ -11,6 +11,7 @@ import com.nusiss.inventory.backend.repository.SupplierRepository;
 import com.nusiss.inventory.backend.service.SupplierService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierDao supplierDao;
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public SupplierServiceImpl(SupplierRepository supplierRepository, ProductRepository productRepository, SupplierDao supplierDao, ObjectMapper objectMapper) {
         this.supplierRepository = supplierRepository;
         this.productRepository = productRepository;
@@ -64,7 +66,7 @@ public class SupplierServiceImpl implements SupplierService {
         // Check if any products are associated with this supplier
         long productCount = productRepository.countBySupplierId(id);
         if (productCount > 0) {
-            throw new RuntimeException("Cannot delete supplier as there are associated products.");
+            throw new IllegalStateException("Cannot delete supplier as there are associated products.");
         }
         // If no products are associated, proceed with deletion
         supplierRepository.deleteById(id);

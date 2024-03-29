@@ -9,9 +9,11 @@ import com.nusiss.inventory.backend.repository.CustomerRepository;
 import com.nusiss.inventory.backend.service.CustomerService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -21,6 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerDao customerDao, ObjectMapper objectMapper) {
         this.customerRepository = customerRepository;
         this.customerDao = customerDao;
@@ -62,7 +65,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDto> getAllCustomer() {
-        List<Customer> customers = customerDao.findAllCustomer();
-        return customers.stream().map(Customer::toDto).toList();
+        List<Customer> customers = customerDao.findAllCustomer(); // Ensure this method exists and works as expected
+        return customers.stream()
+                .map(Customer::toDto)
+                .collect(Collectors.toList()); // Adjusted for Java versions before 16
     }
 }
