@@ -1,8 +1,10 @@
 package com.nusiss.inventory.backend;
 
 import com.nusiss.inventory.backend.dao.RoleDao;
+import com.nusiss.inventory.backend.dao.StaffDao;
 import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.entity.Role;
+import com.nusiss.inventory.backend.entity.Staff;
 import com.nusiss.inventory.backend.entity.User;
 import com.nusiss.inventory.backend.utils.GlobalConstants;
 import java.util.HashSet;
@@ -25,18 +27,21 @@ public class AdvancedInventoryManagementSystemApplication {
    * Generates Admin credentials once
    *
    * @param roleDao
+   * @param staffDao
    * @param userDao
    * @param passwordEncoder
    * @return
    */
   @Bean
-  public CommandLineRunner run(RoleDao roleDao, UserDao userDao, PasswordEncoder passwordEncoder) {
+  public CommandLineRunner run(
+      RoleDao roleDao, StaffDao staffDao, UserDao userDao, PasswordEncoder passwordEncoder) {
     return args -> {
       if (roleDao.findByName(GlobalConstants.ROLE_ADMIN).isPresent()) return;
 
-      Role adminRole = new Role(GlobalConstants.ROLE_ADMIN);
       Role userRole = new Role(GlobalConstants.ROLE_USER);
+      roleDao.saveRole(userRole);
 
+      Role adminRole = new Role(GlobalConstants.ROLE_ADMIN);
       Set<Role> roles = new HashSet<>();
       roles.add(adminRole);
 
@@ -45,8 +50,12 @@ public class AdvancedInventoryManagementSystemApplication {
       admin.setUsername("admin");
       admin.setPassword(passwordEncoder.encode("password"));
       admin.getRoles().add(adminRole);
-      userDao.saveUser(admin);
-      roleDao.saveRole(userRole);
+
+      Staff adminStaff = new Staff();
+      adminStaff.setFirstName("admin");
+      adminStaff.setLastName("admin");
+      adminStaff.setUser(admin);
+      staffDao.saveStaff(adminStaff);
     };
   }
 }

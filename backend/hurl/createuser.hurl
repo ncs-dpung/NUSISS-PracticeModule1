@@ -38,6 +38,8 @@ Authorization: Bearer {{jwt}}
 HTTP 200
 [Captures]
 staff_id: jsonpath "$.staff.id"
+username: jsonpath "$.staff.user.username"
+password: jsonpath "$.password"
 
 # Admin Get Staff
 GET http://localhost:8080/staff/{{staff_id}}
@@ -56,8 +58,32 @@ HTTP 200
 [Asserts]
 jsonpath "$.firstName" == "Buck"
 
-# Admin Delete Staff
+# Staff Login & get token
+POST http://localhost:8080/auth/login
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+} 
+
+HTTP 200
+[Captures]
+staffjwt: jsonpath "$.jwt"
+
+# Staff Get All Staff without authorisation
+GET http://localhost:8080/staff
+Authorization: Bearer {{staffjwt}}
+
+HTTP 403
+
+# Staff Get Self
+GET http://localhost:8080/staff/{{staff_id}}
+Authorization: Bearer {{staffjwt}}
+
+HTTP 200
+
+#Admin Delete Staff
 DELETE http://localhost:8080/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}
 
 HTTP 204
+

@@ -6,9 +6,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nusiss.inventory.backend.utils.GlobalConstants;
 import com.nusiss.inventory.backend.utils.RSAKeyProperties;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+// @EnableMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class SecurityConfiguration {
 
   private final RSAKeyProperties keys;
@@ -65,7 +68,6 @@ public class SecurityConfiguration {
             auth -> {
               auth.requestMatchers("/api/healthcheck").permitAll();
               auth.requestMatchers("/auth/**").permitAll();
-              auth.requestMatchers("/staff/**").hasRole(GlobalConstants.ROLE_ADMIN);
               auth.anyRequest().authenticated();
             })
         .oauth2ResourceServer(
@@ -104,11 +106,16 @@ public class SecurityConfiguration {
 
   private Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {
     return jwt -> {
+      Map<String, Object> details = jwt.getClaimAsMap("details");
+
       Collection<GrantedAuthority> authorities =
-          jwt.getClaims().keySet().stream()
+          jwt.getClaimAsStringList("authorities").stream()
               .map(SimpleGrantedAuthority::new)
               .collect(Collectors.toList());
-      return new JwtAuthenticationToken(jwt, authorities);
+      AbstractAuthenticationToken token = new JwtAuthenticationToken(jwt, authorities);
+
+      token.setDetails(details);
+      return token;
     };
   }
 }
