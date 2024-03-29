@@ -53,10 +53,10 @@
     - Edit Supplier Profile
     - Remove Supplier Profile
     - Search Supplier Profile
-- **Supplier Order Management** Page 7
+- **Supplier Order Management** Page 7 (aka Restocking Notification)
     - Create Orders for Suppliers
     - Edit Orders for Suppliers
     - Remove Orders for Suppliers
-    - View and Search Orders for Suppliers (his/her own orders)
-    - Update Delivery Details (From Supplier to Warehouse)
-    - Track Delivery from Suppliers
+    - View and Search Orders for Suppliers (his/her own orders) - Future Feature
+    - Update Delivery Details (From Supplier to Warehouse) - Future Feature
+    - Track Delivery from Suppliers - Future Feature
