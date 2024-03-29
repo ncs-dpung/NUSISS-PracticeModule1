@@ -3,12 +3,10 @@ package com.nusiss.inventory.backend.strategies.impl;
 import com.nusiss.inventory.backend.components.OrderConverter;
 import com.nusiss.inventory.backend.dto.OrderDto;
 import com.nusiss.inventory.backend.dto.OrderItemDto;
-import com.nusiss.inventory.backend.entity.Customer;
-import com.nusiss.inventory.backend.entity.Order;
-import com.nusiss.inventory.backend.entity.OrderItem;
-import com.nusiss.inventory.backend.entity.User;
+import com.nusiss.inventory.backend.entity.*;
 import com.nusiss.inventory.backend.repository.CustomerRepository;
 import com.nusiss.inventory.backend.repository.OrderRepository;
+import com.nusiss.inventory.backend.repository.ProductRepository;
 import com.nusiss.inventory.backend.repository.UserRepository;
 import com.nusiss.inventory.backend.strategies.OrderUpdateStrategy;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component("PENDINGOrderUpdateStrategy")
@@ -26,21 +23,23 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-
     private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
 
     private final OrderConverter orderConverter;
 
     @Autowired
-    public PendingOrderUpdateStrategy(OrderRepository orderRepository, UserRepository userRepository, CustomerRepository customerRepository, OrderConverter orderConverter) {
+    public PendingOrderUpdateStrategy(OrderRepository orderRepository, UserRepository userRepository, CustomerRepository customerRepository, ProductRepository productRepository, OrderConverter orderConverter) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
         this.orderConverter = orderConverter;
     }
 
 
     @Override
+    @Transactional
     public OrderDto updateOrder(Order order, OrderDto orderDto) {
         // TODO: Uncomment the following line when user management is implemented
 //        User user = userRepository.findById(orderDto.getUserId())
@@ -58,27 +57,61 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
         else order.setDateShipped(null);
 
         // Update OrderItems
-        // First, create a map of current items for easy lookup
-        Map<Long, OrderItem> currentItemMap = order.getItems().stream()
-                .collect(Collectors.toMap(item -> item.getProduct().getId(), item -> item, (item1, item2) -> item1));
-
-        for (OrderItemDto itemDto : orderDto.getItems()) {
-            OrderItem existingItem = currentItemMap.remove(itemDto.getProductId());
-            if (existingItem != null) {
-                // Item exists, update its quantity and price
-                existingItem.setQuantity(itemDto.getQuantity());
-                existingItem.setPrice(itemDto.getPrice());
-            } else {
-                // New item, add it to the order
-                OrderItem newItem = orderConverter.convertOrderItemDtoToEntity(itemDto, order);
-                order.getItems().add(newItem); // Associate with the current order
-            }
-        }
-
-        // Remove items that were not included in the updated DTO
-        currentItemMap.values().forEach(order.getItems()::remove);
+        updateOrderItems(order, orderDto.getItems());
 
         orderRepository.save(order);
         return orderConverter.convertOrderToDto(order);
     }
+
+    private void updateOrderItems(Order order, Collection<OrderItemDto> itemDtos) {
+        // Temporary map to track updates
+        Map<Long, OrderItem> currentItemMap = new HashMap<>();
+        order.getItems().forEach(item -> currentItemMap.put(item.getProduct().getId(), item));
+
+        // Update or add items
+        for (OrderItemDto dto : itemDtos) {
+            Optional<Product> optionalProduct = productRepository.findById(dto.getProductId());
+
+            if (!optionalProduct.isPresent()) {
+                // If the product doesn't exist anymore, skip this iteration
+                continue;
+            }
+
+            Product product = optionalProduct.get();
+            OrderItem item = currentItemMap.remove(dto.getProductId());
+
+            if (item != null) {
+                // Existing item, update quantity
+                int quantityDiff = dto.getQuantity() - item.getQuantity();
+                product.adjustInventory(-quantityDiff); // adjustInventory handles negative checks
+                item.setQuantity(dto.getQuantity());
+                item.setPrice(dto.getPrice());
+            } else {
+                // New item, adjust inventory and add to order
+                product.adjustInventory(-dto.getQuantity());
+                OrderItem newItem = orderConverter.convertOrderItemDtoToEntity(dto, order);
+                order.getItems().add(newItem);
+            }
+
+            // Only save the product if it exists
+            productRepository.save(product);
+        }
+
+        // Remove items not in the updated DTO and adjust inventory accordingly
+        currentItemMap.values().forEach(removedItem -> {
+            Optional<Product> optionalProduct = productRepository.findById(removedItem.getProduct().getId());
+
+            if (!optionalProduct.isPresent()) {
+                // If the product doesn't exist anymore, just remove the item from the order
+                order.getItems().remove(removedItem);
+                return; // Skip further processing for this removed item
+            }
+
+            Product product = optionalProduct.get();
+            product.adjustInventory(removedItem.getQuantity()); // Add back the removed quantity to inventory
+            order.getItems().remove(removedItem);
+            productRepository.save(product);
+        });
+    }
+
 }

@@ -48,4 +48,18 @@ public class Product {
     public String getStockLevel() {
         return quantityAvailable > reorderLevel ? StockLevelEnum.SUFFICIENT.name() : StockLevelEnum.LOW.name();
     }
+
+    /**
+     * Adjusts the inventory quantity for this product.
+     * Ensures the inventory does not drop below zero.
+     *
+     * @param adjustment the amount to adjust the inventory by. Can be positive or negative.
+     */
+    public void adjustInventory(int adjustment) {
+        int newQuantity = this.quantityAvailable + adjustment;
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("The order od item "+ this.id +"  is greater than available quantity.");
+        }
+        this.quantityAvailable = newQuantity;
+    }
 }

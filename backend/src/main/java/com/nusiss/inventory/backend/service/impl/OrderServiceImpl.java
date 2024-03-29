@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -120,6 +121,16 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + orderId));
         if (!"Pending".equals(order.getStatus().getName())) {
             throw new IllegalStateException("Order can only be deleted if it is in Pending status.");
+        }
+        // Add back the quantity of each item to the inventory
+        for (OrderItem item : order.getItems()) {
+            // Check if the product still exists before adjusting the inventory
+            Optional<Product> productOpt = productRepository.findById(item.getProduct().getId());
+            if (productOpt.isPresent()) {
+                Product product = productOpt.get();
+                product.adjustInventory(item.getQuantity());
+                productRepository.save(product);
+            }
         }
         orderRepository.delete(order);
     }
