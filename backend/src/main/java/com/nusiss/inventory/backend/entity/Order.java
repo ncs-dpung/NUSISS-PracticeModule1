@@ -19,10 +19,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+// TODO: Uncomment the following line when user management is implemented
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -34,7 +34,8 @@ public class Order {
     @Column(name = "date_shipped")
     private LocalDateTime dateShipped;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne
+    @JoinColumn(name = "status_id")
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

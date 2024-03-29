@@ -29,8 +29,6 @@ public class ProcessedOrderUpdateStrategy implements OrderUpdateStrategy {
         this.orderConverter = orderConverter;
     }
 
-
-
     @Override
     public OrderDto updateOrder(Order order, OrderDto orderDto) {
 

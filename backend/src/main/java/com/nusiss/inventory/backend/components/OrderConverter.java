@@ -80,7 +80,8 @@ public class OrderConverter {
 
         OrderDto dto = new OrderDto(
                 order.getOrderId(),
-                order.getUser().getId(),
+                // TODO: Uncomment the following line when user management is implemented
+                //order.getUser().getId(),
                 order.getCustomer().getId(),
                 order.getCustomer().getCustomerName(),
                 order.getDatePlaced(),

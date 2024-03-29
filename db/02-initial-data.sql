@@ -10,25 +10,25 @@
 -- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('procurement', 'procurement@example.com', 'procurementpassword', 3);
 -- INSERT INTO tbl_user (user_name, email, password, roleid) VALUES ('sales', 'sales@example.com', 'salespassword', 4);
 
---------------- User Management ---------------
--- Insert Roles
-INSERT INTO tbl_role (role_name, created_at, updated_at, created_by, updated_by) VALUES ('Admin', NOW(), NOW(), 'system', 'system');
-
--- Insert Actions
-INSERT INTO tbl_action (authority, created_at, updated_at, created_by, updated_by) VALUES ('C,R,U,D', NOW(), NOW(), 'system', 'system');
-
--- Insert Role-Action Junctions
-INSERT INTO role_action_junction (role_id, action_id) VALUES (1, 1);
-
--- Insert Staff
-INSERT INTO tbl_staff (first_name, last_name, position, department, email, phone_number, address, created_at, updated_at, created_by, updated_by)
-VALUES ('John', 'Doe', 'Manager', 'IT', 'john.doe@example.com', '123-456-7890', '1234 Street Name, City', NOW(), NOW(), 'system', 'system');
-
--- Insert Users
-INSERT INTO tbl_user (user_name, email, password, staff_id, created_at, updated_at, created_by, updated_by)
-VALUES ('johndoe', 'john.doe@example.com', 'encrypted_password_here', 1, NOW(), NOW(), 'system', 'system');
-
---------------- User Management ---------------
+-- ------------- User Management (Not Working) ---------------
+-- -- Insert Roles
+-- INSERT INTO tbl_role (role_name, created_at, updated_at, created_by, updated_by) VALUES ('Admin', NOW(), NOW(), 'system', 'system');
+--
+-- -- Insert Actions
+-- INSERT INTO tbl_action (authority, created_at, updated_at, created_by, updated_by) VALUES ('C,R,U,D', NOW(), NOW(), 'system', 'system');
+--
+-- -- Insert Role-Action Junctions
+-- INSERT INTO role_action_junction (role_id, action_id) VALUES (1, 1);
+--
+-- -- Insert Staff
+-- INSERT INTO tbl_staff (first_name, last_name, position, department, email, phone_number, address, created_at, updated_at, created_by, updated_by)
+-- VALUES ('John', 'Doe', 'Manager', 'IT', 'john.doe@example.com', '123-456-7890', '1234 Street Name, City', NOW(), NOW(), 'system', 'system');
+--
+-- -- Insert Users
+-- INSERT INTO tbl_user (user_name, email, password, staff_id, created_at, updated_at, created_by, updated_by)
+-- VALUES ('johndoe', 'john.doe@example.com', 'encrypted_password_here', 1, NOW(), NOW(), 'system', 'system');
+--
+-- ------------- User Management (Not Working) ---------------
 
 -- Insert Categories
 INSERT INTO tbl_category (category_name) VALUES ('Yarn');
@@ -55,21 +55,25 @@ INSERT INTO tbl_product (name, category_id, price, batch_no, supplier_id, quanti
 INSERT INTO tbl_product (name, category_id, price, batch_no, supplier_id, quantity_available, reorder_level) VALUES ('Clover', 2, 8.00, 'CLV004', 3, 30, 50); -- Low stock
 INSERT INTO tbl_product (name, category_id, price, batch_no, supplier_id, quantity_available, reorder_level) VALUES ('Boye', 2, 5.00, 'BY005', 3, 10, 50); -- Low stock
 
- -- Insert Customers
- INSERT INTO tbl_customer (name, contact_info) VALUES ('John Doe', 'john.doe@example.com');
- INSERT INTO tbl_customer (name, contact_info) VALUES ('Jane Smith', 'jane.smith@example.com');
+-- Insert Customers
+INSERT INTO tbl_customer (customer_name, contact_info) VALUES ('John Doe', 'john.doe@example.com');
+INSERT INTO tbl_customer (customer_name, contact_info) VALUES ('Jane Smith', 'jane.smith@example.com');
 
- -- Insert OrderStatus
- INSERT INTO tbl_order_status (status_name) VALUES ('Pending');
- INSERT INTO tbl_order_status (status_name) VALUES ('Processed');
- INSERT INTO tbl_order_status (status_name) VALUES ('Delivered');
+-- Insert OrderStatus
+INSERT INTO tbl_order_status (status_name) VALUES ('Pending');
+INSERT INTO tbl_order_status (status_name) VALUES ('Processed');
+INSERT INTO tbl_order_status (status_name) VALUES ('Delivered');
 
- -- Insert Orders
-INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 1, NOW(), NOW(), 3);
-INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 1, NOW(), NULL, 1);
-INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 2, NOW(), NULL, 2);
+-- Insert Orders
+INSERT INTO tbl_order (customer_id, date_placed, date_shipped, order_status_id) VALUES ( 1, NOW(), NOW(), 3);
+INSERT INTO tbl_order (customer_id, date_placed, date_shipped, order_status_id) VALUES ( 1, NOW(), NULL, 1);
+INSERT INTO tbl_order (customer_id, date_placed, date_shipped, order_status_id) VALUES ( 2, NOW(), NULL, 2);
 
- -- Link Products to Orders
+-- INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 1, NOW(), NOW(), 3);
+-- INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 1, NOW(), NULL, 1);
+-- INSERT INTO tbl_order (user_id, customer_id, date_placed, date_shipped, order_status_id) VALUES (1, 2, NOW(), NULL, 2);
+
+-- Link Products to Orders
 INSERT INTO tbl_order_items (order_id, product_id, quantity, price)
 VALUES (1, 3, 2, 10.00), -- 2 units of product 3, each priced at $10.00 for order 1
        (1, 2, 4, 20.00);  -- 4 units of product 2, each priced at $20.00 for order 1

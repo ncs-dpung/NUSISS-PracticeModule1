@@ -16,7 +16,8 @@ import java.util.Set;
 @ToString
 public class OrderDto {
     private Long orderId;
-    private Long userId;
+    // TODO: Uncomment the following line when user management is implemented
+//    private Long userId;
     private Long customerId;
     private String customerName;
     private LocalDateTime datePlaced;

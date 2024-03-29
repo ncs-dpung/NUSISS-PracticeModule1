@@ -41,9 +41,10 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
 
     @Override
     public OrderDto updateOrder(Order order, OrderDto orderDto) {
-        User user = userRepository.findById(orderDto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + orderDto.getUserId()));
-        order.setUser(user);
+        // TODO: Uncomment the following line when user management is implemented
+//        User user = userRepository.findById(orderDto.getUserId())
+//                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + orderDto.getUserId()));
+//        order.setUser(user);
 
         Customer customer = customerRepository.findById(orderDto.getCustomerId())
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + orderDto.getCustomerId()));
