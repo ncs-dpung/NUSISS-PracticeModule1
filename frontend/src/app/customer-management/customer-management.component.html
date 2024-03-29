@@ -15,19 +15,29 @@
         <!-- Add more categories as needed -->
       </select>
 
-      <!-- Condition Radio Buttons -->
+      <!-- Condition Checkboxes -->
       <fieldset class="filter-section">
         <legend>Condition:</legend>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="new" checked> New
-        </label>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="used"> Used
-        </label>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="refurbished"> Refurbished
-        </label>
+        <div class="checkbox-group">
+          <input type="checkbox" id="new" name="condition" value="new">
+          <label for="new">New</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="used" name="condition" value="used">
+          <label for="used">Used</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="refurbished" name="condition" value="refurbished">
+          <label for="refurbished">Refurbished</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="vintage" name="condition" value="refurbished">
+          <label for="refurbished">Vintage</label>
+        </div>
       </fieldset>
+
+
+
 
       <!-- Date Filter -->
       <label for="fromDate">From</label>
@@ -60,7 +70,7 @@
         <button class="add-new-btn" (click)="toggleCustomerModal()">Add New</button>
       </div>
 
-      <!-- Add New Inventory Item Modal -->
+      <!-- Add New Customer Modal -->
       <div class="modal" [ngClass]="{'show-modal': showCustomerModal}">
         <div class="modal-content">
           <span class="close" (click)="toggleCustomerModal()">&times;</span>
@@ -69,7 +79,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">Customer Name:</label>
-                <input type="text" id="itemName" [(ngModel)]="newUser.userName" name="name" placeholder="User Name"
+                <input type="text" id="itemName" [(ngModel)]="newCustomer.customerName" name="name" placeholder="User Name"
                   required>
               </div>
               <div class="form-group">
@@ -85,22 +95,22 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Email:</label>
-                <input type="text" id="itemAvailable" [(ngModel)]="newUser.email" name="email" required>
+                <input type="text" id="itemAvailable" [(ngModel)]="newCustomer.customerContact" name="email" required>
               </div>
               <div class="form-group">
                 <label for="itemReserved">Contact:</label>
-                <input type="text" id="itemReserved" [(ngModel)]="newUser.contact" name="contact" required>
+                <input type="text" id="itemReserved" [(ngModel)]="newCustomer.customerContact" name="contact" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Mailing Address:</label>
-                <input type="text" id="itemPrice" [(ngModel)]="newUser.address" name="price" required>
+                <input type="text" id="itemPrice" [(ngModel)]="newCustomer.customerContact" name="price" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Modified:</label>
-                <input type="date" id="itemModified" [(ngModel)]="newUser.address" name="modified" required>
+                <input type="date" id="itemModified" [(ngModel)]="newCustomer.customerContact" name="modified" required>
               </div>
             </div>
 
@@ -109,22 +119,21 @@
         </div>
       </div>
 
-
       <!-- Update User Modal -->
       <div class="modal" [class.show-modal]="showUpdateModal">
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Customer Profile</h2>
-          <form (submit)="onUpdateUser()" #updateUserForm="ngForm">
+          <form (ngSubmit)="onUpdateCustomer()" #updateUserForm="ngForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserName">Customer Name:</label>
-                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.userName" name="userName"
+                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.customerName" name="userName"
                   placeholder="User Name" required>
               </div>
               <div class="form-group">
                 <label for="updateUserRole">Cutomer Type:</label>
-                <select id="updateUserRole" [(ngModel)]="selectedUser.role" name="role" required>
+                <select id="updateUserRole"  name="customerRole" required>
                   <option value="new">Individual</option>
                   <option value="new">Corporate</option>
                 </select>
@@ -134,22 +143,22 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserEmail">Email:</label>
-                <input type="text" id="updateUserEmail" [(ngModel)]="selectedUser.email" name="email" required>
+                <input type="text" id="updateUserEmail"  name="email" required>
               </div>
               <div class="form-group">
                 <label for="updateUserContact">Contact:</label>
-                <input type="text" id="updateUserContact" [(ngModel)]="selectedUser.contact" name="contact" required>
+                <input type="text" id="updateUserContact" [(ngModel)]="selectedUser.customerContact" name="contact" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserAddress">Mailing Address:</label>
-                <input type="text" id="updateUserAddress" [(ngModel)]="selectedUser.address" name="address" required>
+                <input type="text" id="updateUserAddress"  name="address" required>
               </div>
               <div class="form-group">
                 <label for="updateUserModified">Last Modified:</label>
-                <input type="date" id="updateUserModified" [(ngModel)]="selectedUser.modified" name="modified" required>
+                <input type="date" id="updateUserModified"  name="modified" required>
               </div>
             </div>
             <button type="submit" class="btn-add">Update User</button>
@@ -227,13 +236,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Example Product Row -->
-          <!--<tr>
-          <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-          <td>1</td>
-          <td>NCS Pte Ltd</td>
-        -->
-
           <tr *ngFor="let customer of customers; let i = index">
             <td><input type="checkbox" name="selectedItem" [value]="customer.id"></td>
             <td>{{ i + 1 }}</td>
@@ -245,7 +247,7 @@
             <td>
               <button class="btn-action view-btn" (click)="toggleOrderHistoryModal()">History</button>
               <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Profile</button>
-              <button class="btn-action delete-btn">Delete</button>
+              <button class="btn-action delete-btn" (click)="deleteCustomer(customer.id!)">Delete</button>
             </td>
           </tr>
 

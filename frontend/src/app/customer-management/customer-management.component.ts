@@ -19,6 +19,17 @@ import { CommonModule } from '@angular/common';
 })
 export class CustomerManagementComponent implements OnInit {
 
+   newCustomer: Customer = {
+     customerName: '',
+     customerContact: ''
+   };
+
+     selectedUser:Customer = {
+          id: null,
+          customerName: '',
+          customerContact: ''
+     };
+
   constructor(private router: Router, private customerService: CustomerService) { }
 
   customers: Customer[] = [];
@@ -52,28 +63,53 @@ export class CustomerManagementComponent implements OnInit {
     this.router.navigate([path]);
   }
   onSubmitCustomer(): void {
-    // Here you would typically make a service call to your backend to save the new user
-    console.log('User data to submit:', this.newUser);
-    // After submission, you might want to close the modal and clear the form
-    this.showCustomerModal = false;
-    this.newUser = {
-      userName: '',
-      email: '',
-      contact: '',
-      address: '',
-      role: 'user'
-    };
-  }
+  this.customerService.createCustomer(this.newCustomer).subscribe({
+       next: (customer) => {
+         console.log('Customer added:', customer);
+       },
+       error: (error) => {
+         console.error('Error adding customer', error);
 
-  // In your user-management.component.ts
-  selectedUser = {
-    userName: '',
-    role: '',
-    email: '',
-    contact: '',
-    address: '',
-    modified: '' // This could be the date the user was last updated
-  };
+       }
+     });
+   }
+
+   onUpdateCustomer(): void {
+     if (this.selectedUser.id === undefined) {
+       // Handle error: selected user must have an id to be updated
+       console.error('Cannot update a customer without an ID');
+       return;
+     }
+
+     this.customerService.updateCustomer(this.selectedUser).subscribe({
+       next: (updatedCustomer) => {
+         // Replace the customer in your local array or re-fetch the list
+         // Close the modal and clear/reset the selectedUser
+         this.showUpdateModal = false;
+         // ... any other logic like showing a success message
+       },
+       error: (error) => {
+         console.error('Error updating customer', error);
+         // ... any error handling like showing an error message
+       }
+     });
+   }
+
+
+   deleteCustomer(customerId: number): void {
+     if (confirm('Are you sure you want to delete this customer?')) {
+       this.customerService.deleteCustomer(customerId).subscribe({
+         next: (response) => {
+           // Optionally, filter out the deleted customer from the local array
+           this.customers = this.customers.filter(customer => customer.id !== customerId);
+           console.log('Customer deleted successfully', response);
+         },
+         error: (error) => {
+           console.error('Error deleting customer', error);
+         }
+       });
+     }
+   }
 
   showUpdateModal = false;
 
