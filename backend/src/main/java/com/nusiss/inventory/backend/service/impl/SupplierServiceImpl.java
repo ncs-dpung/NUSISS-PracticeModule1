@@ -6,8 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nusiss.inventory.backend.dao.SupplierDao;
 import com.nusiss.inventory.backend.dto.SupplierDto;
 import com.nusiss.inventory.backend.entity.Supplier;
+import com.nusiss.inventory.backend.repository.ProductRepository;
 import com.nusiss.inventory.backend.repository.SupplierRepository;
 import com.nusiss.inventory.backend.service.SupplierService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +20,13 @@ import java.util.stream.Collectors;
 public class SupplierServiceImpl implements SupplierService {
 
     private final SupplierRepository supplierRepository;
+    private final ProductRepository productRepository;
     private final SupplierDao supplierDao;
     private final ObjectMapper objectMapper;
 
-    public SupplierServiceImpl(SupplierRepository supplierRepository, SupplierDao supplierDao, ObjectMapper objectMapper) {
+    public SupplierServiceImpl(SupplierRepository supplierRepository, ProductRepository productRepository, SupplierDao supplierDao, ObjectMapper objectMapper) {
         this.supplierRepository = supplierRepository;
+        this.productRepository = productRepository;
         this.supplierDao = supplierDao;
         this.objectMapper = objectMapper;
     }
@@ -32,14 +37,16 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public SupplierDto createSupplier(SupplierDto supplierDto) {
         return supplierDao.saveSupplier(supplierDto.toEntity()).toDto();
     }
 
     @Override
+    @Transactional
     public SupplierDto updateSupplier(Long id, SupplierDto supplierDto) {
         Supplier supplier = supplierRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Supplier with id [" + id + "] does not exist")
+                () -> new EntityNotFoundException("Supplier with id [" + id + "] does not exist")
         );
 
         try {
@@ -52,8 +59,15 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public void deleteSupplierById(Long id) {
-        supplierDao.deleteSupplierById(id);
+        // Check if any products are associated with this supplier
+        long productCount = productRepository.countBySupplierId(id);
+        if (productCount > 0) {
+            throw new RuntimeException("Cannot delete supplier as there are associated products.");
+        }
+        // If no products are associated, proceed with deletion
+        supplierRepository.deleteById(id);
     }
 
     @Override

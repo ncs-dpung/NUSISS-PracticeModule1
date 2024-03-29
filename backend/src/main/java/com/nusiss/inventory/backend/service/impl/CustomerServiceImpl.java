@@ -7,6 +7,8 @@ import com.nusiss.inventory.backend.dto.CustomerDto;
 import com.nusiss.inventory.backend.entity.Customer;
 import com.nusiss.inventory.backend.repository.CustomerRepository;
 import com.nusiss.inventory.backend.service.CustomerService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,14 +33,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerDto createCustomer(CustomerDto customerDto) {
         return customerDao.saveCustomer(customerDto.toEntity()).toDto();
     }
 
     @Override
+    @Transactional
     public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
         Customer customer = customerRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Customer with id [" + id + "] does not exist")
+                () -> new EntityNotFoundException("Customer with id [" + id + "] does not exist")
         );
 
         try {
@@ -51,6 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void deleteCustomerById(Long id) {
         customerDao.deleteCustomerById(id);
     }

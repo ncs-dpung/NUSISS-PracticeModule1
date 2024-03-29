@@ -4,6 +4,7 @@ import com.nusiss.inventory.backend.dto.ProductDto;
 import com.nusiss.inventory.backend.entity.Product;
 import com.nusiss.inventory.backend.repository.ProductRepository;
 import com.nusiss.inventory.backend.service.InventoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    @Transactional
     public void reorderProduct(Long productId, int quantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
