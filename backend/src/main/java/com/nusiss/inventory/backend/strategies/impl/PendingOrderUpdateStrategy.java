@@ -13,10 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component("PENDINGOrderUpdateStrategy")
 public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {

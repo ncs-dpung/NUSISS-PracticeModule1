@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class OrderConverter {
         order.setCustomer(customer);
 
         // Set other simple fields
-        order.setDatePlaced(orderDto.getDatePlaced());
+        order.setDatePlaced(orderDto.getDatePlaced() == null ? new Date() : orderDto.getDatePlaced());
         order.setDateShipped(orderDto.getDateShipped());
         order.setStatus(orderDto.getStatus());
 
