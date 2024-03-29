@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,12 +32,12 @@ public class InventoryController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/reorder-product")
+    @PutMapping("/reorder-product/{id}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reordered product")
     })
-    public ResponseEntity<String> reorderProduct(Long productId, int quantity) {
-        inventoryService.reorderProduct(productId, quantity);
+    public ResponseEntity<String> reorderProduct(@PathVariable Long id, @RequestBody int quantity) {
+        inventoryService.reorderProduct(id, quantity);
         return ResponseEntity.ok("Product reordered successfully");
     }
 }
