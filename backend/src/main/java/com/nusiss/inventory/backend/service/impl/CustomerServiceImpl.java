@@ -9,6 +9,7 @@ import com.nusiss.inventory.backend.repository.CustomerRepository;
 import com.nusiss.inventory.backend.service.CustomerService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, CustomerDao customerDao, ObjectMapper objectMapper) {
         this.customerRepository = customerRepository;
         this.customerDao = customerDao;

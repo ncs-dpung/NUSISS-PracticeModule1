@@ -34,4 +34,8 @@ public class Customer {
 //        dto.setCustomerAddress(customerAddress);
         return dto;
     }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 }
