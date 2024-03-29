@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component("ProcessedOrderUpdateStrategy")
+@Component("PROCESSEDOrderUpdateStrategy")
 public class ProcessedOrderUpdateStrategy implements OrderUpdateStrategy {
 
     private final OrderRepository orderRepository;
@@ -34,7 +35,7 @@ public class ProcessedOrderUpdateStrategy implements OrderUpdateStrategy {
 
         // Update other fields
         order.setStatus(orderDto.getStatus());
-        if(order.getStatus().getName().equals("Delivered")) order.setDateShipped(LocalDateTime.now());
+        if(order.getStatus().getName().equals("Delivered")) order.setDateShipped(new Date());
         else order.setDateShipped(null);
 
         orderRepository.save(order);

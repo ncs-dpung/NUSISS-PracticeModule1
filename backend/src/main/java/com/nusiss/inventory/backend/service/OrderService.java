@@ -1,9 +1,8 @@
 package com.nusiss.inventory.backend.service;
 
 import com.nusiss.inventory.backend.dto.OrderDto;
-import com.nusiss.inventory.backend.response.StatusUpdateRequest;
+import com.nusiss.inventory.backend.json.StatusUpdateRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {

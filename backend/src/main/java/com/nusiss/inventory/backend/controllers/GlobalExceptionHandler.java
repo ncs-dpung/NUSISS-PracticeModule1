@@ -1,6 +1,6 @@
 package com.nusiss.inventory.backend.controllers;
 
-import com.nusiss.inventory.backend.response.ErrorResponse;
+import com.nusiss.inventory.backend.json.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

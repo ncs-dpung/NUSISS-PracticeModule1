@@ -6,14 +6,15 @@ import com.nusiss.inventory.backend.entity.*;
 import com.nusiss.inventory.backend.repository.OrderRepository;
 import com.nusiss.inventory.backend.repository.OrderStatusRepository;
 import com.nusiss.inventory.backend.repository.ProductRepository;
-import com.nusiss.inventory.backend.response.StatusUpdateRequest;
+import com.nusiss.inventory.backend.json.StatusUpdateRequest;
 import com.nusiss.inventory.backend.service.OrderService;
 import com.nusiss.inventory.backend.strategies.OrderUpdateStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -69,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDto updateOrderStatus(Long orderId, StatusUpdateRequest statusUpdateRequest) {
         Long statusId = statusUpdateRequest.getStatus().getId();
-        LocalDateTime deliveryDate = statusUpdateRequest.getDeliveryDate();
+        Date deliveryDate = statusUpdateRequest.getDeliveryDate();
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + orderId));
@@ -79,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(status);
         // Check if the status is 'Delivered'
         if ("Delivered".equals(status.getName())) {
-            order.setDateShipped(deliveryDate != null ? deliveryDate : LocalDateTime.now());
+            order.setDateShipped(deliveryDate != null ? deliveryDate : new Date());
         } else {
             order.setDateShipped(null); // clear the dateShipped if the status is not Delivered
         }

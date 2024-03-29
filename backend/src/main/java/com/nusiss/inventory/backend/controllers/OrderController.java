@@ -1,8 +1,9 @@
 package com.nusiss.inventory.backend.controllers;
 
 import com.nusiss.inventory.backend.dto.OrderDto;
-import com.nusiss.inventory.backend.response.StatusUpdateRequest;
+import com.nusiss.inventory.backend.json.StatusUpdateRequest;
 import com.nusiss.inventory.backend.service.OrderService;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -38,9 +39,8 @@ public class OrderController {
     @ApiOperation(value = "Update an existing order")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Order updated successfully"),
-            @ApiResponse(code = 400, message = "Unable to update order due to validation error or order not in PENDING status"),
-            @ApiResponse(code = 404, message = "Order not found"),
-            @ApiResponse(code = 500, message = "Internal Server Error")
+            @ApiResponse(code = 500, message = "Unable to update order due to validation error or order not in PENDING status"),
+            @ApiResponse(code = 404, message = "Order not found")
     })
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable Long orderId, @RequestBody OrderDto orderDto) {
@@ -63,9 +63,8 @@ public class OrderController {
     @ApiOperation(value = "Delete an order")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Order deleted successfully"),
-            @ApiResponse(code = 400, message = "Order cannot be deleted due to non-PENDING status"),
-            @ApiResponse(code = 404, message = "Order not found"),
-            @ApiResponse(code = 500, message = "Internal Server Error")
+            @ApiResponse(code = 500, message = "Order cannot be deleted due to non-PENDING status"),
+            @ApiResponse(code = 404, message = "Order not found")
     })
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {

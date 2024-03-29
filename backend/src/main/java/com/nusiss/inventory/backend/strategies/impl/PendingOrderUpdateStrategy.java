@@ -17,10 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component("PendingOrderUpdateStrategy")
+@Component("PENDINGOrderUpdateStrategy")
 public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
 
     private final OrderRepository orderRepository;
@@ -53,7 +54,7 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
         // Update other fields
         order.setDatePlaced(orderDto.getDatePlaced());
         order.setStatus(orderDto.getStatus());
-        if(order.getStatus().getName().equals("Delivered")) order.setDateShipped(LocalDateTime.now());
+        if(order.getStatus().getName().equals("Delivered")) order.setDateShipped(new Date());
         else order.setDateShipped(null);
 
         // Update OrderItems

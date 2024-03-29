@@ -107,8 +107,8 @@ CREATE TABLE IF NOT EXISTS tbl_product (
      order_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
 --     user_id BIGINT,
      customer_id BIGINT,
-     date_placed DATETIME NOT NULL,
-     date_shipped DATETIME,
+     date_placed DATE NOT NULL,
+     date_shipped DATE,
      order_status_id BIGINT,
 --     FOREIGN KEY (user_id) REFERENCES tbl_user(user_id),
      FOREIGN KEY (customer_id) REFERENCES tbl_customer(customer_id),
@@ -117,11 +117,11 @@ CREATE TABLE IF NOT EXISTS tbl_product (
 
  -- Junction Table for Many-to-Many relationship between Orders and Products
  CREATE TABLE IF NOT EXISTS tbl_order_items (
+     id BIGINT AUTO_INCREMENT PRIMARY KEY,
      order_id BIGINT,
      product_id BIGINT,
      quantity INT NOT NULL,
      price DECIMAL(10, 2) NOT NULL,
-     PRIMARY KEY (order_id, product_id),
      FOREIGN KEY (order_id) REFERENCES tbl_order(order_id),
      FOREIGN KEY (product_id) REFERENCES tbl_product(product_id)
  );

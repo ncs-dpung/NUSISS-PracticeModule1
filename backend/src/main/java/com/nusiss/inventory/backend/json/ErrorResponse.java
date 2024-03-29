@@ -1,4 +1,4 @@
-package com.nusiss.inventory.backend.response;
+package com.nusiss.inventory.backend.json;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

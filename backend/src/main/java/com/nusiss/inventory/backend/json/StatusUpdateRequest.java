@@ -1,4 +1,4 @@
-package com.nusiss.inventory.backend.response;
+package com.nusiss.inventory.backend.json;
 
 import com.nusiss.inventory.backend.entity.OrderStatus;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +14,5 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class StatusUpdateRequest {
     private OrderStatus status;
-    private LocalDateTime deliveryDate;
-
+    private Date deliveryDate;
 }

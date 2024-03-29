@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 @Table(name = "tbl_order")
@@ -24,21 +26,21 @@ public class Order {
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @Column(name = "date_placed")
-    private LocalDateTime datePlaced;
+    private Date datePlaced;
 
     @Column(name = "date_shipped")
-    private LocalDateTime dateShipped;
+    private Date dateShipped;
 
-    @OneToOne
-    @JoinColumn(name = "status_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_status_id")
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> items;
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Collection<OrderItem> items;
 
 }

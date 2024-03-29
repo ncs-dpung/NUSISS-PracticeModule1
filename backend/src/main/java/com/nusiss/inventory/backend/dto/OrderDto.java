@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -20,14 +22,14 @@ public class OrderDto {
 //    private Long userId;
     private Long customerId;
     private String customerName;
-    private LocalDateTime datePlaced;
-    private LocalDateTime dateShipped;
+    private Date datePlaced;
+    private Date dateShipped;
     private OrderStatus status;
-    private Set<OrderItemDto> items;
+    private Collection<OrderItemDto> items;
 
     public BigDecimal getTotal() {
         return items.stream()
-                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+                .map(OrderItemDto::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
