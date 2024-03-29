@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component("PENDINGOrderUpdateStrategy")
+@Component("PendingOrderUpdateStrategy")
 public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
 
     private final OrderRepository orderRepository;
@@ -52,7 +52,7 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
         // Update other fields
         order.setDatePlaced(orderDto.getDatePlaced());
         order.setStatus(orderDto.getStatus());
-        if(order.getStatus().getName().equals("DELIVERED")) order.setDateShipped(LocalDateTime.now());
+        if(order.getStatus().getName().equals("Delivered")) order.setDateShipped(LocalDateTime.now());
         else order.setDateShipped(null);
 
         // Update OrderItems

@@ -77,11 +77,11 @@ public class OrderServiceImpl implements OrderService {
         OrderStatus status = orderStatusRepository.findById(statusId)
                 .orElseThrow(() -> new EntityNotFoundException("OrderStatus not found with ID: " + statusId));
         order.setStatus(status);
-        // Check if the status is 'DELIVERED'
-        if ("DELIVERED".equals(status.getName())) {
+        // Check if the status is 'Delivered'
+        if ("Delivered".equals(status.getName())) {
             order.setDateShipped(deliveryDate != null ? deliveryDate : LocalDateTime.now());
         } else {
-            order.setDateShipped(null); // clear the dateShipped if the status is not DELIVERED
+            order.setDateShipped(null); // clear the dateShipped if the status is not Delivered
         }
         orderRepository.save(order);
         return orderConverter.convertOrderToDto(order);
@@ -117,8 +117,8 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + orderId));
-        if (!"PENDING".equals(order.getStatus().getName())) {
-            throw new IllegalStateException("Order can only be deleted if it is in PENDING status.");
+        if (!"Pending".equals(order.getStatus().getName())) {
+            throw new IllegalStateException("Order can only be deleted if it is in Pending status.");
         }
         orderRepository.delete(order);
     }

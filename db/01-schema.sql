@@ -2,24 +2,63 @@ DROP DATABASE IF EXISTS inventory_db;
 CREATE DATABASE inventory_db;
 USE inventory_db;
 
--- -- Create Role Table
--- CREATE TABLE IF NOT EXISTS tbl_role (
---     role_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
---     role_name VARCHAR(255) NOT NULL
--- );
---
--- -- Create User Table
--- CREATE TABLE IF NOT EXISTS tbl_user (
---     user_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
---     user_name VARCHAR(255) NOT NULL,
---     email VARCHAR(255) NOT NULL,
---     password VARCHAR(255) NOT NULL,
---     role_id BIGINT,
---     created_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---     updated_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---     FOREIGN KEY (role_id) REFERENCES tbl_role(role_id)
--- );
---
+-- Create Role Table
+CREATE TABLE tbl_role (
+    role_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL
+);
+CREATE TABLE tbl_action (
+    action_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    authority VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL
+);
+
+-- Create Role-Action Junction Table
+CREATE TABLE role_action_junction (
+    role_id BIGINT NOT NULL,
+    action_id BIGINT NOT NULL,
+    PRIMARY KEY (role_id, action_id),
+    FOREIGN KEY (role_id) REFERENCES tbl_role(role_id),
+    FOREIGN KEY (action_id) REFERENCES tbl_action(action_id)
+);
+
+-- Create Staff Table
+CREATE TABLE tbl_staff (
+    staff_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    position VARCHAR(255),
+    department VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone_number VARCHAR(255),
+    address VARCHAR(255),
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL
+);
+
+-- Create User Table
+CREATE TABLE tbl_user (
+    user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    staff_id BIGINT,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
+    FOREIGN KEY (staff_id) REFERENCES tbl_staff(staff_id)
+);
+
  -- Create Category Table
  CREATE TABLE IF NOT EXISTS tbl_category (
      category_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,

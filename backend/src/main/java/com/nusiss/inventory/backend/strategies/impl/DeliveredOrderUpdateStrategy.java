@@ -6,7 +6,7 @@ import com.nusiss.inventory.backend.strategies.OrderUpdateStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
-@Component("DELIVEREDOrderUpdateStrategy")
+@Component("DeliveredOrderUpdateStrategy")
 public class DeliveredOrderUpdateStrategy implements OrderUpdateStrategy {
     @Override
     public OrderDto updateOrder(Order order, OrderDto orderDto) {
