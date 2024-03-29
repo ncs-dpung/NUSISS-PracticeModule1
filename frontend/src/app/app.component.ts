@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'advanced-inventory-management-system';
 
-  constructor(private router: Router) {} 
+  constructor(private router: Router) {}
 
   navigate(path: string): void {
-    this.router.navigate([path]); 
+    this.router.navigate([path]);
   }
 }

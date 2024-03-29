@@ -14,24 +14,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "customer_id")
+  private Long id;
 
-    @Column(name = "customer_name")
-    private String customerName;
+  @Column(name = "customer_name")
+  private String customerName;
 
-    @Column(name = "contact_info")
-    private String customerContact;
-//    private String customerAddress;
+  @Column(name = "contact_info")
+  private String customerContact;
 
-    public CustomerDto toDto() {
-        CustomerDto dto = new CustomerDto();
-        dto.setId(id);
-        dto.setCustomerName(customerName);
-        dto.setCustomerContact(customerContact);
-//        dto.setCustomerAddress(customerAddress);
-        return dto;
-    }
+  //    private String customerAddress;
+
+  public CustomerDto toDto() {
+    CustomerDto dto = new CustomerDto();
+    dto.setId(id);
+    dto.setCustomerName(customerName);
+    dto.setCustomerContact(customerContact);
+    //        dto.setCustomerAddress(customerAddress);
+    return dto;
+  }
 }

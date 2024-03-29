@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SupplierDto {
-    private Long id;
-    private String supplierName;
-    private String supplierContact;
-    private String supplierAddress;
+  private Long id;
+  private String supplierName;
+  private String supplierContact;
+  private String supplierAddress;
 
-    public Supplier toEntity() {
-        Supplier supplier = new Supplier();
-        supplier.setId(id);
-        supplier.setSupplierName(supplierName);
-        supplier.setSupplierContact(supplierContact);
-        supplier.setSupplierAddress(supplierAddress);
-        return supplier;
-    }
+  public Supplier toEntity() {
+    Supplier supplier = new Supplier();
+    supplier.setId(id);
+    supplier.setSupplierName(supplierName);
+    supplier.setSupplierContact(supplierContact);
+    supplier.setSupplierAddress(supplierAddress);
+    return supplier;
+  }
 }

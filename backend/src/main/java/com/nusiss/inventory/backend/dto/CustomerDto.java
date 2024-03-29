@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDto {
-    private Long id;
-    private String customerName;
-    private String customerContact;
+  private Long id;
+  private String customerName;
+  private String customerContact;
 
-    public Customer toEntity() {
-        Customer customer = new Customer();
-        customer.setId(id);
-        customer.setCustomerName(customerName);
-        customer.setCustomerContact(customerContact);
-        return customer;
-    }
+  public Customer toEntity() {
+    Customer customer = new Customer();
+    customer.setId(id);
+    customer.setCustomerName(customerName);
+    customer.setCustomerContact(customerContact);
+    return customer;
+  }
 }
