@@ -21,10 +21,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-// TODO: Uncomment the following line when user management is implemented
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
@@ -42,6 +42,5 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<OrderItem> items;
-
 
 }

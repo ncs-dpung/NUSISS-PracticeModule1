@@ -12,12 +12,19 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     // Fetch total sales and revenue by month
-    @Query(value = "SELECT YEAR(o.date_placed) AS year, MONTH(o.date_placed) AS month, COUNT(*) AS totalOrders, SUM(oi.price) AS totalRevenue " +
+//    @Query(value = "SELECT YEAR(o.date_placed) AS year, MONTH(o.date_placed) AS month, COUNT(*) AS totalOrders, SUM(oi.price) AS totalRevenue " +
+//            "FROM tbl_order o " +
+//            "INNER JOIN tbl_order_items oi ON o.order_id = oi.order_id " +
+//            "GROUP BY YEAR(o.date_placed), MONTH(o.date_placed) " +
+//            "ORDER BY YEAR(o.date_placed), MONTH(o.date_placed)", nativeQuery = true)
+//    List<Object[]> findTotalSalesAndRevenueByMonth();
+
+    @Query(value = "SELECT YEAR(o.date_placed) AS year, MONTH(o.date_placed) AS month, COUNT(*) AS totalOrders, SUM(oi.price * oi.quantity) AS totalRevenue " +
             "FROM tbl_order o " +
             "INNER JOIN tbl_order_items oi ON o.order_id = oi.order_id " +
-            "GROUP BY YEAR(o.date_placed), MONTH(o.date_placed) " +
-            "ORDER BY YEAR(o.date_placed), MONTH(o.date_placed)", nativeQuery = true)
-    List<Object[]> findTotalSalesAndRevenueByMonth();
+            "WHERE YEAR(o.date_placed) = :year AND MONTH(o.date_placed) = :month " +
+            "GROUP BY YEAR(o.date_placed), MONTH(o.date_placed)", nativeQuery = true)
+    List<Object[]> findTotalSalesAndRevenueForSpecificMonth(@Param("year") int year, @Param("month") int month);
 
 
     // Fetch name of the most sold product for a given month and year

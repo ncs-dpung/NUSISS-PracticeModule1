@@ -29,21 +29,21 @@ USE inventory_db;
 --        FOREIGN KEY (action_id) REFERENCES tbl_action(action_id)
 --    );
 --
---    -- Create Staff Table
---    CREATE TABLE tbl_staff (
---        staff_id BIGINT AUTO_INCREMENT PRIMARY KEY,
---        first_name VARCHAR(255) NOT NULL,
---        last_name VARCHAR(255) NOT NULL,
---        position VARCHAR(255),
---        department VARCHAR(255),
---        email VARCHAR(255) UNIQUE NOT NULL,
---        phone_number VARCHAR(255),
---        address VARCHAR(255),
---        created_at TIMESTAMP NOT NULL,
---        updated_at TIMESTAMP NOT NULL,
---        created_by VARCHAR(255) NOT NULL,
---        updated_by VARCHAR(255) NOT NULL
---    );
+-- Create Staff Table
+CREATE TABLE tbl_staff (
+    staff_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    position VARCHAR(255),
+    department VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone_number VARCHAR(255),
+    address VARCHAR(255),
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL
+);
 --
 --    -- Create User Table
 --    CREATE TABLE tbl_user (
@@ -105,12 +105,12 @@ CREATE TABLE IF NOT EXISTS tbl_product (
  -- Create Order Table
  CREATE TABLE IF NOT EXISTS tbl_order (
      order_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
---     user_id BIGINT,
+     staff_id_id BIGINT,
      customer_id BIGINT,
      date_placed DATE NOT NULL,
      date_shipped DATE,
      order_status_id BIGINT,
---     FOREIGN KEY (user_id) REFERENCES tbl_user(user_id),
+     FOREIGN KEY (staff_id_id) REFERENCES tbl_staff(staff_id),
      FOREIGN KEY (customer_id) REFERENCES tbl_customer(customer_id),
      FOREIGN KEY (order_status_id) REFERENCES tbl_order_status(order_status_id)
  );
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS tbl_product (
      FOREIGN KEY (product_id) REFERENCES tbl_product(product_id)
  );
 --
--- -- Create Sales Table (Sales Report?)
+-- -- Create Sales Table (Review this table for correctness : change to supplier order table
 -- CREATE TABLE IF NOT EXISTS tbl_sales (
 --     sales_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
 --     order_id BIGINT,
