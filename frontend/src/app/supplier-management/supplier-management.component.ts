@@ -1,46 +1,79 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {NgClass} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { NgClass } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Supplier } from './supplier.model';
+import { SupplierService } from '../supplier.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-supplier-management',
   standalone: true,
   imports: [
-  NgClass,
-      FormsModule],
+    NgClass,
+    FormsModule,
+    CommonModule],
   templateUrl: './supplier-management.component.html',
   styleUrl: './supplier-management.component.scss'
 })
-export class SupplierManagementComponent {
+export class SupplierManagementComponent implements OnInit {
 
- showModal: boolean = false;
-  newItem: any = {
-    name: '',
-    condition: 'new',
-    available: 0,
-    reserved: 0,
-    price: '',
-    modified: new Date().toISOString().split('T')[0]
-  }; // Replace with your item model
-  showUpdateModal = false;
-  selectedItem: any = {};
+  suppliers: Supplier[] = [];
+  newSupplier: Supplier = { supplier_id: 0, supplier_name: '', contact_info: '', address: '' };
+  selectedSupplier: Supplier = { supplier_id: 0, supplier_name: '', contact_info: '', address: '' };
+  showModal: boolean = false;
+  showUpdateModal: boolean = false;
+  showOrderModal = false;
+  showHistoryModal = false;
 
+  constructor(private router: Router, private supplierService: SupplierService) { }
 
-  toggleModal() {
+  ngOnInit(): void {
+    this.loadSuppliers();
+  }
+
+  loadSuppliers(): void {
+    this.supplierService.getSuppliers().subscribe({
+      next: (data) => {
+        this.suppliers = data;
+        console.log('Suppliers loaded', this.suppliers); // To see if suppliers are loaded correctly
+      },
+      error: (error) => {
+        console.error('Error fetching suppliers', error);
+      }
+    });
+  }
+
+  onSubmit(): void {
+    this.supplierService.createSupplier(this.newSupplier).subscribe(supplier => {
+      this.suppliers.push(supplier);
+      this.toggleModal();
+    });
+  }
+
+  onUpdateSupplier(supplierId: number): void {
+    // Find the supplier in the array
+    const supplierToUpdate = this.suppliers.find(s => s.supplier_id === supplierId);
+    
+    // If supplier is found, proceed with update
+    if (supplierToUpdate) {
+      this.selectedSupplier = { ...supplierToUpdate }; // Make a copy of the supplier to be updated
+      this.showModal = true; // Show the modal for updating
+    } else {
+      console.error(`Supplier with ID ${supplierId} not found.`);
+    }
+  }
+
+  onDeleteSupplier(supplierId: number): void {
+    this.supplierService.deleteSupplier(supplierId).subscribe(() => {
+      this.suppliers = this.suppliers.filter(supplier => supplier.supplier_id !== supplierId);
+    });
+  }
+
+  toggleModal(): void {
     this.showModal = !this.showModal;
   }
-
-  onSubmit() {
-    // Here you'd handle adding the new item to your inventory list
-    console.log('New item:', this.newItem);
-    // Close the modal
-    this.showModal = false;
-    // Reset the new item or do whatever is needed post-submission
-    this.newItem = {};
-  }
-  constructor(private router: Router) {}
 
   navigate(path: string): void {
     this.router.navigate([path]);
@@ -54,26 +87,13 @@ export class SupplierManagementComponent {
 
   }
 
-  onUpdateItem() {
-    // Implement update logic here, such as making an HTTP request to update the item in the backend
-    console.log(this.selectedItem);
-    this.toggleUpdateModal(false); // Hide modal after update
+  toggleOrderModal(): void {
+    this.showOrderModal = !this.showOrderModal;
   }
 
-      showOrderModal = false;
+  toggleHistoryModal(): void {
+    this.showHistoryModal = !this.showHistoryModal;
+  }
 
-        toggleOrderModal(): void {
-          this.showOrderModal = !this.showOrderModal;
-        }
-
-        showHistoryModal = false;
-
-
-                toggleHistoryModal(): void {
-                  this.showHistoryModal = !this.showHistoryModal;
-                }
-
-                placeOrder(){
-                }
 
 }

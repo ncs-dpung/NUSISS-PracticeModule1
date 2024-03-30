@@ -72,35 +72,39 @@ export class CustomerManagementComponent implements OnInit {
 
        }
      });
+     this.loadCustomers();
    }
 
    onUpdateCustomer(): void {
-     if (this.selectedUser.id === undefined) {
-       // Handle error: selected user must have an id to be updated
-       console.error('Cannot update a customer without an ID');
-       return;
-     }
-
-     this.customerService.updateCustomer(this.selectedUser).subscribe({
-       next: (updatedCustomer) => {
-         // Replace the customer in your local array or re-fetch the list
-         // Close the modal and clear/reset the selectedUser
-         this.showUpdateModal = false;
-         // ... any other logic like showing a success message
-       },
-       error: (error) => {
-         console.error('Error updating customer', error);
-         // ... any error handling like showing an error message
-       }
-     });
-   }
+    if (this.selectedUser.id === undefined) {
+      console.error('Cannot update a customer without an ID');
+      return;
+    }
+  
+    this.customerService.updateCustomer(this.selectedUser).subscribe({
+      next: (updatedCustomer) => {
+        // Find the index of the customer in the array
+        const index = this.customers.findIndex(customer => customer.id === updatedCustomer.id);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.customers[index] = updatedCustomer;
+        }
+  
+        this.showUpdateModal = false;
+        this.loadCustomers();
+      },
+      error: (error) => {
+        console.error('Error updating customer', error);
+      }
+    });
+  }
+  
 
 
    deleteCustomer(customerId: number): void {
      if (confirm('Are you sure you want to delete this customer?')) {
        this.customerService.deleteCustomer(customerId).subscribe({
          next: (response) => {
-           // Optionally, filter out the deleted customer from the local array
            this.customers = this.customers.filter(customer => customer.id !== customerId);
            console.log('Customer deleted successfully', response);
          },
@@ -115,6 +119,11 @@ export class CustomerManagementComponent implements OnInit {
 
   toggleUpdateModal(show: boolean): void {
     this.showUpdateModal = show;
+  }
+
+  selectCustomerForUpdate(customer: Customer): void {
+    this.selectedUser = { ...customer }; 
+    this.toggleUpdateModal(true); 
   }
 
   onUpdateUser(): void {

@@ -77,11 +77,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">Name:</label>
-                <input type="text" id="itemName" [(ngModel)]="newItem.name" name="name" placeholder="Item Name" required>
+                <input type="text" id="itemName" [(ngModel)]="newSupplier.supplier_name" name="name" placeholder="Item Name" required>
               </div>
               <div class="form-group">
                 <label for="itemCondition">Condition:</label>
-                <select id="itemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                <select id="itemCondition" [(ngModel)]="newSupplier.supplier_name" name="condition" required>
                   <option value="new">New</option>
                   <option value="used">Used</option>
                   <option value="refurbished">Refurbished</option>
@@ -92,22 +92,22 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Available:</label>
-                <input type="number" id="itemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <input type="number" id="itemAvailable" [(ngModel)]="newSupplier.supplier_name" name="available" required>
               </div>
               <div class="form-group">
                 <label for="itemReserved">Reserved:</label>
-                <input type="number" id="itemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <input type="number" id="itemReserved" [(ngModel)]="newSupplier.supplier_name" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Price:</label>
-                <input type="text" id="itemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <input type="text" id="itemPrice" [(ngModel)]="newSupplier.supplier_name" name="price" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Modified:</label>
-                <input type="date" id="itemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <input type="date" id="itemModified" [(ngModel)]="newSupplier.supplier_name" name="modified" required>
               </div>
             </div>
 
@@ -122,15 +122,15 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Inventory Item</h2>
-          <form (submit)="onUpdateItem()">
+          <form (submit)="onUpdateSupplier(selectedSupplier.supplier_id)">
             <div class="form-row">
               <div class="form-group">
                 <label for="updateItemName">Name:</label>
-                <input type="text" id="updateItemName" [(ngModel)]="selectedItem.name" name="name" placeholder="Item Name" required>
+                <input type="text" id="updateItemName" [(ngModel)]="selectedSupplier.supplier_name" name="name" placeholder="Item Name" required>
               </div>
               <div class="form-group">
                 <label for="itemCondition">Condition:</label>
-                <select id="upDateItemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                <select id="upDateItemCondition" [(ngModel)]="newSupplier.supplier_name" name="condition" required>
                   <option value="new">New</option>
                   <option value="used">Used</option>
                   <option value="refurbished">Refurbished</option>
@@ -141,22 +141,22 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Available:</label>
-                <input type="number" id="updateItemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <input type="number" id="updateItemAvailable" [(ngModel)]="newSupplier.supplier_name" name="available" required>
               </div>
               <div class="form-group">
                 <label for="itemReserved">Reserved:</label>
-                <input type="number" id="updateItemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <input type="number" id="updateItemReserved" [(ngModel)]="newSupplier.supplier_name" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Price:</label>
-                <input type="text" id="updateItemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <input type="text" id="updateItemPrice" [(ngModel)]="newSupplier.supplier_name" name="price" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Modified:</label>
-                <input type="date" id="updateItemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <input type="date" id="updateItemModified" [(ngModel)]="newSupplier.supplier_name" name="modified" required>
               </div>
             </div>
             <button type="submit" class="btn-add">Update Item</button>
@@ -288,19 +288,18 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Example Product Row -->
-        <tr>
-          <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-          <td>1</td>
-          <td>HRC Cotton Supply</td>
-          <td>67</td>
-          <td>Transporting</td>
+          <tr *ngFor="let supplier of suppliers; let i = index">
+          <td><input type="checkbox" name="selectedSupplier" [value]="supplier.supplier_id"></td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ supplier.supplier_name }}</td>
+          <td>{{ supplier.contact_info }}</td>
+          <td>{{ supplier.address }}</td>
           <td>03/13/2017</td>
           <td>
             <button class="btn-action view-btn" (click)="toggleOrderModal()">Order</button>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
+            <button class="btn-action update-btn" (click)="onUpdateSupplier(supplier.supplier_id!)">Update</button>
             <button class="btn-action history-button" (click)="toggleHistoryModal()">History</button>
-            <button class="btn-action delete-btn">Delete</button>
+            <button class="btn-action delete-btn" (click)="onDeleteSupplier(supplier.supplier_id!)">Delete</button>
           </td>
         </tr>
 
