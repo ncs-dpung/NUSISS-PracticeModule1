@@ -23,6 +23,9 @@ public class AdvancedInventoryManagementSystemApplication {
       generator.generateDeleteActions();
       generator.generateBasicRoles();
       generator.generateAdminStaff();
+      generator.generateSalesRepRole();
+      generator.generateWarehouseMgrRole();
+      generator.generateProcurementOffrRole();
     };
   }
 }
