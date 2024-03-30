@@ -1,11 +1,31 @@
 package com.nusiss.inventory.backend.repository;
 
+import com.nusiss.inventory.backend.dto.TotalSalesDto;
 import com.nusiss.inventory.backend.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    // Fetch total sales and revenue by month
+    @Query(value = "SELECT YEAR(o.date_placed) AS year, MONTH(o.date_placed) AS month, COUNT(*) AS totalOrders, SUM(oi.price) AS totalRevenue " +
+            "FROM tbl_order o " +
+            "INNER JOIN tbl_order_items oi ON o.order_id = oi.order_id " +
+            "GROUP BY YEAR(o.date_placed), MONTH(o.date_placed) " +
+            "ORDER BY YEAR(o.date_placed), MONTH(o.date_placed)", nativeQuery = true)
+    List<Object[]> findTotalSalesAndRevenueByMonth();
 
+
+    // Fetch name of the most sold product for a given month and year
+    @Query(value = "SELECT p.name, SUM(oi.quantity) AS totalQuantity " +
+            "FROM tbl_order_items oi JOIN tbl_product p JOIN tbl_order o " +
+            "WHERE YEAR(o.date_placed) = :year AND MONTH(o.date_placed) = :month " +
+            "GROUP BY p.product_id " +
+            "ORDER BY SUM(oi.quantity) DESC " +
+            "LIMIT 1", nativeQuery = true)
+    List<Object[]> findMostSoldProductForMonthAndYear(@Param("year") String year, @Param("month") String month);
 }
-

@@ -1,5 +1,6 @@
 package com.nusiss.inventory.backend.repository;
 
+import com.nusiss.inventory.backend.dto.TopSellingProductDto;
 import com.nusiss.inventory.backend.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     long countBySupplierId(Long supplierId);
 
     List<Product> findByIdIn(Set<Long> ids);
+
+    @Query("SELECT new com.nusiss.inventory.backend.dto.TopSellingProductDto(p.name, SUM(oi.quantity) as totalQuantity) " +
+            "FROM OrderItem oi JOIN oi.product p " +
+            "GROUP BY p.id " +
+            "ORDER BY totalQuantity DESC " +
+            "LIMIT 6")
+    List<TopSellingProductDto> findTopSellingProducts();
 }
 
