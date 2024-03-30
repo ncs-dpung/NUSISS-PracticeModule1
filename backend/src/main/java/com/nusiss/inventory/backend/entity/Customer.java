@@ -25,14 +25,14 @@ public class Customer {
   @Column(name = "contact_info")
   private String customerContact;
 
-  //private String customerAddress;
+  // private String customerAddress;
 
   public CustomerDto toDto() {
     CustomerDto dto = new CustomerDto();
     dto.setId(id);
     dto.setCustomerName(customerName);
     dto.setCustomerContact(customerContact);
-    //dto.setCustomerAddress(customerAddress);
+    // dto.setCustomerAddress(customerAddress);
     return dto;
   }
 }

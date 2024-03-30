@@ -8,12 +8,26 @@ import com.nusiss.inventory.backend.service.StaffService;
 import com.nusiss.inventory.backend.service.UserService;
 import com.nusiss.inventory.backend.utils.GlobalConstants;
 import com.nusiss.inventory.backend.utils.PasswordGeneratorUtil;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/staff")
@@ -33,6 +47,7 @@ public class StaffController {
       value = "Get a list of all staff",
       authorizations = {@Authorization(value = "Bearer")})
   @GetMapping
+  @PreAuthorize("hasRole('ADMIN') || hasAuthority('R_STAFF')")
   public ResponseEntity<List<StaffDto>> getAllStaff() {
     List<StaffDto> staff = staffService.getAllStaff();
     return ResponseEntity.ok(staff);
@@ -47,6 +62,9 @@ public class StaffController {
         @ApiResponse(code = 404, message = "Staff not found")
       })
   @GetMapping("/{id}")
+  @PreAuthorize(
+      "hasRole('ADMIN') || hasAuthority('R_STAFF') || #id =="
+          + " authentication.details['user']['staffId']")
   public ResponseEntity<StaffDto> getStaffById(
       @ApiParam(value = "Staff ID", required = true) @PathVariable Long id) {
     StaffDto staffDto = staffService.getStaffById(id);
@@ -58,6 +76,7 @@ public class StaffController {
       authorizations = {@Authorization(value = "Bearer")})
   @PostMapping
   @Transactional
+  @PreAuthorize("hasRole('ADMIN') || hasAuthority('C_STAFF')")
   public ResponseEntity<StaffRegResDto> createStaff(
       @ApiParam(value = "Staff data", required = true) @RequestBody StaffDto staffDto) {
     StaffDto createdStaff = staffService.createStaff(staffDto);
@@ -77,6 +96,9 @@ public class StaffController {
       authorizations = {@Authorization(value = "Bearer")})
   @PatchMapping("/{id}")
   @Transactional
+  @PreAuthorize(
+      "hasRole('ADMIN') || hasAuthority('U_STAFF') || #id =="
+          + " authentication.details['user']['staffId']")
   public ResponseEntity<StaffDto> updateStaff(
       @ApiParam(value = "Staff ID", required = true) @PathVariable Long id,
       @ApiParam(value = "Staff data", required = true) @RequestBody StaffUpdateDto updateDto) {
@@ -87,8 +109,9 @@ public class StaffController {
   @ApiOperation(
       value = "Update an existing staff password",
       authorizations = {@Authorization(value = "Bearer")})
-  @PutMapping("/password/{id}")
+  @PutMapping("/{id}/password")
   @Transactional
+  @PreAuthorize("#id == authentication.details['user']['staffId']")
   public ResponseEntity<String> updateStaffPassword(
       @ApiParam(value = "Staff ID", required = true) @PathVariable Long id,
       @ApiParam(value = "Old and New Password", required = true) @RequestBody
@@ -107,6 +130,7 @@ public class StaffController {
         @ApiResponse(code = 404, message = "Staff not found")
       })
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('ADMIN') || hasAuthority('D_STAFF')")
   public ResponseEntity<?> deleteStaff(
       @ApiParam(value = "Staff ID", required = true) @PathVariable Long id) {
     staffService.deleteStaffById(id);

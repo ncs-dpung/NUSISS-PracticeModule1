@@ -9,6 +9,8 @@ public interface StaffDao {
 
   Staff saveStaff(Staff user);
 
+  Staff saveAdminStaff(Staff user);
+
   void deleteStaffById(Long id);
 
   List<Staff> findAllStaff();

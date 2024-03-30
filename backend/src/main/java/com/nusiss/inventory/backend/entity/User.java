@@ -22,6 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
@@ -101,7 +103,14 @@ public class User extends BaseAuditEntity implements UserDetails {
   }
 
   @Override
-  public Collection<Role> getAuthorities() {
-    return roles;
+  public Collection<GrantedAuthority> getAuthorities() {
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+      for (AuthorisedAction action : role.getActions()) {
+        authorities.add(new SimpleGrantedAuthority(action.getAuthority()));
+      }
+    }
+    return authorities;
   }
 }

@@ -1,5 +1,7 @@
 package com.nusiss.inventory.backend.service.impl;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.dto.UserDto;
 import com.nusiss.inventory.backend.dto.UserPasswordUpdateDto;
@@ -18,11 +20,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
   private final UserDao userDao;
   private final PasswordEncoder passwordEncoder;
+  private final ObjectMapper objectMapper;
 
   @Autowired
-  public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+  public UserServiceImpl(
+      UserDao userDao, PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
     this.userDao = userDao;
     this.passwordEncoder = passwordEncoder;
+    this.objectMapper = objectMapper;
   }
 
   @Override
@@ -37,16 +42,18 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto updateUser(Long id, UserDto userDto) {
-    User user = userDao.findById(id).orElse(null);
-    if (user != null) {
-      user.setUsername(userDto.getUsername());
-      user.setEmail(userDto.getEmail());
-      // update roles or other fields
+  public UserDto updateUser(Long id, UserDto updateDto) {
+    User user =
+        userDao
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("user with id [" + id + "] does not exist"));
+    try {
+      objectMapper.updateValue(user, updateDto);
       User updatedUser = userDao.saveUser(user);
       return updatedUser.toDto();
+    } catch (JsonMappingException e) {
+      throw new RuntimeException(e.getMessage());
     }
-    return null;
   }
 
   @Override
