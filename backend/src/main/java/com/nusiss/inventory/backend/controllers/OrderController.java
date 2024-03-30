@@ -86,12 +86,23 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
 
+    @ApiOperation(value = "List all orders with status 'Pending' or 'Processed'")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Orders retrieved successfully"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
+    @GetMapping("/pending-processed")
+    public ResponseEntity<List<OrderDto>> getPendingAndProcessedOrders() {
+        List<OrderDto> orders = orderService.findPendingAndProcessedOrdersSorted();
+        return ResponseEntity.ok(orders);
+    }
+
     @ApiOperation(value = "List all orders")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Orders retrieved successfully"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         List<OrderDto> orders = orderService.findAllOrders();
         return ResponseEntity.ok(orders);

@@ -28,4 +28,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY SUM(oi.quantity) DESC " +
             "LIMIT 1", nativeQuery = true)
     List<Object[]> findMostSoldProductForMonthAndYear(@Param("year") String year, @Param("month") String month);
+
+    @Query(value = "SELECT o.order_id, o.customer_id, o.date_placed, o.date_shipped, o.order_status_id " +
+            "FROM tbl_order o " +
+            "INNER JOIN tbl_order_status os ON o.order_status_id = os.order_status_id " +
+            "WHERE os.status_name IN ('Pending', 'Processed') " +
+            "ORDER BY CASE WHEN os.status_name = 'Pending' THEN 1 WHEN os.status_name = 'Processed' THEN 2 ELSE 3 END, o.order_id",
+            nativeQuery = true)
+    List<Order> findPendingAndProcessedOrdersSorted();
+
+
 }

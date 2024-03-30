@@ -134,5 +134,13 @@ public class OrderServiceImpl implements OrderService {
         }
         orderRepository.delete(order);
     }
+
+    @Override
+    public List<OrderDto> findPendingAndProcessedOrdersSorted() {
+        List<Order> orders = orderRepository.findPendingAndProcessedOrdersSorted();
+        return orders.stream()
+                .map(orderConverter::convertOrderToDto)
+                .collect(Collectors.toList());
+    }
 }
 

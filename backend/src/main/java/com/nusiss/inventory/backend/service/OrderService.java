@@ -12,4 +12,5 @@ public interface OrderService {
     List<OrderDto> findAllOrders();
     OrderDto updateOrder(Long orderId, OrderDto orderDto);
     void deleteOrder(Long orderId);
+    List<OrderDto> findPendingAndProcessedOrdersSorted();
 }
