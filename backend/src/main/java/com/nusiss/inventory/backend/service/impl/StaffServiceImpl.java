@@ -37,6 +37,11 @@ public class StaffServiceImpl implements StaffService {
   }
 
   @Override
+  public StaffDto createAdminStaff(StaffDto staffDto) {
+    return staffDao.saveAdminStaff(staffDto.toEntity()).toDto();
+  }
+
+  @Override
   public StaffDto updateStaff(Long id, StaffUpdateDto updateDto) {
     Staff staff =
         staffDao

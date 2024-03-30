@@ -37,9 +37,23 @@ public class StaffDaoImpl implements StaffDao {
 
   @Transactional
   @Override
-  // to implement test with debugger
   public Staff saveStaff(Staff staff) {
     Role userRole = roleRepository.findByName(GlobalConstants.ROLE_USER).get();
+    User user = staff.getUser();
+    if (!user.getRoles().contains(userRole)) {
+      user.getRoles().add(userRole);
+    }
+    user.setStaff(staff);
+    User savedUser = userRepository.save(user);
+    Staff savedStaff = staffRepository.save(staff);
+    savedStaff.setUser(savedUser);
+    return savedStaff;
+  }
+
+  @Transactional
+  @Override
+  public Staff saveAdminStaff(Staff staff) {
+    Role userRole = roleRepository.findByName(GlobalConstants.ROLE_ADMIN).get();
     User user = staff.getUser();
     if (!user.getRoles().contains(userRole)) {
       user.getRoles().add(userRole);

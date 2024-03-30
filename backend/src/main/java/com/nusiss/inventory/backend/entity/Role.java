@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ import org.springframework.security.core.GrantedAuthority;
 @EqualsAndHashCode
 public class Role extends BaseAuditEntity implements GrantedAuthority {
 
-  private final String ROLE_PREFIX = "ROLE_";
+  @Transient private final String ROLE_PREFIX = "ROLE_";
 
   @Id
   @EqualsAndHashCode.Include
