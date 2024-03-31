@@ -25,9 +25,7 @@ interface RevenueByCategory {
   styleUrl: './reporting.component.scss',
 })
 export class ReportingComponent implements OnInit {
-  selectedMonth: string = (new Date().getMonth() + 1)
-    .toString()
-    .padStart(2, '0');
+  selectedMonth: string = (new Date().getMonth() + 1).toString();
   selectedYear: string = new Date().getFullYear().toString();
 
   barChart: any;
@@ -43,11 +41,6 @@ export class ReportingComponent implements OnInit {
     topSellingProducts: [],
     revenueByCategory: [],
   };
-  
-
-  updateDateHeader(): void {
-    // Logic to update something on date change if needed
-  }
 
   constructor(private router: Router, private reportService: ReportingService) {
     Chart.register(...registerables);
@@ -67,17 +60,8 @@ export class ReportingComponent implements OnInit {
     });
   }
 
-  getMonthName(monthNumber: number): string {
-    if (monthNumber === 0) {
-      return 'Nil';
-    }
-    // Note: Month is 0-indexed in JavaScript Date, so subtract 1.
-    const date = new Date();
-    date.setMonth(monthNumber + 1);
-  
-    // Use Angular's DatePipe programmatically or return a formatted string directly.
-    // Here's how you might format it directly for simplicity:
-    return new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+  getDateString(year: number, month: number): string {
+    return `${year}-${month.toString().padStart(2, '0')}-01`;
   }
 
   navigate(path: string): void {

@@ -50,7 +50,7 @@
           </div>
           <!-- Display Selected Month and Year -->
           <div class="selected-date-display">
-            <h3>{{ getMonthName(reportData.totalSales.month) }} {{reportData.totalSales.year}}</h3>
+            <h3>{{ getDateString(reportData.totalSales.year, reportData.totalSales.month) | date : 'MMMM' }} {{reportData.totalSales.year}}</h3>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <tbody>
             <tr>
               <td>{{ reportData.totalSales.year == 0 ? 'Nil' : reportData.totalSales.year}}</td>
-              <td>{{ getMonthName(reportData.totalSales.month) }}</td>
+              <td>{{ getDateString(reportData.totalSales.year, reportData.totalSales.month) | date : 'MMMM'}}</td>
               <td>{{ reportData.totalSales.totalOrders }}</td>
               <td>{{ reportData.totalSales.totalRevenue | currency }}</td>
               <td>{{ reportData.totalSales.mostSoldProduct == ''? 'Nil' : reportData.totalSales.mostSoldProduct }}</td>
@@ -82,7 +82,7 @@
       <!-- Chart Section -->
       <section class="chart-section">
         <div class="bar-chart-container">
-          <h3>Top 6 Most Selling Products</h3>
+          <h3>Top Most Selling Products</h3>
           <canvas id="barChart"></canvas>
         </div>
 
