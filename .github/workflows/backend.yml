@@ -7,6 +7,13 @@ on:
       - .github/workflows/**
 
 jobs:
+  gjf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--skip-sorting-imports --replace"
   ci:
     runs-on: ubuntu-latest
 
