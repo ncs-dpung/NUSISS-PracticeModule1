@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -14,8 +13,6 @@ import { UserAccessManagementComponent } from './user-access-management/user-acc
 import { HttpClientModule } from '@angular/common/http';
 import { routes } from './app.routes';
 import { ChartsModule } from 'ng2-charts';
-import { FormsModule }    from '@angular/forms';
-
 
 @NgModule({
   declarations: [
@@ -27,17 +24,10 @@ import { FormsModule }    from '@angular/forms';
     UserAccessManagementComponent,
     SupplierManagementComponent,
     SupplierOrderManagementComponent,
-    CustomerManagementComponent
+    CustomerManagementComponent,
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    routes,
-    FormsModule,
-    ChartsModule
-
-  ],
+  imports: [HttpClientModule, BrowserModule, routes, FormsModule, ChartsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
