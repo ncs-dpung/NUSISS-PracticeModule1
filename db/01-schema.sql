@@ -29,21 +29,21 @@ USE inventory_db;
 --        FOREIGN KEY (action_id) REFERENCES tbl_action(action_id)
 --    );
 --
----- Create Staff Table
---CREATE TABLE tbl_staff (
---    staff_id BIGINT AUTO_INCREMENT PRIMARY KEY,
---    first_name VARCHAR(255) NOT NULL,
---    last_name VARCHAR(255) NOT NULL,
---    position VARCHAR(255),
---    department VARCHAR(255),
---    email VARCHAR(255) UNIQUE NOT NULL,
---    phone_number VARCHAR(255),
---    address VARCHAR(255),
---    created_at TIMESTAMP NOT NULL,
---    updated_at TIMESTAMP NOT NULL,
---    created_by VARCHAR(255) NOT NULL,
---    updated_by VARCHAR(255) NOT NULL
---);
+--    -- Create Staff Table
+--    CREATE TABLE tbl_staff (
+--        staff_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+--        first_name VARCHAR(255) NOT NULL,
+--        last_name VARCHAR(255) NOT NULL,
+--        position VARCHAR(255),
+--        department VARCHAR(255),
+--        email VARCHAR(255) UNIQUE NOT NULL,
+--        phone_number VARCHAR(255),
+--        address VARCHAR(255),
+--        created_at TIMESTAMP NOT NULL,
+--        updated_at TIMESTAMP NOT NULL,
+--        created_by VARCHAR(255) NOT NULL,
+--        updated_by VARCHAR(255) NOT NULL
+--    );
 --
 --    -- Create User Table
 --    CREATE TABLE tbl_user (
@@ -76,18 +76,18 @@ USE inventory_db;
 -- -- Create Product Table (Mixed Product and Inventory Table)
 -- -- 1 supplier many products; 1 product 1 supplier
 -- -- 1 category many products; 1 product 1 category
---CREATE TABLE IF NOT EXISTS tbl_product (
---    product_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
---    name VARCHAR(255) NOT NULL,
---    category_id BIGINT,
---    price DECIMAL(10, 2) NOT NULL,
---    batch_no VARCHAR(255),
---    supplier_id BIGINT,
---    quantity_available INT NOT NULL,
---    reorder_level INT NOT NULL,
---    FOREIGN KEY (category_id) REFERENCES tbl_category(category_id),
---    FOREIGN KEY (supplier_id) REFERENCES tbl_supplier(supplier_id)
---);
+--    CREATE TABLE IF NOT EXISTS tbl_product (
+--        product_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
+--        name VARCHAR(255) NOT NULL,
+--        category_id BIGINT,
+--        price DECIMAL(10, 2) NOT NULL,
+--        batch_no VARCHAR(255),
+--        supplier_id BIGINT,
+--        quantity_available INT NOT NULL,
+--        reorder_level INT NOT NULL,
+--        FOREIGN KEY (category_id) REFERENCES tbl_category(category_id),
+--        FOREIGN KEY (supplier_id) REFERENCES tbl_supplier(supplier_id)
+--    );
 --
 -- -- Create Customer Table
 -- CREATE TABLE IF NOT EXISTS tbl_customer (
