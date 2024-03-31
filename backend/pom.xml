@@ -82,11 +82,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.9</version> <!-- Use the latest version -->
-		</dependency>
 		<!-- dev tools -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
