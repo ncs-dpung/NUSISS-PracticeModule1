@@ -37,19 +37,4 @@ public class ReportController {
         MonthlyReportDto monthlyReport = reportService.getMonthlyReport(year, month);
         return ResponseEntity.ok(monthlyReport);
     }
-
-//    @GetMapping("/sales-by-month")
-//    public ResponseEntity<List<TotalSalesDto>> getTotalSalesRevenueAndMostSoldProductByMonth() {
-//        return ResponseEntity.ok(reportService.getTotalSalesAndMostSoldProductByMonth());
-//    }
-//
-//    @GetMapping("/top-selling-products")
-//    public ResponseEntity<List<TopSellingProductDto>> getTopSellingProducts() {
-//        return ResponseEntity.ok(reportService.getTopSellingProducts());
-//    }
-//
-//    @GetMapping("/revenue-by-category")
-//    public ResponseEntity<List<CategoryRevenueDto>> getRevenueByCategory() {
-//        return ResponseEntity.ok(reportService.getRevenueByCategory());
-//    }
 }

@@ -69,44 +69,5 @@ public class ReportServiceImpl implements ReportService {
                 ((Number) data[1]).longValue()
         )).toList();
     }
-
-
-//    public List<TotalSalesDto> getTotalSalesAndMostSoldProductByMonth(int year, int month) {
-//        List<Object[]> monthlySales = orderRepository.findTotalSalesAndRevenueByMonth();
-//        List<TotalSalesDto> results = new ArrayList<>();
-//
-//        System.out.println("monthlySales: " + orderRepository.findTotalSalesAndRevenueByMonth());
-//
-//
-//        for (Object[] monthData : monthlySales) {
-//            int year = ((Number) monthData[0]).intValue();
-//            int month = ((Number) monthData[1]).intValue();
-//            long totalOrders = ((Number) monthData[2]).longValue();
-//            BigDecimal totalRevenue = (BigDecimal) monthData[3];
-//
-//            List<Object[]> mostSoldProductData = orderRepository.findMostSoldProductForMonthAndYear(String.valueOf(year), String.valueOf(month));
-//
-//            String mostSoldProductName = null;
-//            for(Object[] data: mostSoldProductData){
-//                mostSoldProductName = (String) data[0];
-//            }
-//
-//            TotalSalesDto dto = new TotalSalesDto(year, month, totalOrders, totalRevenue, mostSoldProductName);
-//            results.add(dto);
-//        }
-//
-//        return results;
-//    }
-//
-//
-//
-//    public List<TopSellingProductDto> getTopSellingProducts(int year, int month) {
-//        return productRepository.findTopSellingProducts();
-//    }
-//
-//
-//    public List<CategoryRevenueDto> getRevenueByCategory(int year, int month) {
-//        return categoryRepository.findRevenueByCategory();
-//    }
 }
 

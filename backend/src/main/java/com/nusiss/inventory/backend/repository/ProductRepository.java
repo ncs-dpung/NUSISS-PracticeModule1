@@ -22,13 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByIdIn(Set<Long> ids);
 
-//    @Query("SELECT new com.nusiss.inventory.backend.dto.TopSellingProductDto(p.name, SUM(oi.quantity) as totalQuantity) " +
-//            "FROM OrderItem oi JOIN oi.product p " +
-//            "GROUP BY p.id " +
-//            "ORDER BY totalQuantity DESC " +
-//            "LIMIT 6")
-//    List<TopSellingProductDto> findTopSellingProducts();
-
     @Query(value = "SELECT p.name, SUM(oi.quantity) AS totalQuantity " +
             "FROM tbl_order_items oi JOIN tbl_product p ON oi.product_id = p.product_id JOIN tbl_order o ON oi.order_id = o.order_id " +
             "WHERE YEAR(o.date_placed) = :year AND MONTH(o.date_placed) = :month " +
