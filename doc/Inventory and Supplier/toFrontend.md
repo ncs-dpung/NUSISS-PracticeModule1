@@ -10,7 +10,7 @@
  3. Delete Supplier -> unable to delete if there are products associated with the supplier
  4. View Supplier Details
 
-### Features on Product Management Page
+### Features on Product/Inventory Management Page
 `Note: 1-4 is a table; 5 is another table`
 1. Add Product -> Select Supplier, Category from available list (dropdown); other fields can just insert
 2. Edit Product -> Select Supplier, Category from available list (dropdown); other fields can just insert
