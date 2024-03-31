@@ -9,6 +9,8 @@ public interface StaffService {
 
   StaffDto createStaff(StaffDto staffDto);
 
+  StaffDto createAdminStaff(StaffDto staffDto);
+
   StaffDto updateStaff(Long id, StaffUpdateDto staffDto);
 
   void deleteStaffById(Long id);

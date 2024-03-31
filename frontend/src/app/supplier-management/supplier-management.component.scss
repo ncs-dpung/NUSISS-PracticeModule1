@@ -43,20 +43,19 @@ body {
   margin-top: 2px;
 }
 
-.filter-section .radio-group {
-  display: block;
-}
-
-.filter-section .radio-group label {
-  display: flex;
+.filter-section .checkbox-group {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Left column for checkbox, right column for label */
   align-items: center;
-  margin-right: 2px;
-  margin-bottom: 2px;
+  gap: 2em; /* Space between checkbox and label */
+  margin-bottom: 0.5em; /* Space between each checkbox group */
 }
 
-.filter-section input[type="radio"] {
-  margin-right: 2px;
+/* Additional style resets if necessary */
+.filter-section input[type="checkbox"] {
+  margin: 0; /* Reset any margin if applied */
 }
+
 
 .main-content {
   width: 80%;
@@ -131,7 +130,7 @@ body {
 
 .modal-footer {
 display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   padding: 20px 20px 5px 20px;
 }

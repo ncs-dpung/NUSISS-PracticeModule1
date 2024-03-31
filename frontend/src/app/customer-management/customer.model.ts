@@ -1,6 +1,6 @@
 
 export interface Customer {
-    id: number;
+    id?: number | null | undefined;
     customerName: string;
     customerContact: string;
 //

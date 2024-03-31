@@ -14,19 +14,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Category {
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
+  @Id
+  @EqualsAndHashCode.Include
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "category_id")
+  private Long categoryId;
 
-    @Column(name = "category_name")
-    private String categoryName;
+  @Column(name = "category_name")
+  private String categoryName;
 
-    public CategoryDto toDto() {
-        CategoryDto dto = new CategoryDto();
-        dto.setCategoryId(categoryId);
-        dto.setCategoryName(categoryName);
-        return dto;
-    }
+  public CategoryDto toDto() {
+    CategoryDto dto = new CategoryDto();
+    dto.setCategoryId(categoryId);
+    dto.setCategoryName(categoryName);
+    return dto;
+  }
 }

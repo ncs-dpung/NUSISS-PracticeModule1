@@ -44,20 +44,19 @@ body {
   margin-top: 2px;
 }
 
-.filter-section .radio-group {
-  display: block;
+.filter-section .checkbox-group {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Left column for checkbox, right column for label */
+  align-items: center;
+  gap: 2em; /* Space between checkbox and label */
+  margin-bottom: 0.5em; /* Space between each checkbox group */
 }
 
-.filter-section .radio-group label {
-  display: flex;
-  align-items: center; /* Ensures vertical alignment */
-  margin-right: 2px; /* Space between radio buttons */
-  margin-bottom: 2px; /* Space between each radio button group */
+/* Additional style resets if necessary */
+.filter-section input[type="checkbox"] {
+  margin: 0; /* Reset any margin if applied */
 }
 
-.filter-section input[type="radio"] {
-  margin-right: 2px; /* Space between the radio button and its label */
-}
 
 .main-content {
   width: 80%;

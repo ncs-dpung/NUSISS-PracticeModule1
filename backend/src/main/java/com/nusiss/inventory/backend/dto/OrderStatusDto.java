@@ -10,6 +10,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class OrderStatusDto {
-    private Long id;
-    private String statusName;
+  private Long id;
+  private String statusName;
 }

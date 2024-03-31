@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +28,8 @@ import org.springframework.security.core.GrantedAuthority;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Role extends BaseAuditEntity implements GrantedAuthority {
+
+  @Transient private final String ROLE_PREFIX = "ROLE_";
 
   @Id
   @EqualsAndHashCode.Include
@@ -51,15 +54,13 @@ public class Role extends BaseAuditEntity implements GrantedAuthority {
   public Role(String name) {
     this.name = name;
     this.actions = new HashSet<>();
-    AuthorisedAction baseAction = new AuthorisedAction(name);
-    actions.add(baseAction);
   }
 
   @Override
   public String getAuthority() {
-    String scope =
-        actions.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
-    return scope;
+    String authority = ROLE_PREFIX + name;
+    System.out.println("Authority: " + authority);
+    return authority;
   }
 
   public RoleDto toDto() {

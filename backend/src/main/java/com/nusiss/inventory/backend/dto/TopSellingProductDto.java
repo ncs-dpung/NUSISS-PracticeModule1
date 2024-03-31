@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TopSellingProductDto {
-    private String productName;
-    private long totalQuantity;
+  private String productName;
+  private long totalQuantity;
 }

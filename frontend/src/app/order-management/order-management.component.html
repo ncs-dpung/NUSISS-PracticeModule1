@@ -16,18 +16,25 @@
         <!-- Add more categories as needed -->
       </select>
 
-      <!-- Condition Radio Buttons -->
+      <!-- Condition Checkboxes -->
       <fieldset class="filter-section">
         <legend>Condition:</legend>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="new" checked> New
-        </label>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="used"> Used
-        </label>
-        <label class="radio-group">
-          <input type="radio" name="condition" value="refurbished"> Refurbished
-        </label>
+        <div class="checkbox-group">
+          <input type="checkbox" id="new" name="condition" value="new">
+          <label for="new">New</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="used" name="condition" value="used">
+          <label for="used">Used</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="refurbished" name="condition" value="refurbished">
+          <label for="refurbished">Refurbished</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="vintage" name="condition" value="refurbished">
+          <label for="refurbished">Vintage</label>
+        </div>
       </fieldset>
 
       <!-- Date Filter -->

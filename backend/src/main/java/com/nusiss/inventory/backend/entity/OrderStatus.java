@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class OrderStatus {
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_status_id")
-    private Long id;
+  @Id
+  @EqualsAndHashCode.Include
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "order_status_id")
+  private Long id;
 
-    @Column(name = "status_name")
-    private String name;
+  @Column(name = "status_name")
+  private String name;
 }
