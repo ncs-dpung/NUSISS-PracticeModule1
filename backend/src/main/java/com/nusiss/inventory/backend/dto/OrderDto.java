@@ -7,31 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class OrderDto {
-    private Long orderId;
-    private Long staffId;
-    private String staffFirstName;
-    private String staffLastName;
-    private Long customerId;
-    private String customerName;
-    private Date datePlaced;
-    private Date dateShipped;
-    private OrderStatus status;
-    private Collection<OrderItemDto> items;
+  private Long orderId;
+  private Long staffId;
+  private String staffFirstName;
+  private String staffLastName;
+  private Long customerId;
+  private String customerName;
+  private Date datePlaced;
+  private Date dateShipped;
+  private OrderStatus status;
+  private Collection<OrderItemDto> items;
 
-    public BigDecimal getTotal() {
-        return items.stream()
-                .map(OrderItemDto::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
+  public BigDecimal getTotal() {
+    return items.stream().map(OrderItemDto::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+  }
 }

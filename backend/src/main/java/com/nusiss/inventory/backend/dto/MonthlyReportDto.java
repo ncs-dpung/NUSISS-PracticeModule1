@@ -12,8 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class MonthlyReportDto {
-    private TotalSalesDto totalSales;
-    private List<TopSellingProductDto> topSellingProducts;
-    private List<CategoryRevenueDto> revenueByCategory;
+  private TotalSalesDto totalSales;
+  private List<TopSellingProductDto> topSellingProducts;
+  private List<CategoryRevenueDto> revenueByCategory;
 }
-
