@@ -63,12 +63,10 @@ fdescribe('ReportingService', () => {
         totalRevenue: 10000,
         mostSoldProduct: 'Sample',
       },
-      topSellingProducts: [
-        { productName: 'Sample A', totalQuantity: 50 }
-      ],
+      topSellingProducts: [{ productName: 'Sample A', totalQuantity: 50 }],
       revenueByCategory: [
         { categoryName: 'Category A', revenue: 5000 },
-        { categoryName: 'Category B', revenue: 3000 }
+        { categoryName: 'Category B', revenue: 3000 },
       ],
     });
   });

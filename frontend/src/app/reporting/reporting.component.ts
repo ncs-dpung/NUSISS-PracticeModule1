@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
-import { ReportingService } from './reporting.service';
+import { ReportingService } from '../services/reporting.service';
 import { MonthlyReport } from './monthly-report-model';
 import { CommonModule } from '@angular/common';
 
