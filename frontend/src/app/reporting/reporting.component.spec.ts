@@ -1,92 +1,75 @@
-// import { ComponentFixture, TestBed } from '@angular/core/testing';
-// import { RouterTestingModule } from '@angular/router/testing';
-// import { FormsModule } from '@angular/forms';
-// import { CommonModule } from '@angular/common';
-// import { Chart, registerables } from 'chart.js';
-// import { ReportingComponent } from './reporting.component';
-// import { ReportingService } from './reporting.service';
-// import { Observable } from 'rxjs';
-// import { MonthNamePipe } from './month-name-pipe';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReportingComponent } from './reporting.component';
+import { ReportingService } from './reporting.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-// describe('ReportingComponent', () => {
-//   let component: ReportingComponent;
-//   let fixture: ComponentFixture<ReportingComponent>;
-//   let reportingService: ReportingService;
+fdescribe('ReportingComponent', () => {
+  let component: ReportingComponent;
+  let fixture: ComponentFixture<ReportingComponent>;
+  let mockReportService: jasmine.SpyObj<ReportingService>;
 
-//   beforeEach(async () => {
-//     await TestBed.configureTestingModule({
-//       imports: [RouterTestingModule, FormsModule, CommonModule],
-//       declarations: [ReportingComponent],
-//       providers: [ReportingService],
-//     }).compileComponents();
-//   });
+  const mockMonthlyReport = {
+    totalSales: {
+      year: 2024,
+      month: 3,
+      totalOrders: 10,
+      totalRevenue: 1000,
+      mostSoldProduct: 'Mock Product',
+    },
+    topSellingProducts: [
+      { productName: 'Mock Product 1', totalQuantity: 100 },
+      { productName: 'Mock Product 2', totalQuantity: 90 },
+      { productName: 'Mock Product 3', totalQuantity: 80 },
+      { productName: 'Mock Product 4', totalQuantity: 70 },
+      { productName: 'Mock Product 5', totalQuantity: 60 },
+      { productName: 'Mock Product 6', totalQuantity: 50 },
+    ],
+    revenueByCategory: [
+      { categoryName: 'Mock Category 1', revenue: 500 },
+      { categoryName: 'Mock Category 2', revenue: 500 },
+    ],
+  };
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(ReportingComponent);
-//     component = fixture.componentInstance;
-//     reportingService = TestBed.inject(ReportingService);
-//     fixture.detectChanges();
-//   });
+  beforeEach(async () => {
+    mockReportService = jasmine.createSpyObj('ReportingService', [
+      'getMonthlyReport',
+    ]);
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
+    await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        FormsModule,
+        CommonModule,
+        ReportingComponent,
+      ],
+      providers: [{ provide: ReportingService, useValue: mockReportService }],
+    }).compileComponents();
+  });
 
-//   it('should fetch and display report data', () => {
-//     const mockReportData = {
-//       totalSales: {
-//         year: 2022,
-//         month: 10,
-//         totalOrders: 100,
-//         totalRevenue: 5000,
-//         mostSoldProduct: 'Product A',
-//       },
-//       topSellingProducts: [
-//         { productName: 'Product A', totalQuantity: 50 }
-//       ],
-//       revenueByCategory: [
-//         { categoryName: 'Category A', revenue: 2000 },
-//         { categoryName: 'Category B', revenue: 3000 },
-//       ],
-//     };
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ReportingComponent);
+    component = fixture.componentInstance;
+    mockReportService.getMonthlyReport.and.returnValue(of(mockMonthlyReport));
+    fixture.detectChanges();
+  });
 
-//     spyOn(reportingService, 'getMonthlyReport').and.returnValue(Promise.resolve(mockReportData) as Observable<any>);
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-//     component.fetchAndDisplayReport();
+  it('should update reportData correctly with mock data from service on init', () => {
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    expect(mockReportService.getMonthlyReport).toHaveBeenCalledWith(
+      year,
+      month
+    );
 
-//     expect(reportingService.getReportData).toHaveBeenCalled();
-//     expect(component.reportData).toEqual(mockReportData);
-//   });
-
-//   it('should navigate to the specified path', () => {
-//     const routerSpy = spyOn(component.router, 'navigateByUrl');
-
-//     component.navigate('/dashboard');
-
-//     expect(routerSpy).toHaveBeenCalledWith('/dashboard');
-//   });
-
-//   it('should initialize bar chart', () => {
-//     const topSellingProducts = [
-//       { productName: 'Product A', totalQuantity: 50 },
-//       { productName: 'Product B', totalQuantity: 30 },
-//     ];
-
-//     component.initBarChart(topSellingProducts);
-
-//     expect(component.barChart).toBeDefined();
-//     // Add more assertions for the bar chart initialization if needed
-//   });
-
-//   it('should initialize pie chart', () => {
-//     const revenueByCategory = [
-//       { categoryName: 'Category A', revenue: 2000 },
-//       { categoryName: 'Category B', revenue: 3000 },
-//     ];
-
-//     component.initPieChart(revenueByCategory);
-
-//     expect(component.pieChart).toBeDefined();
-//     // Add more assertions for the pie chart initialization if needed
-//   });
-// });
+    expect(component.reportData).toEqual(mockMonthlyReport);
+  });
+});
