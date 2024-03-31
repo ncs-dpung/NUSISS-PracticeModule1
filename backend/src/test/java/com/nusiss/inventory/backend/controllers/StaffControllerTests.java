@@ -1,21 +1,8 @@
 package com.nusiss.inventory.backend.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.nusiss.inventory.backend.dto.StaffDto;
-import com.nusiss.inventory.backend.dto.StaffRegResDto;
-import com.nusiss.inventory.backend.dto.StaffUpdateDto;
-import com.nusiss.inventory.backend.dto.UserPasswordUpdateDto;
-import com.nusiss.inventory.backend.entity.Staff;
-import com.nusiss.inventory.backend.entity.User;
 import jakarta.transaction.Transactional;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 // TODO: Write service-level tests instead

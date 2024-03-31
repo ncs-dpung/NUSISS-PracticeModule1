@@ -16,28 +16,26 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ReportControllerTests {
 
-    @Mock
-    private ReportService reportService;
+  @Mock private ReportService reportService;
 
-    @InjectMocks
-    private ReportController reportController;
+  @InjectMocks private ReportController reportController;
 
-    @BeforeEach
-    public void setUp() {
-        // This is automatically done by MockitoExtension
-    }
+  @BeforeEach
+  public void setUp() {
+    // This is automatically done by MockitoExtension
+  }
 
-    @Test
-    public void getMonthlyReport_ReturnsMonthlyReportDto() {
-        int year = 2024;
-        int month = 3;
-        MonthlyReportDto mockMonthlyReport = new MonthlyReportDto(); // Populate this with mock data
+  @Test
+  public void getMonthlyReport_ReturnsMonthlyReportDto() {
+    int year = 2024;
+    int month = 3;
+    MonthlyReportDto mockMonthlyReport = new MonthlyReportDto(); // Populate this with mock data
 
-        when(reportService.getMonthlyReport(year, month)).thenReturn(mockMonthlyReport);
+    when(reportService.getMonthlyReport(year, month)).thenReturn(mockMonthlyReport);
 
-        ResponseEntity<MonthlyReportDto> response = reportController.getMonthlyReport(year, month);
+    ResponseEntity<MonthlyReportDto> response = reportController.getMonthlyReport(year, month);
 
-        assertEquals(response.getStatusCodeValue(), 200);
-        assertEquals(response.getBody(), mockMonthlyReport);
-    }
+    assertEquals(response.getStatusCodeValue(), 200);
+    assertEquals(response.getBody(), mockMonthlyReport);
+  }
 }
