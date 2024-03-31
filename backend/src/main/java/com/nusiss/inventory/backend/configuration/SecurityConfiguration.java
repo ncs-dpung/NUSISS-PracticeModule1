@@ -68,6 +68,8 @@ public class SecurityConfiguration {
             auth -> {
               auth.requestMatchers("/api/healthcheck").permitAll();
               auth.requestMatchers("/auth/**").permitAll();
+              auth.requestMatchers("/swagger-ui/**").permitAll();
+              auth.requestMatchers("/v3/api-docs/**").permitAll();
               auth.anyRequest().authenticated();
             })
         .oauth2ResourceServer(
