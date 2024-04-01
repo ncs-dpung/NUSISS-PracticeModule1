@@ -1,11 +1,15 @@
 name: trivy
 on:
   push:
+    branches:
+      - main
+      - dev
     paths:
       - backend/**
       - frontend/**
+      - .github/workflows/**
 jobs:
-  build:
+  trivy:
     name: Trivy scan
     runs-on: ubuntu-20.04
     steps:
