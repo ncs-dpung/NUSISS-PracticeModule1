@@ -1,0 +1,2 @@
+# NUSISS-PracticeModule1
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/016d95ef950d4cd8ad93632015ce1770)](https://app.codacy.com/gh/ncs-dpung/NUSISS-PracticeModule1?utm_source=github.com&utm_medium=referral&utm_content=ncs-dpung/NUSISS-PracticeModule1&utm_campaign=Badge_Grade)
