@@ -8,13 +8,16 @@ on:
 
 jobs:
   gjf:
+    name: Goole Java Formatter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--skip-sorting-imports --replace"
+
   ci:
+    name: Build & Test
     runs-on: ubuntu-latest
 
     defaults:
@@ -33,6 +36,22 @@ jobs:
 
       - name: Build
         run: mvn --batch-mode --update-snapshots verify
+
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@master
+        with:
+          tool: SpotBugs
+          output: results.sarif
+          format: sarif
+          gh-code-scanning-compat: true
+          max-allowed-issues: 2147483647
+          directory: backend
+      
+      # Upload the SARIF file generated in the previous step
+      - name: Upload SARIF results file
+        uses: github/codeql-action/upload-sarif@main
+        with:
+          sarif_file: results.sarif
 
   # TODO: AWS
   # deploy:
