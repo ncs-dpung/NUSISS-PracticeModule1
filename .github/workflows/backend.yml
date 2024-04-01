@@ -45,7 +45,7 @@ jobs:
           format: sarif
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
-          directory: backend
+          directory: /backend
       
       # Upload the SARIF file generated in the previous step
       - name: Upload SARIF results file
