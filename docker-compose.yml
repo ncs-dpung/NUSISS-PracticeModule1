@@ -58,5 +58,11 @@ services:
       dev-be:
         condition: service_healthy
 
+  umlserver:
+    container_name: uml
+    image: plantuml/plantuml-server:tomcat
+    ports:
+      - 8000:8080
+
 networks:
     springapimysql-net:
