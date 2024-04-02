@@ -1,0 +1,73 @@
+@startuml
+''' sequence diagram of ci processes
+title CI/CD Processes
+autonumber
+
+actor       Developer   as dev
+participant GitHub      as gh
+participant "CI Runner" as ci
+participant "DockerHub" as dh
+participant "AWS EC2"   as ec2
+
+dev -> gh   : push
+activate gh
+
+gh  -> ci   : triggers
+activate ci
+
+autonumber 3.1
+group security
+    ci  -> ci   : dependency scan
+    activate ci
+
+    ci  --> gh  : put scan results
+    deactivate ci
+end
+
+autonumber 4.1
+group build & test
+    ci  -> ci   : code formatter
+    activate ci
+
+    ci  --> gh  : push formatted code
+    deactivate ci
+
+    ci  -> ci   : build & test
+    activate ci
+
+    ci  --> gh  : put artifacts/logs
+    deactivate ci
+    
+autonumber 4.5.1
+alt build & test success
+    ci  -> ci   : build image
+    activate ci
+    
+    ci  -> dh   : push image
+    activate dh
+    deactivate dh
+    deactivate ci
+end
+
+deactivate ci
+deactivate gh
+end
+== main branch ==
+
+autonumber 5
+dev -> gh   : deploy
+activate gh
+
+gh  -> ec2  : connect to application runner
+activate ec2
+
+ec2 ->x ec2 : delete old container
+activate ec2
+deactivate ec2
+
+ec2 -> dh   : pull image
+activate dh
+deactivate dh
+
+ec2 -> ec2  : run application container from image
+@enduml
