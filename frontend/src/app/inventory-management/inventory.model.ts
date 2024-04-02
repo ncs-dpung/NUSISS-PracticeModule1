@@ -3,6 +3,5 @@ export interface Inventory {
     product_id: number;
     quantity_available: number;
     reorder_level:number;
-
   }
 

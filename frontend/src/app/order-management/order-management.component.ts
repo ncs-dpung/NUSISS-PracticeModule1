@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import { Order } from '../order-management/order.model';
+import { Order_Items } from '../order-management/order_items.model';
+import { Order_Status } from '../order-management/order_status.model';
 
 @Component({
   selector: 'app-order-management',

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Supplier } from './supplier.model';
-import { SupplierService } from '../supplier.service';
+import { Supplier } from '../supplier-management/supplier.model';
+import { SupplierService } from '../services/supplier.service';
 import { CommonModule } from '@angular/common';
+
 
 
 @Component({
@@ -55,7 +56,7 @@ export class SupplierManagementComponent implements OnInit {
   onUpdateSupplier(supplierId: number): void {
     // Find the supplier in the array
     const supplierToUpdate = this.suppliers.find(s => s.supplier_id === supplierId);
-    
+
     // If supplier is found, proceed with update
     if (supplierToUpdate) {
       this.selectedSupplier = { ...supplierToUpdate }; // Make a copy of the supplier to be updated

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {NgClass} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { NgClass } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Staff } from '../user-access-management/staff.model';
 
 @Component({
   selector: 'app-user-access-management',

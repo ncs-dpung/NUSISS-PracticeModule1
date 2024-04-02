@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Customer } from './customer.model';
-import { CustomerService } from '../customer.service';
+import { Customer } from '../customer-management/customer.model';
+import { CustomerService } from '../services/customer.service';
 import { CommonModule } from '@angular/common';
 
 
@@ -80,7 +80,7 @@ export class CustomerManagementComponent implements OnInit {
       console.error('Cannot update a customer without an ID');
       return;
     }
-  
+
     this.customerService.updateCustomer(this.selectedUser).subscribe({
       next: (updatedCustomer) => {
         // Find the index of the customer in the array
@@ -89,7 +89,7 @@ export class CustomerManagementComponent implements OnInit {
           // Update the customer in the array
           this.customers[index] = updatedCustomer;
         }
-  
+
         this.showUpdateModal = false;
         this.loadCustomers();
       },
@@ -98,7 +98,7 @@ export class CustomerManagementComponent implements OnInit {
       }
     });
   }
-  
+
 
 
    deleteCustomer(customerId: number): void {
@@ -122,8 +122,8 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   selectCustomerForUpdate(customer: Customer): void {
-    this.selectedUser = { ...customer }; 
-    this.toggleUpdateModal(true); 
+    this.selectedUser = { ...customer };
+    this.toggleUpdateModal(true);
   }
 
   onUpdateUser(): void {
