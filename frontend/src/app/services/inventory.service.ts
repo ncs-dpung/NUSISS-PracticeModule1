@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Inventory } from '../inventory-management/inventory.model';
+import { Product } from '../inventory-management/product.model';
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
-private apiUrl = 'http://localhost:8080/inventory'; 
+  private apiUrl = 'http://localhost:8080/products';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -15,33 +16,40 @@ private apiUrl = 'http://localhost:8080/inventory';
   };
 
   constructor(private http: HttpClient) { }
-  /*
- // Create (POST)
- createItem(ItemData: any): Observable<any> {
-  return this.http.post<any>(this.apiUrl, ItemData, this.httpOptions);
-}
 
-// Read (GET)
-getAllItem(): Observable<any[]> {
-  return this.http.get<any[]>(this.apiUrl);
-}
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl);
+  }
 
-// Read single item (GET)
-getItemById(id: string): Observable<any> {
-  const url = `${this.apiUrl}/${id}`;
-  return this.http.get<any>(url);
-}
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
 
-// Update (PUT)
-updateItem(id: string, supplierData: any): Observable<any> {
-  const url = `${this.apiUrl}/${id}`;
-  return this.http.put<any>(url, supplierData, this.httpOptions);
-}
+  createProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, product);
+  }
 
-// Delete (DELETE)
-deleteItem(id: string): Observable<any> {
-  const url = `${this.apiUrl}/${id}`;
-  return this.http.delete<any>(url, this.httpOptions);
-}*/
+  updateProduct(id: number, product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+
+  // Method to get products that need reordering
+  getProductsNeedingReorder(): Observable<Product[]> {
+    const url = `${this.apiUrl}/inventory/products/needing-reorder`;
+    return this.http.get<Product[]>(url);
+  }
+
+  // Method to reorder a product
+  reorderProduct(id: number): Observable<any> {
+    const url = `${this.apiUrl}/inventory/reorder/product/${id}`;
+
+    // data detail
+    return this.http.put(url, {});
+  }
 
 }

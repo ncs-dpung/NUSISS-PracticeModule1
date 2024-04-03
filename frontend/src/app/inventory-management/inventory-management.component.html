@@ -77,11 +77,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemName">Name:</label>
-                  <input type="text" id="itemName" [(ngModel)]="newItem.name" name="name" placeholder="Item Name" required>
+                  <input type="text" id="itemName" [(ngModel)]="newProduct.name" name="name" placeholder="Product Name" required>
                 </div>
                 <div class="form-group">
                   <label for="itemCondition">Condition:</label>
-                  <select id="itemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                  <select id="itemCondition"  name="condition" required>
                     <option value="new">New</option>
                     <option value="used">Used</option>
                     <option value="refurbished">Refurbished</option>
@@ -92,22 +92,22 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemAvailable">Available:</label>
-                  <input type="number" id="itemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                  <input type="number" id="itemAvailable" [(ngModel)]="newProduct.quantity" name="available" required>
                 </div>
                 <div class="form-group">
                   <label for="itemReserved">Reserved:</label>
-                  <input type="number" id="itemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                  <input type="number" id="itemReserved"  name="reserved" required>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemPrice">Price:</label>
-                  <input type="text" id="itemPrice" [(ngModel)]="newItem.price" name="price" required>
+                  <input type="text" id="itemPrice" [(ngModel)]="newProduct.price" name="price" required>
                 </div>
                 <div class="form-group">
-                  <label for="itemModified">Modified:</label>
-                  <input type="date" id="itemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                  <label for="itemModified">Batch No:</label>
+                  <input type="date" id="itemModified" [(ngModel)]="newProduct.batch_no" name="batch_no" required>
                 </div>
               </div>
 
@@ -126,11 +126,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="updateItemName">Name:</label>
-                  <input type="text" id="updateItemName" [(ngModel)]="selectedItem.name" name="name" placeholder="Item Name" required>
+                  <input type="text" id="updateItemName" [(ngModel)]="selectedProduct.name" name="name" placeholder="Product Name" required>
                 </div>
                 <div class="form-group">
                   <label for="itemCondition">Condition:</label>
-                  <select id="upDateItemCondition" [(ngModel)]="newItem.condition" name="condition" required>
+                  <select id="upDateItemCondition"  name="condition" required>
                     <option value="new">New</option>
                     <option value="used">Used</option>
                     <option value="refurbished">Refurbished</option>
@@ -141,22 +141,22 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemAvailable">Available:</label>
-                  <input type="number" id="updateItemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                  <input type="number" id="updateItemAvailable" [(ngModel)]="newProduct.quantity" name="available" required>
                 </div>
                 <div class="form-group">
-                  <label for="itemReserved">Reserved:</label>
-                  <input type="number" id="updateItemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                  <label for="itemReserved">Batch No:</label>
+                  <input type="number" id="updateItemReserved"  [(ngModel)]="newProduct.batch_no" name="reserved" required>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemPrice">Price:</label>
-                  <input type="text" id="updateItemPrice" [(ngModel)]="newItem.price" name="price" required>
+                  <input type="text" id="updateItemPrice" [(ngModel)]="newProduct.price" name="price" required>
                 </div>
                 <div class="form-group">
-                  <label for="itemModified">Modified:</label>
-                  <input type="date" id="updateItemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                  <label for="itemModified">Batch Date:</label>
+                  <input type="date" id="updateItemModified" name="modified" required>
                 </div>
               </div>
               <button type="submit" class="btn-add">Update Item</button>
@@ -172,9 +172,9 @@
               <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
               <th>No.</th>
               <th>NAME</th>
-              <th>CONDITION</th>
-              <th>AVAILABLE</th>
-              <th>RESERVED</th>
+              <th>PRICE</th>
+              <th>STOCK</th>
+              <th>BATCH NO.</th>
               <th>PRICE</th>
               <th>MODIFIED</th>
               <th>ACTIONS</th>
@@ -182,18 +182,18 @@
           </thead>
           <tbody>
             <!-- Example Product Row -->
-            <tr>
-              <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-              <td>1</td>
-              <td>128GB SD card</td>
-              <td>New</td>
-              <td>3,546</td>
-              <td>3,354</td>
+            <tr *ngFor="let product of products; let i = index">
+              <td><input type="checkbox" name="selectedProduct" [value]="product.product_id"></td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.batch_no }}</td>
               <td>$10.13</td>
               <td>03/13/2017</td>
               <td>
                 <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
-                <button class="btn-action delete-btn">Delete</button>
+                <button class="btn-action delete-btn" (click)="deleteProduct(product.product_id!)" >Delete</button>
               </td>
             </tr>
 

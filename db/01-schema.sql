@@ -105,7 +105,7 @@ USE inventory_db;
 -- -- Create Order Table
 -- CREATE TABLE IF NOT EXISTS tbl_order (
 --     order_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
---     staff_id_id BIGINT,
+--     staff_id BIGINT,
 --     customer_id BIGINT,
 --     date_placed DATE NOT NULL,
 --     date_shipped DATE,
