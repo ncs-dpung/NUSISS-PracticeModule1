@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - frontend/**
-      - .github/workflows/**
+      - .github/workflows/frontend.yml
 
 jobs:
   ci:
