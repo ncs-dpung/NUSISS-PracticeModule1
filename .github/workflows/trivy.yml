@@ -7,7 +7,7 @@ on:
     paths:
       - backend/**
       - frontend/**
-      - .github/workflows/**
+      - .github/workflows/trivy.yml
 jobs:
   trivy:
     name: Trivy scan
