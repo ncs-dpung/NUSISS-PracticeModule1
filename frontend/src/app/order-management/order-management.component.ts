@@ -1,48 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import { Order } from '../order-management/order.model';
 import { Order_Items } from '../order-management/order_items.model';
 import { Order_Status } from '../order-management/order_status.model';
+import { OrderService } from '../services/order.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-order-management',
   standalone: true,
   imports: [
       NgClass,
-      FormsModule],
+      FormsModule,
+      CommonModule],
   templateUrl: './order-management.component.html',
   styleUrl: './order-management.component.scss'
 })
-export class OrderManagementComponent {
+export class OrderManagementComponent implements OnInit{
 
   showModal: boolean = false;
-  newItem: any = {
-    name: '',
-    condition: 'new',
-    available: 0,
-    reserved: 0,
-    price: '',
-    modified: new Date().toISOString().split('T')[0]
-  }; // Replace with your item model
+  
   showUpdateModal = false;
-  selectedItem: any = {};
 
+  constructor(private router: Router, private orderService: OrderService) {}
+
+  orders: Order[] = [];
+
+  newOrder: Order = {
+    order_id: null,
+    staff_id: null,
+    customer_id: null,
+    date_placed: new Date('01/01/2000'),
+    date_shipped: new Date('01/01/2000'),
+    order_status_id: null,
+  };
+
+  selectedProduct: Order = {
+    order_id: null,
+    staff_id: null,
+    customer_id: null,
+    date_placed: new Date('01/01/2000'),
+    date_shipped: new Date('01/01/2000'),
+    order_status_id: null,
+  };
+
+
+  ngOnInit() {
+    this.loadAllOrders();
+  }
+
+  loadAllOrders(): void {
+    this.orderService.getAllOrders().subscribe(orders => {
+      this.orders = orders;
+    });
+  }
 
   toggleModal() {
     this.showModal = !this.showModal;
   }
 
   onSubmit() {
-    // Here you'd handle adding the new item to your inventory list
-    console.log('New item:', this.newItem);
+
     // Close the modal
     this.showModal = false;
     // Reset the new item or do whatever is needed post-submission
-    this.newItem = {};
+    //this.newOrder = {};
   }
-  constructor(private router: Router) {}
+
 
   navigate(path: string): void {
     this.router.navigate([path]);
@@ -57,8 +83,7 @@ export class OrderManagementComponent {
   }
 
   onUpdateItem() {
-    // Implement update logic here, such as making an HTTP request to update the item in the backend
-    console.log(this.selectedItem);
+
     this.toggleUpdateModal(false); // Hide modal after update
   }
 }

@@ -53,6 +53,11 @@ export class SupplierManagementComponent implements OnInit {
     });
   }
 
+  selectSupplierForUpdate(supplier: Supplier): void {
+    this.selectedSupplier = { ...supplier };
+    this.toggleUpdateModal(true);
+  }
+
   onUpdateSupplier(supplierId: number): void {
     // Find the supplier in the array
     const supplierToUpdate = this.suppliers.find(s => s.supplier_id === supplierId);

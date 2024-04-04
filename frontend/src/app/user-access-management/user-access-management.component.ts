@@ -1,74 +1,129 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Staff } from '../user-access-management/staff.model';
+import { StaffService } from '../services/staff.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-user-access-management',
   standalone: true,
   imports: [
-      NgClass,
-      FormsModule],
+    NgClass,
+    FormsModule,
+    CommonModule],
   templateUrl: './user-access-management.component.html',
   styleUrl: './user-access-management.component.scss'
 })
-export class UserAccessManagementComponent {
+export class UserAccessManagementComponent implements OnInit {
 
   showUserModal = false;
-    newUser = {
-      userName: '',
-      email: '',
-      contact: '',
-      address: '',
-      role: 'user' // Default role
-    };
 
-   toggleUserModal(): void {
-      this.showUserModal = !this.showUserModal;
+  staffs: Staff[] = [];
+
+  newStaff: Staff = {
+    staff_id: null,
+    first_name: '',
+    last_name: '',
+    position: '',
+    department: '',
+    email: '',
+    phone_number: '',
+    address: '',
+    created_at: new Date('01/01/2000'),
+    updated_at: new Date('01/01/2000'),
+    created_by: '',
+    updated_by: '',
+  };
+
+  selectedStaff: Staff = {
+    staff_id: null,
+    first_name: '',
+    last_name: '',
+    position: '',
+    department: '',
+    email: '',
+    phone_number: '',
+    address: '',
+    created_at: new Date('01/01/2000'),
+    updated_at: new Date('01/01/2000'),
+    created_by: '',
+    updated_by: '',
+  };
+
+  constructor(private router: Router, private staffService: StaffService) { }
+
+  ngOnInit(): void {
+    this.loadSaffs();
+  }
+
+  loadSaffs() {
+    this.staffService.getAllStaff().subscribe((staffs) => {
+      this.staffs = staffs;
+    });
+  }
+
+  onUpdateStaff(staffId: number) {
+    // Find the supplier in the array
+    const staffToUpdate = this.staffs.find(s => s.staff_id === staffId);
+
+    // If supplier is found, proceed with update
+    if (staffToUpdate) {
+      this.selectedStaff = { ...staffToUpdate }; // Make a copy of the supplier to be updated
+    } else {
+      console.error(`Supplier with ID ${staffId} not found.`);
     }
+    console.log(this.selectedStaff);
+    this.toggleUpdateModal(false); // Hide modal after update
+  }
 
-  constructor(private router: Router) {}
+  deleteStaff(staffId: number): void {
+    if (confirm('Are you sure you want to delete this staff?')) {
+      this.staffService.deleteStaff(staffId).subscribe({
+        next: (response) => {
+          this.staffs = this.staffs.filter(staff => staff.staff_id !== staffId);
+          console.log('Staff deleted successfully', response);
+        },
+        error: (error) => {
+          console.error('Error Deleting This Staff', error);
+        }
+      });
+    }
+  }
+
+  toggleUserModal(): void {
+    this.showUserModal = !this.showUserModal;
+  }
+
+
 
   navigate(path: string): void {
     this.router.navigate([path]);
   }
-    onSubmitUser(): void {
-      // Here you would typically make a service call to your backend to save the new user
-      console.log('User data to submit:', this.newUser);
-      // After submission, you might want to close the modal and clear the form
+
+  onSubmitStaff(): void {
+    console.log('New item:', this.newStaff);
+    // Close the modal
+    this.staffService.addStaff(this.newStaff).subscribe(staff => {
+      this.staffs.push(staff);
       this.showUserModal = false;
-      this.newUser = {
-        userName: '',
-        email: '',
-        contact: '',
-        address: '',
-        role: 'user'
-      };
-    }
+    });
 
-    // In your user-management.component.ts
-    selectedUser = {
-      userName: '',
-      role: '',
-      email: '',
-      contact: '',
-      address: '',
-      modified: '' // This could be the date the user was last updated
-    };
 
-    showUpdateModal = false;
 
-    toggleUpdateModal(show: boolean): void {
-      this.showUpdateModal = show;
-    }
 
-    onUpdateUser(): void {
-      // Implement your logic to update the user here, such as calling a service to update the user data on the server
-      console.log('Updated user data:', this.selectedUser);
-      // After updating, you might want to close the modal
-      this.showUpdateModal = false;
-    }
+
+  }
+
+
+  showUpdateModal = false;
+
+  toggleUpdateModal(show: boolean): void {
+    this.showUpdateModal = show;
+  }
+
 
 
 }

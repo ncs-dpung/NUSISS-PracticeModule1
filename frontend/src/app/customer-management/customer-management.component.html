@@ -243,7 +243,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let customer of customers; let i = index">
-            <td><input type="checkbox" name="selectedItem" [value]="customer.id"></td>
+            <td><input type="checkbox" name="selectedUser" [value]="customer.id"></td>
             <td>{{ i + 1 }}</td>
             <td>{{ customer.customerName }}</td>
             <td>{{ customer.customerContact }}</td>
