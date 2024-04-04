@@ -5,6 +5,8 @@ import com.nusiss.inventory.backend.entity.Supplier;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,6 +15,7 @@ public class SupplierDto {
   private String supplierName;
   private String supplierContact;
   private String supplierAddress;
+  private List<ProductDto> products;
 
   public Supplier toEntity() {
     Supplier supplier = new Supplier();

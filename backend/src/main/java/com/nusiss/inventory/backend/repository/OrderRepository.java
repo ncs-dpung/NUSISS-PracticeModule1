@@ -44,4 +44,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
               + " ELSE 3 END, o.order_id",
       nativeQuery = true)
   List<Order> findPendingAndProcessedOrdersSorted();
+
+  List<Order> findByCustomerId(Long customerId);
 }

@@ -29,4 +29,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               + " GROUP BY p.product_id ORDER BY totalQuantity DESC LIMIT 6",
       nativeQuery = true)
   List<Object[]> findTopSellingProducts(@Param("year") int year, @Param("month") int month);
+
+  List<Product> findBySupplierId(Long supplierId);
 }

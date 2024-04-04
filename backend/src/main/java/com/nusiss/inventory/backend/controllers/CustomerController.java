@@ -24,7 +24,7 @@ public class CustomerController {
       authorizations = {@Authorization(value = "Bearer")})
   @GetMapping
   public ResponseEntity<List<CustomerDto>> getAllCustomer() {
-    List<CustomerDto> customers = customerService.getAllCustomer();
+    List<CustomerDto> customers = customerService.getAllCustomerWithOrders();
     return ResponseEntity.ok(customers);
   }
 
