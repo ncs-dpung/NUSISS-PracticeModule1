@@ -18,10 +18,7 @@ public class InventoryManager implements InventorySubject {
   private final ProductRepository productRepository;
   private final ProductComponent productComponent;
 
-
-  public InventoryManager(
-      ProductRepository productRepository,
-      ProductComponent productComponent) {
+  public InventoryManager(ProductRepository productRepository, ProductComponent productComponent) {
     this.productRepository = productRepository;
     this.observers = new ArrayList<>();
     this.productComponent = productComponent;
