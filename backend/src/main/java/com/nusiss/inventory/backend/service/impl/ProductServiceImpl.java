@@ -1,5 +1,6 @@
 package com.nusiss.inventory.backend.service.impl;
 
+import com.nusiss.inventory.backend.components.ProductComponent;
 import com.nusiss.inventory.backend.dto.ProductDto;
 import com.nusiss.inventory.backend.entity.Category;
 import com.nusiss.inventory.backend.entity.Product;
@@ -21,15 +22,18 @@ public class ProductServiceImpl implements ProductService {
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
   private final SupplierRepository supplierRepository;
+  private final ProductComponent productConverter;
 
   @Autowired
   public ProductServiceImpl(
       ProductRepository productRepository,
       CategoryRepository categoryRepository,
-      SupplierRepository supplierRepository) {
+      SupplierRepository supplierRepository,
+      ProductComponent productConverter) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.supplierRepository = supplierRepository;
+    this.productConverter = productConverter;
   }
 
   @Override
@@ -90,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
   @Transactional(readOnly = true)
   public List<ProductDto> findAllProducts() {
     return productRepository.findAllWithDetails().stream()
-        .map(this::convertToDTO)
+        .map(productConverter::convertToDTO)
         .collect(Collectors.toList());
   }
 
@@ -106,22 +110,5 @@ public class ProductServiceImpl implements ProductService {
         supplier); // supplier is already fetched based on productDTO.getSupplierId()
     product.setQuantityAvailable(productDTO.getQuantityAvailable());
     product.setReorderLevel(productDTO.getReorderLevel());
-  }
-
-  @Override
-  public ProductDto convertToDTO(Product product) {
-    ProductDto dto = new ProductDto();
-    dto.setId(product.getId());
-    dto.setName(product.getName());
-    dto.setCategoryId(product.getCategory().getCategoryId());
-    dto.setCategoryName(product.getCategory().getCategoryName());
-    dto.setSupplierId(product.getSupplier().getId());
-    dto.setSupplierName(product.getSupplier().getSupplierName());
-    dto.setPrice(product.getPrice());
-    dto.setBatchNo(product.getBatchNo());
-    dto.setQuantityAvailable(product.getQuantityAvailable());
-    dto.setReorderLevel(product.getReorderLevel());
-    dto.setStockLevel(product.getStockLevel());
-    return dto;
   }
 }

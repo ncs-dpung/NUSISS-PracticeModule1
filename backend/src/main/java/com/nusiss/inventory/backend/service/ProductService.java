@@ -13,5 +13,5 @@ public interface ProductService {
 
   List<ProductDto> findAllProducts();
 
-  ProductDto convertToDTO(Product product);
+  //ProductDto convertToDTO(Product product);
 }
