@@ -29,7 +29,11 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Autowired
   public CustomerServiceImpl(
-      CustomerRepository customerRepository, CustomerDao customerDao, ObjectMapper objectMapper, OrderConverter orderConverter, OrderRepository orderRepository){
+      CustomerRepository customerRepository,
+      CustomerDao customerDao,
+      ObjectMapper objectMapper,
+      OrderConverter orderConverter,
+      OrderRepository orderRepository) {
     this.customerRepository = customerRepository;
     this.customerDao = customerDao;
     this.objectMapper = objectMapper;
@@ -39,7 +43,9 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public CustomerDto getCustomerById(Long id) {
-    Customer customer = customerRepository.findById(id)
+    Customer customer =
+        customerRepository
+            .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id));
 
     CustomerDto dto = new CustomerDto();
@@ -49,9 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     // Fetch and convert associated orders
     List<Order> orders = orderRepository.findByCustomerId(customer.getId());
-    List<OrderDto> orderDtos = orders.stream()
-            .map(orderConverter::convertOrderToDto)
-            .collect(Collectors.toList());
+    List<OrderDto> orderDtos =
+        orders.stream().map(orderConverter::convertOrderToDto).collect(Collectors.toList());
     dto.setOrders(orderDtos);
 
     return dto;
@@ -89,20 +94,24 @@ public class CustomerServiceImpl implements CustomerService {
 
   public List<CustomerDto> getAllCustomerWithOrders() {
     List<Customer> customers = customerRepository.findAll();
-    return customers.stream().map(customer -> {
-      CustomerDto dto = new CustomerDto();
-      dto.setId(customer.getId());
-      dto.setCustomerName(customer.getCustomerName());
-      dto.setCustomerContact(customer.getCustomerContact());
+    return customers.stream()
+        .map(
+            customer -> {
+              CustomerDto dto = new CustomerDto();
+              dto.setId(customer.getId());
+              dto.setCustomerName(customer.getCustomerName());
+              dto.setCustomerContact(customer.getCustomerContact());
 
-      // Fetch and convert associated orders
-      List<Order> orders = orderRepository.findByCustomerId(customer.getId());
-      List<OrderDto> orderDtos = orders.stream()
-              .map(orderConverter::convertOrderToDto)
-              .collect(Collectors.toList());
-      dto.setOrders(orderDtos);
+              // Fetch and convert associated orders
+              List<Order> orders = orderRepository.findByCustomerId(customer.getId());
+              List<OrderDto> orderDtos =
+                  orders.stream()
+                      .map(orderConverter::convertOrderToDto)
+                      .collect(Collectors.toList());
+              dto.setOrders(orderDtos);
 
-      return dto;
-    }).collect(Collectors.toList());
+              return dto;
+            })
+        .collect(Collectors.toList());
   }
 }

@@ -8,7 +8,6 @@ import com.nusiss.inventory.backend.service.InventoryService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final ProductComponent productComponent;
 
   @Autowired
-  public InventoryServiceImpl(ProductRepository productRepository, ProductComponent productComponent) {
+  public InventoryServiceImpl(
+      ProductRepository productRepository, ProductComponent productComponent) {
     this.productRepository = productRepository;
     this.productComponent = productComponent;
   }

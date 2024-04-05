@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailNotification implements InventoryObserver {
 
-    @Override
-    public void update(ProductDto product) {
-        // Logic to send email notification
-        System.out.println("Sending email notification for low stock: " + product.getName());
-    }
+  @Override
+  public void update(ProductDto product) {
+    // Logic to send email notification
+    System.out.println("Sending email notification for low stock: " + product.getName());
+  }
 }
-
