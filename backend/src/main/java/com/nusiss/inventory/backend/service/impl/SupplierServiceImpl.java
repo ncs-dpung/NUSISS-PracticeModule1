@@ -84,7 +84,6 @@ public class SupplierServiceImpl implements SupplierService {
     return suppliers.stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
-
   private SupplierDto convertToDto(Supplier supplier) {
     SupplierDto dto = new SupplierDto();
     dto.setId(supplier.getId());
@@ -93,7 +92,8 @@ public class SupplierServiceImpl implements SupplierService {
     dto.setSupplierAddress(supplier.getSupplierAddress());
 
     // Fetch and add associated products to the DTO
-    List<ProductDto> productDtos = productRepository.findBySupplierId(supplier.getId()).stream()
+    List<ProductDto> productDtos =
+        productRepository.findBySupplierId(supplier.getId()).stream()
             .map(this::convertProductToDto)
             .collect(Collectors.toList());
     dto.setProducts(productDtos);

@@ -14,38 +14,39 @@ import java.util.List;
 @Service
 public class InventoryManager implements InventorySubject {
 
-    private final List<InventoryObserver> observers;
-    private final ProductRepository productRepository;
-    private final ProductComponent productComponent;
+  private final List<InventoryObserver> observers;
+  private final ProductRepository productRepository;
+  private final ProductComponent productComponent;
 
-    @Autowired
-    public InventoryManager(ProductRepository productRepository, List<InventoryObserver> observers, ProductComponent productComponent) {
-        this.productRepository = productRepository;
-        this.observers = observers; // Automatically injects all InventoryObserver beans
-        this.productComponent = productComponent;
-    }
+  @Autowired
+  public InventoryManager(
+      ProductRepository productRepository,
+      List<InventoryObserver> observers,
+      ProductComponent productComponent) {
+    this.productRepository = productRepository;
+    this.observers = observers; // Automatically injects all InventoryObserver beans
+    this.productComponent = productComponent;
+  }
 
-    @Override
-    public void addObserver(InventoryObserver observer) {
-        observers.add(observer);
-    }
+  @Override
+  public void addObserver(InventoryObserver observer) {
+    observers.add(observer);
+  }
 
-    @Override
-    public void removeObserver(InventoryObserver observer) {
-        observers.remove(observer);
-    }
+  @Override
+  public void removeObserver(InventoryObserver observer) {
+    observers.remove(observer);
+  }
 
-    @Override
-    public void notifyObservers() {
-        List<ProductDto> productsNeedingReorder = productComponent.findProductsNeedingReorder();
-        productsNeedingReorder.forEach(productDto ->
-                observers.forEach(observer -> observer.update(productDto))
-        );
-    }
+  @Override
+  public void notifyObservers() {
+    List<ProductDto> productsNeedingReorder = productComponent.findProductsNeedingReorder();
+    productsNeedingReorder.forEach(
+        productDto -> observers.forEach(observer -> observer.update(productDto)));
+  }
 
-    @Scheduled(fixedRate = 60000) // Executes every 1 minutes
-    public void checkAndNotifyForReorder() {
-        notifyObservers();
-    }
+  @Scheduled(fixedRate = 60000) // Executes every 1 minutes
+  public void checkAndNotifyForReorder() {
+    notifyObservers();
+  }
 }
-

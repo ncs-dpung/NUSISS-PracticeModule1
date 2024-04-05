@@ -11,32 +11,32 @@ import java.util.stream.Collectors;
 
 @Component
 public class ProductComponent {
-    private final ProductRepository productRepository;
+  private final ProductRepository productRepository;
 
-    public ProductComponent(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+  public ProductComponent(ProductRepository productRepository) {
+    this.productRepository = productRepository;
+  }
 
-    @Transactional(readOnly = true)
-    public List<ProductDto> findProductsNeedingReorder() {
-        return productRepository.findProductsNeedingReorder().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
+  @Transactional(readOnly = true)
+  public List<ProductDto> findProductsNeedingReorder() {
+    return productRepository.findProductsNeedingReorder().stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+  }
 
-    public ProductDto convertToDTO(Product product) {
-        ProductDto dto = new ProductDto();
-        dto.setId(product.getId());
-        dto.setName(product.getName());
-        dto.setCategoryId(product.getCategory().getCategoryId());
-        dto.setCategoryName(product.getCategory().getCategoryName());
-        dto.setSupplierId(product.getSupplier().getId());
-        dto.setSupplierName(product.getSupplier().getSupplierName());
-        dto.setPrice(product.getPrice());
-        dto.setBatchNo(product.getBatchNo());
-        dto.setQuantityAvailable(product.getQuantityAvailable());
-        dto.setReorderLevel(product.getReorderLevel());
-        dto.setStockLevel(product.getStockLevel());
-        return dto;
-    }
+  public ProductDto convertToDTO(Product product) {
+    ProductDto dto = new ProductDto();
+    dto.setId(product.getId());
+    dto.setName(product.getName());
+    dto.setCategoryId(product.getCategory().getCategoryId());
+    dto.setCategoryName(product.getCategory().getCategoryName());
+    dto.setSupplierId(product.getSupplier().getId());
+    dto.setSupplierName(product.getSupplier().getSupplierName());
+    dto.setPrice(product.getPrice());
+    dto.setBatchNo(product.getBatchNo());
+    dto.setQuantityAvailable(product.getQuantityAvailable());
+    dto.setReorderLevel(product.getReorderLevel());
+    dto.setStockLevel(product.getStockLevel());
+    return dto;
+  }
 }
