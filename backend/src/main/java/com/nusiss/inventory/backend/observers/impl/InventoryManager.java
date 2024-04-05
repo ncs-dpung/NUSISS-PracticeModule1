@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,9 +20,9 @@ public class InventoryManager implements InventorySubject {
     private final ProductComponent productComponent;
 
     @Autowired
-    public InventoryManager(ProductRepository productRepository, List<InventoryObserver> observers, ProductComponent productComponent) {
+    public InventoryManager(ProductRepository productRepository, ProductComponent productComponent) {
         this.productRepository = productRepository;
-        this.observers = observers; // Automatically injects all InventoryObserver beans
+        this.observers = new ArrayList<>();
         this.productComponent = productComponent;
     }
 
