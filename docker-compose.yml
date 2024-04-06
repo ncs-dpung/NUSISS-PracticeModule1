@@ -1,25 +1,8 @@
 version: '3'
 
 services:
-  backend:
-    image: backend:latest
-    container_name: backend
-    build:
-      context: ./backend  # Path to the backend Dockerfile
-    ports:
-      - "8080:8080"
-    restart: always
-    networks:
-      - springapimysql-net
-    environment:
-      - spring.datasource.url=jdbc:mysql://db:3306/inventory_db
-    command: [ "mvn", "-f", "/usr/src/app/pom.xml", "clean", "package", "Dspring.profiles.active=test" ]
-    depends_on:
-        - db  # Ensure the backend container starts after the database
-
   db:
-    image: mysql:8.0.36  # Use the official MySQL
-    restart: always
+    image: mysql:8.0.36
     ports:
       - "3306:3306"
     networks:
@@ -29,17 +12,57 @@ services:
       MYSQL_DATABASE: inventory_db
       MYSQL_USER: user123
       MYSQL_PASSWORD: pwd123
-      MYSQL_INITDB_SKIP_TZINFO: true
+      TZ: Asia/Singapore
     volumes:
       - ./db:/docker-entrypoint-initdb.d  # Mount the db folder with initialization scripts
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1", "-u", "$$MYSQL_USER", "--password=$$MYSQL_PASSWORD" ]
+      timeout: 10s
+      retries: 10
+      start_period: 30s
 
-#  frontend:
-#    image: frontend:latest
-#    container_name: frontend
-#    build:
-#      context: ./frontend  # Path to the frontend Dockerfile
-#    ports:
-#      - "4200:80"  # Map host port 4200 to container port 80
+  dev-be:
+    container_name: dev_be
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    networks:
+      - springapimysql-net
+    environment:
+      - spring.datasource.url=jdbc:mysql://db:3306/inventory_db
+    entrypoint: sh ./docker-entrypoint.dev.sh
+    volumes:
+      - ./backend:/be
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail http://localhost:8080/api/healthcheck || exit 1
+      timeout: 15s
+      retries: 20
+      start_period: 30s
+
+  dev-fe:
+    container_name: dev_fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend/src:/app/src
+    command: ng serve --host 0.0.0.0
+    depends_on:
+      dev-be:
+        condition: service_healthy
+
+  umlserver:
+    container_name: uml
+    image: plantuml/plantuml-server:tomcat
+    ports:
+      - 8000:8080
 
 networks:
     springapimysql-net:

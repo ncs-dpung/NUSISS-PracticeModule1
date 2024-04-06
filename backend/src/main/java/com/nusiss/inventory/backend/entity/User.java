@@ -1,50 +1,116 @@
 package com.nusiss.inventory.backend.entity;
 
-import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import com.nusiss.inventory.backend.dto.UserDto;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
 @Table(name = "tbl_user")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userid")
-    private Long id;
+@AllArgsConstructor
+@EqualsAndHashCode
+public class User extends BaseAuditEntity implements UserDetails {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "user_id")
+  private Long id;
 
-    @Column(name = "user_name")
-    private String username;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "password")
-    private String password;
+  @Column(name = "user_name", unique = true)
+  private String username;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "roleiD")
-    private Role role;
+  @Column(name = "email")
+  private String email;
 
-    @Column(updatable = false, nullable = false)
-    @CreatedDate
-    private LocalDateTime createdTime;
+  @Column(name = "password")
+  private String password;
 
-    @Column(nullable = false)
-    @LastModifiedDate
-    private LocalDateTime updatedTime;
+  @OneToOne
+  @JoinColumn(name = "staff_id")
+  private Staff staff;
 
+  @ManyToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+      name = "user_role_junction",
+      joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id")})
+  private Set<Role> roles;
+
+  public User() {
+    super();
+    this.roles = new HashSet<Role>();
+  }
+
+  public User(String username, String password, String email) {
+    super();
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.roles = new HashSet<Role>();
+  }
+
+  public UserDto toDto() {
+    UserDto dto = new UserDto();
+    dto.setId(id);
+    dto.setUsername(username);
+    dto.setEmail(email);
+    dto.setRoles(roles.stream().map(Role::toDto).collect(Collectors.toSet()));
+    return dto;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
+
+  @Override
+  public Collection<GrantedAuthority> getAuthorities() {
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+      for (AuthorisedAction action : role.getActions()) {
+        authorities.add(new SimpleGrantedAuthority(action.getAuthority()));
+      }
+    }
+    return authorities;
+  }
 }
-
-
-

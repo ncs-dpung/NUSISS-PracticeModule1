@@ -1,5 +1,5 @@
-# Ignore doc folder
-doc/
+# Ignore self notes folder
+notes/
 
 # Ignore IntelliJ IDEA files
 .idea/
@@ -11,3 +11,5 @@ doc/
 
 # Ignore Visual Studio Code files
 .vscode/
+
+logs

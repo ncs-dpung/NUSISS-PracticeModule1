@@ -6,11 +6,13 @@ RUN npm install -g @angular/cli
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Angular project files into the container
-COPY . .
+ADD ./package.json .
 
 # Install project dependencies
 RUN npm install
+
+# Copy the Angular project files into the container
+COPY . .
 
 # Build the Angular application for production
 RUN ng build

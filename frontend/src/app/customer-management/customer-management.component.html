@@ -1,0 +1,264 @@
+<div class="dashboard">
+  <aside class="sidebar">
+    <!-- Sidebar: Filter Section -->
+    <div class="filter-section">
+      <h3>Filter Products</h3>
+      <input type="text" placeholder="Search by name">
+
+      <!-- Category Dropdown -->
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="all">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="accessories">Accessories</option>
+        <option value="apparel">Apparel</option>
+        <!-- Add more categories as needed -->
+      </select>
+
+      <!-- Condition Checkboxes -->
+      <fieldset class="filter-section">
+        <legend>Condition:</legend>
+        <div class="checkbox-group">
+          <input type="checkbox" id="new" name="condition" value="new">
+          <label for="new">New</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="used" name="condition" value="used">
+          <label for="used">Used</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="refurbished" name="condition" value="refurbished">
+          <label for="refurbished">Refurbished</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="vintage" name="condition" value="refurbished">
+          <label for="refurbished">Vintage</label>
+        </div>
+      </fieldset>
+
+
+
+
+      <!-- Date Filter -->
+      <label for="fromDate">From</label>
+      <input type="date" id="fromDate" name="fromDate">
+
+      <label for="toDate">To</label>
+      <input type="date" id="toDate" name="toDate">
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- Main Content: Top Bar -->
+    <div class="top-bar">
+      <div class="tab">
+        <button (click)="navigate('inventory-management')">Inventory</button>
+        <button (click)="navigate('order-management')">Orders</button>
+        <button (click)="navigate('reporting')">Report</button>
+        <button (click)="navigate('user-access-management')">Access</button>
+        <button (click)="navigate('customer-management')" class="active">Customer</button>
+        <button (click)="navigate('supplier-management')">Supplier</button>
+        <button (click)="navigate('supplier-order-management')">Supply Order</button>
+      </div>
+      <div class="user-info">Display Username</div>
+    </div>
+
+    <!-- Main Content: Product Listing -->
+    <div class="product-list">
+      <div class="list-header">
+        <h2>Customer Management</h2>
+        <button class="add-new-btn" (click)="toggleCustomerModal()">Add New</button>
+      </div>
+
+      <!-- Add New Customer Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showCustomerModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleCustomerModal()">&times;</span>
+          <h2>Add New Customer Profile</h2>
+          <form (ngSubmit)="onSubmitCustomer()" #addItemForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemName">Customer Name:</label>
+                <input type="text" id="itemName" [(ngModel)]="newCustomer.customerName" name="name"
+                  placeholder="User Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemCondition">Cutomer Type:</label>
+                <select id="itemCondition" [(ngModel)]="newUser.role" name="condition" required>
+                  <option value="new">Individual</option>
+                  <option value="new">Corporate</option>
+
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAvailable">Email:</label>
+                <input type="text" id="itemAvailable" [(ngModel)]="newCustomer.customerContact" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="itemReserved">Contact:</label>
+                <input type="text" id="itemReserved" name="contact" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Mailing Address:</label>
+                <input type="text" id="itemPrice" name="price" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified">Modified:</label>
+                <input type="date" id="itemModified" name="modified" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-add">Add Customer</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Update User Modal -->
+      <div class="modal" [class.show-modal]="showUpdateModal">
+        <div class="modal-content">
+          <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
+          <h2>Update Customer Profile</h2>
+          <form (ngSubmit)="onUpdateCustomer()" #updateUserForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateUserName">Customer ID:</label>
+                <input type="text" id="customerId" [(ngModel)]="selectedUser.id" name="userId" readonly>
+
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateUserName">Customer Name:</label>
+                <input type="text" id="updateUserName" [(ngModel)]="selectedUser.customerName" name="userName" placeholder="User Name" required>
+              </div>
+              <div class="form-group">
+                <label for="updateUserRole">Cutomer Type:</label>
+                <select id="updateUserRole" name="customerRole" required>
+                  <option value="new">Individual</option>
+                  <option value="new">Corporate</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateUserEmail">Email:</label>
+                <input type="text" id="updateUserEmail" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="updateUserContact">Contact:</label>
+                <input type="text" id="updateUserContact" [(ngModel)]="selectedUser.customerContact" name="contact" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateUserAddress">Mailing Address:</label>
+                <input type="text" id="updateUserAddress" name="address" required>
+              </div>
+              <div class="form-group">
+                <label for="updateUserModified">Last Modified:</label>
+                <input type="date" id="updateUserModified" name="modified" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-add">Update User</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- View Order History Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showOrderHistoryModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleOrderHistoryModal()">&times;</span>
+          <h2>Order History</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Product List</th>
+                <th>Status</th>
+                <th>Order Date</th>
+                <th>Complete Date</th>
+                <th>Total Amount (SGD)</th>
+                <th>Process Manager</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Fake Data Entries -->
+              <tr>
+                <td>ORD001</td>
+                <td>Product A, Product B</td>
+                <td>Completed</td>
+                <td>2023-01-01</td>
+                <td>2023-01-05</td>
+                <td>150.00</td>
+                <td>John Doe</td>
+              </tr>
+              <tr>
+                <td>ORD002</td>
+                <td>Product C</td>
+                <td>In Progress</td>
+                <td>2023-02-01</td>
+                <td>-</td>
+                <td>200.00</td>
+                <td>Jane Smith</td>
+              </tr>
+              <!-- Repeat for more fake entries -->
+              <tr>
+                <td>ORD003</td>
+                <td>Product D, Product E</td>
+                <td>Completed</td>
+                <td>2023-02-15</td>
+                <td>2023-02-20</td>
+                <td>100.00</td>
+                <td>Alice Johnson</td>
+              </tr>
+              <!-- Add more rows as needed to make 9 entries in total -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <!-- Table of Products -->
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
+            <th>No.</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Current Order ID</th>
+            <th>Status</th>
+            <th>Note</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers; let i = index">
+            <td><input type="checkbox" name="selectedUser" [value]="customer.id"></td>
+            <td>{{ i + 1 }}</td>
+            <td>{{ customer.customerName }}</td>
+            <td>{{ customer.customerContact }}</td>
+            <td>SGD109940384</td>
+            <td>Pending</td>
+            <td>Prioritised</td>
+            <td>
+              <button class="btn-action view-btn" (click)="toggleOrderHistoryModal()">History</button>
+              <button class="btn-action update-btn" (click)="selectCustomerForUpdate(customer)">Profile</button>
+              <button class="btn-action delete-btn" (click)="deleteCustomer(customer.id!)">Delete</button>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

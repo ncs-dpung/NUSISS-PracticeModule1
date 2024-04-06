@@ -18,20 +18,47 @@
 - https://projectlombok.org/setup/eclipse
 
 
-### Run Backend Application in Local
-1. [Setup Hibernate Database](#setup-and-access-hibernate-database)
-2. Build and run SpringBoot Application
+### Run Docker (Recommended)
+1. To build the images if the images do not exist and starts the containers:
 ```agsl
-    cd backend
-    mvn clean install -DskipTests
-    java -jar ./target/backend-0.0.1-SNAPSHOT.jar
+    docker-compose up
 ```
 
-### Run Docker
-```agsl
-    Coming soon
-```
+>Backend and MySQL server will be started up. Database will be initialized with SQL scripts in `db` folder. The scripts will be run in alphabetic order. Just in case, please name the scripts in `db` folder starting with number in sequence.
 
+2. To access schema or data in MySQL server, choose one of the options:
+>Please refer to the properties file if there is any changes on the credentials or database setup.
+
+   - A. Option 1: Use database design tools with GUI, e.g. MySQL Workbench, DBeaver, etc.
+   ```
+      ...Default settings...
+   
+      Host: 127.0.0.1
+      database: inventory_db
+      username: user123
+      password: pwd124
+   ```
+   - B. Option 2: Use Docker Desktop
+   
+   ```
+      STEP 1:
+      Select Containers> Unfold nusiss-practicemodule1 container> Select the db container> Select Exec
+      
+      STEP 2: 
+      mysql -u user123 -p inventory_db
+      Enter password: pwd123
+      ...
+      exit
+   ```
+   - C. Option3: Use command line.
+   ```
+      docker exec -it <db-container-name> sh
+      mysql -u user123 -p inventory_db
+      Enter password: pwd123
+      ...
+      exit
+   ```
+  
 ### Access API
 
 - http://localhost:8080 + your API endpoint
@@ -46,9 +73,18 @@ Only if seeing any login page at localhost:8080,
 ### API Endpoint Documentation - Swagger
  - http://localhost:8080/swagger-ui.html
 
+### Run Backend Application in Local (Alternative)
+1. [Setup Hibernate Database](#setup-and-access-hibernate-database)
+2. Build and run SpringBoot Application
+```agsl
+    cd backend
+    mvn clean install -DskipTests
+    java -jar ./target/backend-0.0.1-SNAPSHOT.jar
+```
+
 ### Setup and Access Hibernate Database
 1. Navigate to backend > src > main > resources > application.properties
-2. Uncommented
+2. Uncommented the following:
 
 ```agsl
 #spring.datasource.url=jdbc:h2:mem:testdb

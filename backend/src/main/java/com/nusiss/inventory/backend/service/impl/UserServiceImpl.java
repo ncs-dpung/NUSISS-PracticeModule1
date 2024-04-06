@@ -1,73 +1,90 @@
 package com.nusiss.inventory.backend.service.impl;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.dto.UserDto;
+import com.nusiss.inventory.backend.dto.UserPasswordUpdateDto;
 import com.nusiss.inventory.backend.entity.User;
-import com.nusiss.inventory.backend.entity.Role;
 import com.nusiss.inventory.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserDao userDao;
+  private final UserDao userDao;
+  private final PasswordEncoder passwordEncoder;
+  private final ObjectMapper objectMapper;
 
-    @Override
-    public UserDto getUserById(Long id) {
-        User user = userDao.findById(id);
-        return convertToDto(user);
-    }
+  @Autowired
+  public UserServiceImpl(
+      UserDao userDao, PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
+    this.userDao = userDao;
+    this.passwordEncoder = passwordEncoder;
+    this.objectMapper = objectMapper;
+  }
 
-    @Override
-    public UserDto createUser(UserDto userDto) {
-        User user = convertToEntity(userDto);
-        User savedUser = userDao.saveUser(user);
-        return convertToDto(savedUser);
-    }
+  @Override
+  public UserDto getUserById(Long id) {
+    User user = userDao.findById(id).orElse(null);
+    return user.toDto();
+  }
 
-    @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
-        User user = userDao.findById(id);
-        if (user != null) {
-            user.setUsername(userDto.getUsername());
-            user.setEmail(userDto.getEmail());
-            // update roles or other fields
-            User updatedUser = userDao.saveUser(user);
-            return convertToDto(updatedUser);
-        }
-        return null;
-    }
+  @Override
+  public UserDto createUser(User user) {
+    return userDao.saveUser(user).toDto();
+  }
 
-    @Override
-    public void deleteUserById(Long id) {
-        userDao.deleteUserById(id);
+  @Override
+  public UserDto updateUser(Long id, UserDto updateDto) {
+    User user =
+        userDao
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("user with id [" + id + "] does not exist"));
+    try {
+      objectMapper.updateValue(user, updateDto);
+      User updatedUser = userDao.saveUser(user);
+      return updatedUser.toDto();
+    } catch (JsonMappingException e) {
+      throw new RuntimeException(e.getMessage());
     }
+  }
 
-    @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = userDao.findAllUsers();
-        return users.stream().map(this::convertToDto).collect(Collectors.toList());
+  @Override
+  @Transactional
+  public UserDto updateUserPassword(Long id, UserPasswordUpdateDto updateDto) {
+    User user = userDao.findById(id).orElse(null);
+    if (user == null) throw new RuntimeException("user with id [" + id + "] not found");
+    if (user.getPassword() != null
+        && !passwordEncoder.matches(updateDto.getOldPassword(), user.getPassword())) {
+      throw new RuntimeException("old password does not match");
     }
+    user.setPassword(passwordEncoder.encode(updateDto.getNewPassword()));
+    User updatedUser = userDao.saveUser(user);
+    return updatedUser.toDto();
+  }
 
-    private UserDto convertToDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setUsername(user.getUsername());
-        userDto.setEmail(user.getEmail());
-        userDto.setRole(user.getRole());
-        return userDto;
-    }
+  @Override
+  public void deleteUserById(Long id) {
+    userDao.deleteUserById(id);
+  }
 
-    private User convertToEntity(UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        // set roles or other fields
-        return user;
-    }
+  @Override
+  public List<UserDto> getAllUsers() {
+    List<User> users = userDao.findAllUsers();
+    return users.stream().map(User::toDto).collect(Collectors.toList());
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return userDao
+        .findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException("username is invalid"));
+  }
 }
-

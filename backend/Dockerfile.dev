@@ -1,0 +1,9 @@
+FROM maven:3.8-openjdk-17
+
+# install watch
+RUN microdnf install procps-ng ; microdnf clean all
+
+RUN mkdir /be
+WORKDIR /be
+
+ADD docker-entrypoint.dev.sh ./

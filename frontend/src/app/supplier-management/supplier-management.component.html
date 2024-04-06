@@ -1,0 +1,310 @@
+<script src="inventory-management.component.ts"></script>
+<div class="dashboard">
+  <aside class="sidebar">
+    <!-- Sidebar: Filter Section -->
+    <div class="filter-section">
+      <h3>Filter Products</h3>
+      <input type="text" placeholder="Search by name">
+
+      <!-- Category Dropdown -->
+      <label for="category">Category:</label>
+      <select id="category" name="category">
+        <option value="all">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="accessories">Accessories</option>
+        <option value="apparel">Apparel</option>
+        <!-- Add more categories as needed -->
+      </select>
+
+      <!-- Condition Checkboxes -->
+      <fieldset class="filter-section">
+        <legend>Condition:</legend>
+        <div class="checkbox-group">
+          <input type="checkbox" id="new" name="condition" value="new">
+          <label for="new">New</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="used" name="condition" value="used">
+          <label for="used">Used</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="refurbished" name="condition" value="refurbished">
+          <label for="refurbished">Refurbished</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="vintage" name="condition" value="refurbished">
+          <label for="refurbished">Vintage</label>
+        </div>
+      </fieldset>
+
+      <!-- Date Filter -->
+      <label for="fromDate">From</label>
+      <input type="date" id="fromDate" name="fromDate">
+
+      <label for="toDate">To</label>
+      <input type="date" id="toDate" name="toDate">
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- Main Content: Top Bar -->
+    <div class="top-bar">
+      <div class="tab">
+        <button (click)="navigate('inventory-management')" >Inventory</button>
+        <button (click)="navigate('order-management')">Orders</button>
+        <button (click)="navigate('reporting')">Report</button>
+        <button (click)="navigate('user-access-management')">Access</button>
+        <button (click)="navigate('customer-management')">Customer</button>
+        <button (click)="navigate('supplier-management')" class="active">Supplier</button>
+        <button (click)="navigate('supplier-order-management')">Supply Order</button>
+      </div>
+      <div class="user-info">Display Username</div>
+    </div>
+
+    <!-- Main Content: Product Listing -->
+    <div class="product-list">
+      <div class="list-header">
+        <h2>Supplier Management</h2>
+        <button class="add-new-btn" (click)="toggleModal()">Add New</button>
+      </div>
+
+      <!-- Add New Inventory Item Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleModal()">&times;</span>
+          <h2>Add New Inventory Item</h2>
+          <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemName">Name:</label>
+                <input type="text" id="itemName" [(ngModel)]="newSupplier.supplier_name" name="name" placeholder="Item Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemCondition">Condition:</label>
+                <select id="itemCondition" [(ngModel)]="newSupplier.supplier_name" name="condition" required>
+                  <option value="new">New</option>
+                  <option value="used">Used</option>
+                  <option value="refurbished">Refurbished</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAvailable">Available:</label>
+                <input type="number" id="itemAvailable" [(ngModel)]="newSupplier.supplier_name" name="available" required>
+              </div>
+              <div class="form-group">
+                <label for="itemReserved">Reserved:</label>
+                <input type="number" id="itemReserved" [(ngModel)]="newSupplier.supplier_name" name="reserved" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Price:</label>
+                <input type="text" id="itemPrice" [(ngModel)]="newSupplier.supplier_name" name="price" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified">Modified:</label>
+                <input type="date" id="itemModified" [(ngModel)]="newSupplier.supplier_name" name="modified" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-add">Add Item</button>
+          </form>
+        </div>
+      </div>
+
+
+      <!-- Update Inventory Item Modal -->
+      <div class="modal" [class.show-modal]="showUpdateModal">
+        <div class="modal-content">
+          <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
+          <h2>Update Inventory Item</h2>
+          <form (submit)="onUpdateSupplier(selectedSupplier.supplier_id)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="updateItemName">Name:</label>
+                <input type="text" id="updateItemName" [(ngModel)]="selectedSupplier.supplier_name" name="name" placeholder="Item Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemCondition">Condition:</label>
+                <select id="upDateItemCondition" [(ngModel)]="newSupplier.supplier_name" name="condition" required>
+                  <option value="new">New</option>
+                  <option value="used">Used</option>
+                  <option value="refurbished">Refurbished</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAvailable">Available:</label>
+                <input type="number" id="updateItemAvailable" [(ngModel)]="newSupplier.supplier_name" name="available" required>
+              </div>
+              <div class="form-group">
+                <label for="itemReserved">Reserved:</label>
+                <input type="number" id="updateItemReserved" [(ngModel)]="newSupplier.supplier_name" name="reserved" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Price:</label>
+                <input type="text" id="updateItemPrice" [(ngModel)]="newSupplier.supplier_name" name="price" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified">Modified:</label>
+                <input type="date" id="updateItemModified" [(ngModel)]="newSupplier.supplier_name" name="modified" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-add">Update Item</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Supply Order  Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showOrderModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleOrderModal()">&times;</span>
+          <h2>Supply Order</h2>
+          <table>
+            <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Measurement</th>
+              <th>Standard</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total Amount (SGD)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Fake Data Entries -->
+            <tr>
+              <td>ORD001</td>
+              <td>Product A</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>67</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            <tr>
+              <td>ORD002</td>
+              <td>Product C</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>18</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            <!-- Repeat for more fake entries -->
+            <tr>
+              <td>ORD003</td>
+              <td>Product D</td>
+              <td>832X94X05</td>
+              <td>VSR467</td>
+              <td>36</td>
+              <td><input class="modal-number-input" type="number" placeholder="0"></td>
+              <td><input class="modal-total-input" type="number" placeholder="0" disabled></td>
+            </tr>
+            <!-- Other modal content -->
+            </tbody>
+          </table>
+          <div class="modal-footer">
+            <button class="place-order-btn">Place Order</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Order History Modal -->
+      <div class="modal" [ngClass]="{'show-modal': showHistoryModal}">
+        <div class="modal-content">
+          <span class="close" (click)="toggleHistoryModal()">&times;</span>
+          <h2>Order History</h2>
+          <table>
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product List</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Complete Date</th>
+              <th>Total Amount (SGD)</th>
+              <th>Process Manager</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Fake Data Entries -->
+            <tr>
+              <td>ORD001</td>
+              <td>Product A, Product B</td>
+              <td>Completed</td>
+              <td>2023-01-01</td>
+              <td>2023-01-05</td>
+              <td>150.00</td>
+              <td>John Doe</td>
+            </tr>
+            <tr>
+              <td>ORD002</td>
+              <td>Product C</td>
+              <td>In Progress</td>
+              <td>2023-02-01</td>
+              <td>-</td>
+              <td>200.00</td>
+              <td>Jane Smith</td>
+            </tr>
+            <!-- Repeat for more fake entries -->
+            <tr>
+              <td>ORD003</td>
+              <td>Product D, Product E</td>
+              <td>Completed</td>
+              <td>2023-02-15</td>
+              <td>2023-02-20</td>
+              <td>100.00</td>
+              <td>Alice Johnson</td>
+            </tr>
+            <!-- Add more rows as needed to make 9 entries in total -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <!-- Table of Products -->
+      <table>
+        <thead>
+        <tr>
+          <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
+          <th>No.</th>
+          <th>Corporate Name</th>
+          <th>Total Order</th>
+          <th>Status</th>
+          <th>Last Order</th>
+          <th>ACTIONS</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supplier of suppliers; let i = index">
+          <td><input type="checkbox" name="selectedSupplier" [value]="supplier.supplier_id"></td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ supplier.supplier_name }}</td>
+          <td>{{ supplier.contact_info }}</td>
+          <td>{{ supplier.address }}</td>
+          <td>03/13/2017</td>
+          <td>
+            <button class="btn-action view-btn" (click)="toggleOrderModal()">Order</button>
+            <button class="btn-action update-btn" (click)="selectSupplierForUpdate(supplier)">Update</button>
+            <button class="btn-action history-button" (click)="toggleHistoryModal()">History</button>
+            <button class="btn-action delete-btn" (click)="onDeleteSupplier(supplier.supplier_id!)">Delete</button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
