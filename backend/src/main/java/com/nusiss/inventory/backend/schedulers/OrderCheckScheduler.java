@@ -14,19 +14,17 @@ import java.util.List;
 @Component
 public class OrderCheckScheduler {
 
-    @Autowired
-    private OrderRepository orderRepository;
+  @Autowired private OrderRepository orderRepository;
 
-    @Autowired
-    private StaffPendingOrderNotificationObserver staffPendingOrderNotificationObserver;
+  @Autowired private StaffPendingOrderNotificationObserver staffPendingOrderNotificationObserver;
 
-    @Scheduled(fixedRate = 120000) // 24 hours: 86400000
-    public void notifyStaffForOldPendingOrders() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -2); // Go back 2 days
-        Date cutoffDate = calendar.getTime();
+  @Scheduled(fixedRate = 120000) // 24 hours: 86400000
+  public void notifyStaffForOldPendingOrders() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.DAY_OF_MONTH, -2); // Go back 2 days
+    Date cutoffDate = calendar.getTime();
 
-        List<Order> pendingOrders = orderRepository.findPendingOrdersOlderThanDays(cutoffDate);
-        pendingOrders.forEach(staffPendingOrderNotificationObserver::notify);
-    }
+    List<Order> pendingOrders = orderRepository.findPendingOrdersOlderThanDays(cutoffDate);
+    pendingOrders.forEach(staffPendingOrderNotificationObserver::notify);
+  }
 }
