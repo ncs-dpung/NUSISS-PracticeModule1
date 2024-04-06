@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class LowStockEmailNotification implements InventoryObserver {
 
   private final NotificationService notificationService;
+
   @Autowired
   public LowStockEmailNotification(NotificationService notificationService) {
     this.notificationService = notificationService;
@@ -18,6 +19,9 @@ public class LowStockEmailNotification implements InventoryObserver {
   @Override
   public void update(ProductDto product) {
     System.out.println("Low stock notification sent for product " + product.getName());
-    notificationService.sendNotification("admin@admin.com", "Low Stock Notification", "Product " + product.getName() + " is running low on stock.");
+    notificationService.sendNotification(
+        "admin@admin.com",
+        "Low Stock Notification",
+        "Product " + product.getName() + " is running low on stock.");
   }
 }

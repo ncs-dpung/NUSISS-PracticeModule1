@@ -17,7 +17,6 @@ public class InventoryManager implements InventorySubject {
   private final ProductRepository productRepository;
   private final ProductComponent productComponent;
 
-
   public InventoryManager(
       ProductRepository productRepository,
       List<InventoryObserver> observers,

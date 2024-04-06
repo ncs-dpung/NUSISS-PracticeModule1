@@ -50,8 +50,7 @@ public class OrderServiceImpl implements OrderService {
       OrderStatusRepository orderStatusRepository,
       ProductRepository productRepository,
       Map<String, OrderUpdateStrategy> updateStrategies,
-      @Autowired(required = false) List<OrderStatusObserver> observers
-  ) {
+      @Autowired(required = false) List<OrderStatusObserver> observers) {
     this.orderRepository = orderRepository;
     this.orderStatusRepository = orderStatusRepository;
     this.productRepository = productRepository;
