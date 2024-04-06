@@ -73,7 +73,7 @@ jobs:
       - name: Push Docker Image
         run: |
           if [[ $GITHUB_REF == refs/heads/main ]]; then
-            docker push ${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-$GITHUB_BASE_REF
+            docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-$GITHUB_BASE_REF
           fi
   deploy:
     if: success() && github.ref_name == 'main'
@@ -82,7 +82,7 @@ jobs:
     steps:
       - name: Export Deployed BE image path
         run: |
-          export BE_IMAGE=${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-$GITHUB_BASE_REF
+          export BE_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-$GITHUB_BASE_REF
           echo $BE_IMAGE
       - name: Pull and Run docker image
         run: |
