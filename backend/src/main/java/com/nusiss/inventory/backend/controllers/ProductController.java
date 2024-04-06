@@ -1,5 +1,6 @@
 package com.nusiss.inventory.backend.controllers;
 
+import com.nusiss.inventory.backend.components.ProductComponent;
 import com.nusiss.inventory.backend.dto.ProductDto;
 import com.nusiss.inventory.backend.entity.Product;
 import com.nusiss.inventory.backend.service.ProductService;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductService productService;
+  private final ProductComponent productConverter;
 
   @Autowired
-  public ProductController(ProductService productService) {
+  public ProductController(ProductService productService, ProductComponent productConverter) {
     this.productService = productService;
+    this.productConverter = productConverter;
   }
 
   @ApiOperation(value = "View a list of available products", response = List.class)
@@ -37,7 +40,7 @@ public class ProductController {
   @PostMapping
   public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
     Product product = productService.createProduct(productDto);
-    return ResponseEntity.ok(productService.convertToDTO(product));
+    return ResponseEntity.ok(productConverter.convertToDTO(product));
   }
 
   @ApiOperation(value = "Update a product")
@@ -50,7 +53,7 @@ public class ProductController {
   public ResponseEntity<ProductDto> updateProduct(
       @PathVariable Long id, @RequestBody ProductDto productDto) {
     Product updatedProduct = productService.updateProduct(id, productDto);
-    return ResponseEntity.ok(productService.convertToDTO(updatedProduct));
+    return ResponseEntity.ok(productConverter.convertToDTO(updatedProduct));
   }
 
   @ApiOperation(value = "Delete a product")

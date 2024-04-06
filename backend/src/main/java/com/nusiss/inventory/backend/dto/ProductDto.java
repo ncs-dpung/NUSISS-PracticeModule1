@@ -18,25 +18,4 @@ public class ProductDto {
   private int quantityAvailable;
   private int reorderLevel;
   private String stockLevel;
-
-  //    public Product toEntity(Category category, Supplier supplier) {
-  //        Product product = new Product();
-  //        product.setId(this.id);
-  //        product.setName(this.name);
-  //        //Category category = new Category();
-  //        category.setCategoryId(this.categoryId);
-  //        product.setCategory(category);
-  //
-  //        //Supplier supplier = new Supplier();
-  //        supplier.setId(this.supplierId);
-  //        product.setSupplier(supplier);
-  //
-  //        product.setPrice(this.price);
-  //        product.setBatchNo(this.batchNo);
-  //        product.setQuantityAvailable(this.quantityAvailable);
-  //        product.setReorderLevel(this.reorderLevel);
-  //        // Note: Stock level is derived and not set directly
-  //
-  //        return product;
-  //    }
 }
