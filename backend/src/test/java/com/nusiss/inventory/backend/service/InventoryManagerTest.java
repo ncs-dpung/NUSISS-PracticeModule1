@@ -19,24 +19,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class InventoryManagerTest {
 
-    @Mock
-    private ProductComponent productComponent;
+  @Mock private ProductComponent productComponent;
 
-    @Mock
-    private InventoryObserver inventoryObserver;
+  @Mock private InventoryObserver inventoryObserver;
 
-    @InjectMocks
-    private InventoryManager inventoryManager;
+  @InjectMocks private InventoryManager inventoryManager;
 
-    @Test
-    void checkAndNotifyForReorder() {
-        ProductDto productDto = new ProductDto();
-        productDto.setName("Test Product");
-        when(productComponent.findProductsNeedingReorder()).thenReturn(Collections.singletonList(productDto));
+  @Test
+  void checkAndNotifyForReorder() {
+    ProductDto productDto = new ProductDto();
+    productDto.setName("Test Product");
+    when(productComponent.findProductsNeedingReorder())
+        .thenReturn(Collections.singletonList(productDto));
 
-        inventoryManager.checkAndNotifyForReorder();
+    inventoryManager.checkAndNotifyForReorder();
 
-        verify(productComponent).findProductsNeedingReorder();
-    }
+    verify(productComponent).findProductsNeedingReorder();
+  }
 }
-
