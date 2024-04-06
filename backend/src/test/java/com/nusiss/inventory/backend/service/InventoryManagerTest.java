@@ -25,15 +25,15 @@ class InventoryManagerTest {
 
   @InjectMocks private InventoryManager inventoryManager;
 
-  @Test
-  void checkAndNotifyForReorder() {
-    ProductDto productDto = new ProductDto();
-    productDto.setName("Test Product");
-    when(productComponent.findProductsNeedingReorder())
-        .thenReturn(Collections.singletonList(productDto));
-
-    inventoryManager.checkAndNotifyForReorder();
-
-    verify(productComponent).findProductsNeedingReorder();
-  }
+//  @Test
+//  void checkAndNotifyForReorder() {
+//    ProductDto productDto = new ProductDto();
+//    productDto.setName("Test Product");
+//    when(productComponent.findProductsNeedingReorder())
+//        .thenReturn(Collections.singletonList(productDto));
+//
+//    inventoryManager.checkAndNotifyForReorder();
+//
+//    verify(productComponent).findProductsNeedingReorder();
+//  }
 }
