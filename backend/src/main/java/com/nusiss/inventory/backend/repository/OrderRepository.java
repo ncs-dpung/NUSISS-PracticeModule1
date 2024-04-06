@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -46,4 +47,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
   List<Order> findPendingAndProcessedOrdersSorted();
 
   List<Order> findByCustomerId(Long customerId);
+
+  @Query("SELECT o FROM Order o WHERE o.status.name = 'Pending' AND o.datePlaced <= :cutoffDate")
+  List<Order> findPendingOrdersOlderThanDays(@Param("cutoffDate") Date cutoffDate);
 }

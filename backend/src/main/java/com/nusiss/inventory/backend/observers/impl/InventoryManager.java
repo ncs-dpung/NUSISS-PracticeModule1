@@ -8,7 +8,6 @@ import com.nusiss.inventory.backend.repository.ProductRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,9 +20,10 @@ public class InventoryManager implements InventorySubject {
 
   public InventoryManager(
       ProductRepository productRepository,
+      List<InventoryObserver> observers,
       ProductComponent productComponent) {
     this.productRepository = productRepository;
-    this.observers = new ArrayList<>();
+    this.observers = observers;
     this.productComponent = productComponent;
   }
 
@@ -39,6 +39,7 @@ public class InventoryManager implements InventorySubject {
 
   @Override
   public void notifyObservers() {
+    System.out.println("Checking for products needing reorder");
     List<ProductDto> productsNeedingReorder = productComponent.findProductsNeedingReorder();
     productsNeedingReorder.forEach(
         productDto -> observers.forEach(observer -> observer.update(productDto)));

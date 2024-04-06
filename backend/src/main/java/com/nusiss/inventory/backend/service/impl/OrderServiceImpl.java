@@ -4,6 +4,7 @@ import com.nusiss.inventory.backend.components.OrderConverter;
 import com.nusiss.inventory.backend.dto.OrderDto;
 import com.nusiss.inventory.backend.entity.*;
 import com.nusiss.inventory.backend.json.StatusUpdateRequest;
+import com.nusiss.inventory.backend.observers.OrderStatusObserver;
 import com.nusiss.inventory.backend.repository.OrderRepository;
 import com.nusiss.inventory.backend.repository.OrderStatusRepository;
 import com.nusiss.inventory.backend.repository.ProductRepository;
@@ -11,10 +12,8 @@ import com.nusiss.inventory.backend.service.OrderService;
 import com.nusiss.inventory.backend.strategies.OrderUpdateStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,18 +27,40 @@ public class OrderServiceImpl implements OrderService {
   private final Map<String, OrderUpdateStrategy> updateStrategies;
   private final OrderConverter orderConverter;
 
+  private List<OrderStatusObserver> observers = new ArrayList<>();
+
+  public void addObserver(OrderStatusObserver observer) {
+    observers.add(observer);
+  }
+
+  public void removeObserver(OrderStatusObserver observer) {
+    observers.remove(observer);
+  }
+
+  private void notifyObservers(Order order) {
+    for (OrderStatusObserver observer : observers) {
+      observer.notify(order);
+    }
+  }
+
   @Autowired
   public OrderServiceImpl(
       OrderConverter orderConverter,
       OrderRepository orderRepository,
       OrderStatusRepository orderStatusRepository,
       ProductRepository productRepository,
-      Map<String, OrderUpdateStrategy> updateStrategies) {
+      Map<String, OrderUpdateStrategy> updateStrategies,
+      @Autowired(required = false) List<OrderStatusObserver> observers
+  ) {
     this.orderRepository = orderRepository;
     this.orderStatusRepository = orderStatusRepository;
     this.productRepository = productRepository;
     this.orderConverter = orderConverter;
     this.updateStrategies = updateStrategies;
+
+    if (observers != null) {
+      this.observers.addAll(observers);
+    }
   }
 
   @Override
@@ -106,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
       order.setDateShipped(null); // clear the dateShipped if the status is not Delivered
     }
     orderRepository.save(order);
+    notifyObservers(order);
     return orderConverter.convertOrderToDto(order);
   }
 
@@ -129,6 +151,10 @@ public class OrderServiceImpl implements OrderService {
 
     if (strategy == null) {
       throw new IllegalStateException("No update strategy found for status: " + statusName);
+    }
+
+    if ("DELIVERED".equals(statusName)) {
+      notifyObservers(order);
     }
 
     return strategy.updateOrder(order, orderDto);
