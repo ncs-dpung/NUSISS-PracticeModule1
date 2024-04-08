@@ -40,13 +40,18 @@ jobs:
           fi
       - name: Build and Test
         run: mvn --batch-mode --update-snapshots verify -P${{ env.MAVEN_PROFILE }}
-      - name: Create Artifact
+      - name: Create Build Artifact
         run: mkdir staging && cp target/*.jar staging
-      - name: Upload Artifact
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Package
           path: backend/staging
+      - name: Upload Test Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jacoco Report
+          path: backend/target/site/jacoco
   docker:
     name: Docker Build & Push
     needs: be-ci
