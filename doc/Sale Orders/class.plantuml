@@ -1,0 +1,108 @@
+@startuml Class Diagram
+
+interface OrderUpdateStrategy {
+  +updateOrder(order: Order, orderDto: OrderDto): OrderDto
+}
+
+interface OrderRepository {
+  +List<Order> findPendingOrdersOlderThanDays(@Param("cutoffDate") Date cutoffDate)
+}
+
+class ProcessedOrderUpdateStrategy implements OrderUpdateStrategy {
+  +OrderDto updateOrder(Order order, OrderDto orderDto)
+}
+
+class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
+  +OrderDto updateOrder(Order order, OrderDto orderDto)
+}
+
+class DeliveredOrderUpdateStrategy implements OrderUpdateStrategy {
+  +OrderDto updateOrder(Order order, OrderDto orderDto)
+}
+
+interface OrderService {
+  +findById(orderId: Long): OrderDto
+  +createOrder(OrderDto: OrderDto): OrderDto
+  +updateOrderStatus(orderId: Long, statusUpdateRequest: StatusUpdateRequest): OrderDto
+  +findAllOrders(): List<OrderDto>
+  +updateOrder(orderId: Long, OrderDto: OrderDto): OrderDto
+  +deleteOrder(orderId: Long)
+  +findPendingAndProcessedOrdersSorted(): List<OrderDto>
+  +addObserver(observer: OrderStatusObserver)
+  +removeObserver(observer: OrderStatusObserver)
+  +notifyObservers(order: Order)
+}
+
+class OrderServiceImpl implements OrderService {
+  -orderRepository: OrderRepository
+  -orderStatusRepository: OrderStatusRepository
+  -productRepository: ProductRepository
+  -orderConverter: OrderConverter
+  -updateStrategies: Map<String, OrderUpdateStrategy>
+  -observers: List<OrderStatusObserver>
+  +addObserver(observer: OrderStatusObserver)
+  +removeObserver(observer: OrderStatusObserver)
+  +notifyObservers(order: Order)
+  +findById(orderId: Long): OrderDto
+  +createOrder(OrderDto: OrderDto): OrderDto
+  +updateOrderStatus(orderId: Long, statusUpdateRequest: StatusUpdateRequest): OrderDto
+  +findAllOrders(): List<OrderDto>
+  +updateOrder(orderId: Long, OrderDto: OrderDto): OrderDto
+  +deleteOrder(orderId: Long)
+  +findPendingAndProcessedOrdersSorted(): List<OrderDto>
+}
+
+interface OrderStatusObserver {
+  +notify(order: Order)
+}
+
+class CustomerDeliveryStatusObserver implements OrderStatusObserver {
+  -notificationService: NotificationService
+  +notify(order: Order)
+}
+
+class StaffPendingOrderNotificationObserver implements OrderStatusObserver {
+  -notificationService: NotificationService
+  +notify(order: Order)
+  -isOrderOlderThanDays(Order order, int days)
+}
+
+OrderServiceImpl o-right-> OrderUpdateStrategy : uses >
+OrderServiceImpl o-down- OrderStatusObserver : observes
+OrderServiceImpl -left-> OrderRepository : uses >
+
+
+class Order {
+}
+
+class Staff {
+}
+
+class Customer {
+}
+
+OrderServiceImpl --> Order : manages >
+Order --> "1" Customer : has >
+Order --> "1" Staff : has >
+
+interface NotificationService {
+  +sendNotification(String recipient, String subject, String message)
+}
+
+CustomerDeliveryStatusObserver --> NotificationService : uses >
+StaffPendingOrderNotificationObserver --> NotificationService : uses >
+
+class OrderConverter {
+}
+
+class OrderCheckScheduler {
+    -orderRepository: OrderRepository
+    -staffPendingOrderNotificationObserver: StaffPendingOrderNotificationObserver
+    +notifyStaffForOldPendingOrders()
+}
+
+OrderCheckScheduler o-right- OrderStatusObserver : observes
+
+OrderServiceImpl --> OrderConverter : uses >
+
+@enduml
