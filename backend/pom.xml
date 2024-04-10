@@ -135,10 +135,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-dev.properties</include>
-						</includes>
+						<directory>src/main/resources/dev</directory>
 					</resource>
 				</resources>
 			</build>
@@ -148,10 +145,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-test.properties</include>
-						</includes>
+						<directory>src/main/resources/test</directory>
 					</resource>
 				</resources>
 			</build>
@@ -161,10 +155,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-prod.properties</include>
-						</includes>
+						<directory>src/main/resources/prod</directory>
 					</resource>
 				</resources>
 			</build>
