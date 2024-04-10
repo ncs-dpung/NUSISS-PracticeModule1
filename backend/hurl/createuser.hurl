@@ -1,12 +1,12 @@
 # Healthcheck
-GET http://localhost:8080/api/healthcheck
+GET {{host}}/api/healthcheck
 
 HTTP 200
 [Asserts]
 body contains "HEALTHY"
 
 # Admin Login & get token
-POST http://localhost:8080/auth/login
+POST {{host}}/auth/login
 {
   "username": "admin",
   "password": "password"
@@ -17,13 +17,13 @@ HTTP 200
 jwt: jsonpath "$.jwt"
 
 # Admin Get Staff
-GET http://localhost:8080/staff
+GET {{host}}/staff
 Authorization: Bearer {{jwt}}
 
 HTTP 200
 
 # Admin Create Staff
-POST http://localhost:8080/staff
+POST {{host}}/staff
 Authorization: Bearer {{jwt}}
 {
   "firstName": "John",
@@ -42,13 +42,13 @@ username: jsonpath "$.staff.user.username"
 password: jsonpath "$.password"
 
 # Admin Get Staff
-GET http://localhost:8080/staff/{{staff_id}}
+GET {{host}}/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}
 
 HTTP 200
 
 # Admin Update Staff
-PATCH http://localhost:8080/staff/{{staff_id}}
+PATCH {{host}}/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}
 {
   "firstName": "Buck"
@@ -59,7 +59,7 @@ HTTP 200
 jsonpath "$.firstName" == "Buck"
 
 # Staff Login & get token
-POST http://localhost:8080/auth/login
+POST {{host}}/auth/login
 {
   "username": "{{username}}",
   "password": "{{password}}"
@@ -70,19 +70,19 @@ HTTP 200
 staffjwt: jsonpath "$.jwt"
 
 # Staff Get All Staff without authorisation
-GET http://localhost:8080/staff
+GET {{host}}/staff
 Authorization: Bearer {{staffjwt}}
 
 HTTP 403
 
 # Staff Get Self
-GET http://localhost:8080/staff/{{staff_id}}
+GET {{host}}/staff/{{staff_id}}
 Authorization: Bearer {{staffjwt}}
 
 HTTP 200
 
 #Admin Delete Staff
-DELETE http://localhost:8080/staff/{{staff_id}}
+DELETE {{host}}/staff/{{staff_id}}
 Authorization: Bearer {{jwt}}
 
 HTTP 204
