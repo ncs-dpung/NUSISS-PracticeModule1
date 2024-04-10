@@ -39,8 +39,13 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
   @Override
   @Transactional
   public OrderDto updateOrder(Order order, OrderDto orderDto) {
-    Staff staff = staffRepository.findById(orderDto.getStaffId())
-                    .orElseThrow(() -> new EntityNotFoundException("Staff not found with ID: " + orderDto.getStaffId()));
+    Staff staff =
+        staffRepository
+            .findById(orderDto.getStaffId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Staff not found with ID: " + orderDto.getStaffId()));
     order.setStaff(staff);
 
     Customer customer =
