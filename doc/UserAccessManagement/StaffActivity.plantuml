@@ -1,0 +1,17 @@
+@startuml
+|Staff|
+start
+:Perform Action;
+|Authorisation Layer|
+:Get Role;
+:Get Authorised Actions;
+if (Authorised) is (no) then 
+    |Staff|
+    :Unauthorised;
+    end
+else (yes)
+    |System|
+    :Access Service;
+    detach
+
+@enduml
