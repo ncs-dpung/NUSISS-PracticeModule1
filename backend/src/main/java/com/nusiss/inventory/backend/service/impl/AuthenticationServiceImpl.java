@@ -22,8 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   @Autowired
   public AuthenticationServiceImpl(
-      AuthenticationManager authenticationManager,
-      TokenService tokenService) {
+      AuthenticationManager authenticationManager, TokenService tokenService) {
     this.authenticationManager = authenticationManager;
     this.tokenService = tokenService;
   }
