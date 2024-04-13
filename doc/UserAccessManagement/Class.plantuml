@@ -1,5 +1,18 @@
 @startuml
 
+class AuthenticationController {
+  - authenticationService: AuthenticationService
+  + loginUser(body: LoginReqDto)
+}
+
+class AuthenticationServiceImpl implements AuthenticationService {
+  - authenticationManager: AuthenticationManager
+  - passwordEncoder: PasswordEncoder
+  - tokenService: TokenService
+  + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
+  + loginUser(username: String, password: String)
+}
+
 class LoginReqDto {
   - username: String
   - password: String
@@ -56,14 +69,48 @@ interface StaffService {
   + getAllStaff()
 }
 
-interface UserService {
+interface AuthenticationManager {
+  authenticate(Authentication authentication)
+}
+
+interface TokenService {
+  + generateJwt(Authentication authentication)
+}
+
+class Authentication {
+  + getAuthorities()
+  + getCredentials()
+  + getDetails()
+  + getPrincipal()
+  + isAuthenticated()
+  + setAuthenticated(boolean isAuthenticated)
+}
+
+AuthenticationServiceImpl ..> AuthenticationManager
+AuthenticationServiceImpl ..> TokenService
+AuthenticationManager --> Authentication
+TokenService --> Authentication
+
+note left of Authentication::getPrincipal
+  returns UserDetails
+end note
+
+
+interface UserDetailService {
+  {abstract} + loadUserByUsername(username: String)
+}
+
+note right of UserDetailService::loadUserByUsername
+  returns UserDetails
+end note
+
+interface UserService extends UserDetailService {
   + getUserById(id: Long)
   + createUser(user: User)
   + updateUser(id: Long, userDto: UserDto)
   + updateUserPassword(id: Long, updateDto: UserPasswordUpdateDto)
   + deleteUserById(id: Long)
   + getAllUsers()
-  + loadUserByUsername(username: String)
 }
 
 interface StaffDao {
@@ -80,19 +127,6 @@ interface UserDao {
   + saveUser(user: User): User
   + deleteUserById(id: Long): void
   + findAllUsers(): List<User>
-}
-
-interface RoleDao {
-  + findById(id: Long): Optional<Role>
-  + findByName(name: String): Optional<Role>
-  + saveRole(role: Role): Role
-  + deleteRoleById(id: Long): void
-  + findAllRoles(): List<Role>
-}
-
-class AuthenticationController {
-  - authenticationService: AuthenticationService
-  + loginUser(body: LoginReqDto)
 }
 
 class StaffController {
@@ -132,16 +166,6 @@ class UserServiceImpl implements UserService {
   + loadUserByUsername(username: String)
 }
 
-class AuthenticationServiceImpl implements AuthenticationService {
-  - authenticationManager: AuthenticationManager
-  - passwordEncoder: PasswordEncoder
-  - roleDao: RoleDao
-  - tokenService: TokenService
-  - userDao: UserDao
-  + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
-  + loginUser(username: String, password: String)
-}
-
 class UserDaoImpl implements UserDao {
   - userRepository: UserRepository
   - roleRepository: RoleRepository
@@ -163,17 +187,6 @@ class StaffDaoImpl implements StaffDao {
   + saveAdminStaff(staff: Staff): Staff
   + deleteStaffById(id: Long): void
   + findAllStaff(): List<Staff>
-}
-
-class RoleDaoImpl implements RoleDao {
-  - roleRepository: RoleRepository
-  - authorisedActionRepository: AuthorisedActionRepository
-  + RoleDaoImpl(roleRepository: RoleRepository, authorisedActionRepository: AuthorisedActionRepository)
-  + findById(id: Long): Optional<Role>
-  + findByName(name: String): Optional<Role>
-  + saveRole(role: Role): Role
-  + deleteRoleById(id: Long): void
-  + findAllRoles(): List<Role>
 }
 
 class BaseAuditEntity {
@@ -273,8 +286,6 @@ class RoleDto {
 
 
 AuthenticationController ..> AuthenticationService
-AuthenticationServiceImpl ..> UserDao
-AuthenticationServiceImpl ..> RoleDao
 
 StaffController ..> StaffService
 StaffController ..> UserService

@@ -22,24 +22,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final PasswordEncoder passwordEncoder;
 
-  private final RoleDao roleDao;
-
   private final TokenService tokenService;
-
-  private final UserDao userDao;
 
   @Autowired
   public AuthenticationServiceImpl(
       AuthenticationManager authenticationManager,
       PasswordEncoder passwordEncoder,
-      RoleDao roleDao,
-      TokenService tokenService,
-      UserDao userDao) {
+      TokenService tokenService) {
     this.authenticationManager = authenticationManager;
     this.passwordEncoder = passwordEncoder;
-    this.roleDao = roleDao;
     this.tokenService = tokenService;
-    this.userDao = userDao;
   }
 
   public LoginResDto loginUser(String username, String password) {
@@ -49,8 +41,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
               new UsernamePasswordAuthenticationToken(username, password));
 
       String token = tokenService.generateJwt(auth);
+      User user = (User) auth.getPrincipal();
 
-      return new LoginResDto(userDao.findByUsername(username).get().toDto(), token);
+      return new LoginResDto(user.toDto(), token);
     } catch (AuthenticationException e) {
       return new LoginResDto(null, "");
     }
