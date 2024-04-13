@@ -27,8 +27,10 @@ public class EmailNotificationServiceImpl implements NotificationService {
     email.setSubject(subject);
     email.setText(message);
     mailSender.send(email); */
-
-    System.out.println("Email sent to " + recipient + " with subject: " + subject);
+    System.out.println("\nSending email notification...\n\n");
+    System.out.println("Recipient: " + recipient);
+    System.out.println("Subject: " + subject);
     System.out.println("Message: " + message);
+    System.out.println("\n\nEmail notification sent successfully!\n");
   }
 }

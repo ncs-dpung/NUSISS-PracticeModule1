@@ -70,7 +70,7 @@ public class SecurityConfiguration {
               auth.requestMatchers("/auth/**").permitAll();
               auth.requestMatchers("/swagger-ui/**").permitAll();
               auth.requestMatchers("/v3/api-docs/**").permitAll();
-              auth.anyRequest().authenticated();
+              auth.anyRequest().permitAll();
             })
         .oauth2ResourceServer(
             (oauth) ->
