@@ -1,0 +1,24 @@
+@startuml
+|Authorised Staff|
+start
+:Create Staff API;
+|Authorisation Layer|
+:Get Role;
+:Get Authorised Actions;
+:Authorised;
+note left
+has admin role
+or
+has create staff
+authorisation
+end note
+|System|
+fork
+:Create User Login Details;
+:Attach Role;
+fork again
+:Create Staff Profile;
+end merge
+|Authorised Staff|
+:Display Created Staff;
+@enduml

@@ -1,0 +1,318 @@
+@startuml
+
+class AuthenticationController {
+  - authenticationService: AuthenticationService
+  + loginUser(body: LoginReqDto)
+}
+
+class AuthenticationServiceImpl implements AuthenticationService {
+  - authenticationManager: AuthenticationManager
+  - tokenService: TokenService
+  + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
+  + loginUser(username: String, password: String)
+}
+
+class LoginReqDto {
+  - username: String
+  - password: String
+}
+
+class LoginResDto {
+  - user: User
+  - jwt: String
+}
+
+class StaffRegResDto {
+  - password: String
+  - staff: StaffDto
+}
+
+class StaffUpdateDto {
+  - firstName: String
+  - lastName: String
+  - userUpdateDto: UserUpdateDto
+
+  + getFirstName(): String
+  + setFirstName(firstName: String): void
+  + getLastName(): String
+  + setLastName(lastName: String): void
+  + getUserUpdateDto(): UserUpdateDto
+  + setUserUpdateDto(userUpdateDto: UserUpdateDto): void
+}
+
+class UserPasswordUpdateDto {
+  - oldPassword: String
+  - newPassword: String
+}
+
+class UserUpdateDto {
+  - username: String
+  - email: String
+
+  + getUsername(): String
+  + setUsername(username: String): void
+  + getEmail(): String
+  + setEmail(email: String): void
+}
+
+interface AuthenticationService {
+  + loginUser(username: String, password: String)
+}
+
+interface StaffService {
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + createAdminStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, staffDto: StaffUpdateDto)
+  + deleteStaffById(id: Long)
+  + getAllStaff()
+}
+
+interface AuthenticationManager {
+  authenticate(Authentication authentication)
+}
+
+interface TokenService {
+  + generateJwt(Authentication authentication)
+}
+
+class Authentication {
+  + getAuthorities()
+  + getCredentials()
+  + getDetails()
+  + getPrincipal()
+  + isAuthenticated()
+  + setAuthenticated(boolean isAuthenticated)
+}
+
+AuthenticationServiceImpl ..> AuthenticationManager
+AuthenticationServiceImpl ..> TokenService
+AuthenticationManager --> Authentication
+TokenService --> Authentication
+
+note left of Authentication::getPrincipal
+  returns UserDetails
+end note
+
+
+interface UserDetailService {
+  {abstract} + loadUserByUsername(username: String)
+}
+
+note right of UserDetailService::loadUserByUsername
+  returns UserDetails
+end note
+
+interface UserService extends UserDetailService {
+  + getUserById(id: Long)
+  + createUser(user: User)
+  + updateUser(id: Long, userDto: UserDto)
+  + updateUserPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteUserById(id: Long)
+  + getAllUsers()
+}
+
+interface StaffDao {
+  + findById(id: Long): Optional<Staff>
+  + saveStaff(user: Staff): Staff
+  + saveAdminStaff(user: Staff): Staff
+  + deleteStaffById(id: Long): void
+  + findAllStaff(): List<Staff>
+}
+
+interface UserDao {
+  + findById(id: Long): Optional<User>
+  + findByUsername(username: String): Optional<User>
+  + saveUser(user: User): User
+  + deleteUserById(id: Long): void
+  + findAllUsers(): List<User>
+}
+
+class StaffController {
+  - staffService: StaffService
+  - userService: UserService
+  + getAllStaff()
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, updateDto: StaffUpdateDto)
+  + updateStaffPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteStaff(id: Long)
+}
+
+class StaffServiceImpl implements StaffService {
+  - staffDao: StaffDao
+  - objectMapper: ObjectMapper
+  + StaffServiceImpl(staffDao: StaffDao, objectMapper: ObjectMapper)
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + createAdminStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, updateDto: StaffUpdateDto)
+  + deleteStaffById(id: Long)
+  + getAllStaff()
+}
+
+class UserServiceImpl implements UserService {
+  - userDao: UserDao
+  - passwordEncoder: PasswordEncoder
+  - objectMapper: ObjectMapper
+  + UserServiceImpl(userDao: UserDao, passwordEncoder: PasswordEncoder, objectMapper: ObjectMapper)
+  + getUserById(id: Long)
+  + createUser(user: User)
+  + updateUser(id: Long, userDto: UserDto)
+  + updateUserPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteUserById(id: Long)
+  + getAllUsers()
+  + loadUserByUsername(username: String)
+}
+
+class UserDaoImpl implements UserDao {
+  - userRepository: UserRepository
+  - roleRepository: RoleRepository
+  + UserDaoImpl(roleRepository: RoleRepository, userRepository: UserRepository)
+  + findById(id: Long): Optional<User>
+  + findByUsername(username: String): Optional<User>
+  + saveUser(user: User): User
+  + deleteUserById(id: Long): void
+  + findAllUsers(): List<User>
+}
+
+class StaffDaoImpl implements StaffDao {
+  - staffRepository: StaffRepository
+  - userRepository: UserRepository
+  - roleRepository: RoleRepository
+  + StaffDaoImpl(roleRepository: RoleRepository, staffRepository: StaffRepository, userRepository: UserRepository)
+  + findById(id: Long): Optional<Staff>
+  + saveStaff(staff: Staff): Staff
+  + saveAdminStaff(staff: Staff): Staff
+  + deleteStaffById(id: Long): void
+  + findAllStaff(): List<Staff>
+}
+
+class BaseAuditEntity {
+  - createdAt: Date
+  - updatedAt: Date
+  - createdBy: String
+  - updatedBy: String
+}
+
+interface UserDetails {
+  {abstract} + isAccountNonExpired(): boolean
+  {abstract} + isAccountNonLocked(): boolean
+  {abstract} + isCredentialsNonExpired(): boolean
+  {abstract} + isEnabled(): boolean
+  {abstract} + getAuthorities(): Collection<GrantedAuthority>
+}
+
+interface GrantedAuthority {
+  {abstract} + getAuthority(): String
+}
+
+class User extends BaseAuditEntity implements UserDetails {
+  - id: Long
+  - username: String
+  - email: String
+  - password: String
+  - staff: Staff
+  - roles: Set<Role>
+
+  + User()
+  + User(username: String, password: String, email: String)
+  + toDto(): UserDto
+  + getAuthorities(): Collection<GrantedAuthority>
+}
+
+class Staff extends BaseAuditEntity {
+  - id: Long
+  - firstName: String
+  - lastName: String
+  - user: User
+
+  + Staff()
+  + toDto(): StaffDto
+}
+
+class Role extends BaseAuditEntity implements GrantedAuthority {
+  - id: Long
+  - name: String
+  - users: Set<User>
+  - actions: Set<AuthorisedAction>
+
+  + Role(name: String)
+  + toDto(): RoleDto
+}
+
+class AuthorisedAction extends BaseAuditEntity implements GrantedAuthority {
+  - id: Long
+  - authority: String
+  - roles: Set<Role>
+
+  + AuthorisedAction(authority: String)
+  + toDto(): AuthorisedActionDto
+}
+
+class AuthorisedActionDto {
+  - id: Long
+  - authority: String
+
+  + toEntity(): AuthorisedAction
+}
+
+class UserDto {
+  - id: Long
+  - username: String
+  - email: String
+  - roles: Set<RoleDto>
+
+  + toEntity(): User
+}
+
+class StaffDto {
+  - id: Long
+  - firstName: String
+  - lastName: String
+  - user: UserDto
+
+  + toEntity(): Staff
+}
+
+class RoleDto {
+  - id: Long
+  - name: String
+  - actions: Set<AuthorisedActionDto>
+
+  + toEntity(): Role
+}
+
+
+AuthenticationController ..> AuthenticationService
+
+StaffController ..> StaffService
+StaffController ..> UserService
+StaffServiceImpl ..> StaffDao
+UserServiceImpl ..> UserDao
+
+
+Staff -- StaffDto
+User -- UserDto
+Role -- RoleDto
+AuthorisedAction -- AuthorisedActionDto
+
+Staff "1" -- "1" User
+User "1" --o "0.." Role
+Role "1" --o "0.." AuthorisedAction
+
+StaffUpdateDto "1" --* "1" UserUpdateDto
+
+note bottom of User
+  public Collection<GrantedAuthority> getAuthorities() {
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+      for (AuthorisedAction action : role.getActions()) {
+        authorities.add(new SimpleGrantedAuthority(action.getAuthority()));
+      }
+    }
+    return authorities;
+  }
+end note
+@enduml

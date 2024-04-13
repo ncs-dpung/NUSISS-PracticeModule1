@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseAuditEntity {
+public abstract class BaseAuditEntity {
 
   @CreatedDate
   @Temporal(TemporalType.TIMESTAMP)

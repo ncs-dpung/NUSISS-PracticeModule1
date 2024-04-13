@@ -1,0 +1,135 @@
+@startuml
+
+actor Admin as StaffAdmin
+boundary StaffController
+control StaffServiceImpl
+entity StaffDto
+entity Staff
+entity User
+entity UserDto
+control RoleDao
+entity UserPasswordUpdateDto
+control StaffDao
+boundary UserRepository
+boundary StaffRepository
+control PasswordGeneratorUtil
+control UserService
+entity StaffRegResDto
+control UserDao
+control PasswordEncoder
+
+StaffAdmin -> StaffController: createStaff(staffDto: StaffDto)
+activate StaffController
+StaffController -> StaffServiceImpl: createStaff(staffDto)
+activate StaffServiceImpl
+StaffServiceImpl -> StaffDto: toEntity()
+activate StaffDto
+StaffDto -> Staff: toEntity()
+activate Staff
+Staff --> StaffDto: Staff
+deactivate Staff
+deactivate StaffDto
+StaffServiceImpl -> StaffDao: saveStaff(staff)
+activate StaffDao
+StaffDao -> RoleDao: findByName(GlobalConstants.ROLE_USER)
+activate RoleDao
+RoleDao --> StaffDao: userRole
+deactivate RoleDao
+StaffDao -> Staff: getUser()
+activate Staff
+Staff -> User: getUser()
+activate User
+User --> Staff: user
+deactivate User
+deactivate Staff
+StaffDao -> User: getRoles()
+activate User
+User --> StaffDao: roles
+deactivate User
+StaffDao -> UserRepository: save(user)
+activate UserRepository
+UserRepository --> StaffDao: savedUser
+deactivate UserRepository
+StaffDao -> StaffRepository: save(staff)
+activate StaffRepository
+StaffRepository --> StaffDao: savedStaff
+deactivate StaffRepository
+StaffDao -> Staff: setUser(savedUser)
+activate Staff
+deactivate Staff
+StaffDao --> StaffServiceImpl: savedStaff
+deactivate StaffDao
+StaffServiceImpl --> StaffController: createdStaff
+deactivate StaffServiceImpl
+StaffController -> Staff: getUser().getId()
+activate Staff
+Staff -> User: getId()
+activate User
+User --> Staff: user_id
+deactivate User
+deactivate Staff
+StaffController -> PasswordGeneratorUtil: getPassword(GlobalConstants.DEFAULT_PW_LENGTH)
+activate PasswordGeneratorUtil
+PasswordGeneratorUtil --> StaffController: password
+deactivate PasswordGeneratorUtil
+StaffController -> UserPasswordUpdateDto: UserPasswordUpdateDto()
+activate UserPasswordUpdateDto
+UserPasswordUpdateDto -> UserPasswordUpdateDto: setNewPassword(password)
+return updateDto
+StaffController -> UserService: updateUserPassword(user_id, updateDto)
+activate UserService
+UserService -> UserDao: findById(id)
+activate UserDao
+UserDao --> UserService: user
+deactivate UserDao
+
+UserService -> UserPasswordUpdateDto: getOldPassword()
+activate UserPasswordUpdateDto
+return oldPassword
+
+UserService -> User: getPassword()
+activate User
+return dbPassword
+
+UserService -> PasswordEncoder: matches(oldPassword, dbPassword)
+activate PasswordEncoder
+PasswordEncoder --> UserService: passwordMatched
+deactivate PasswordEncoder
+
+UserService -> UserPasswordUpdateDto: getNewPassword()
+activate UserPasswordUpdateDto
+return newPassword
+
+UserService -> PasswordEncoder: encode(newPassword)
+activate PasswordEncoder
+PasswordEncoder --> UserService: encodedPassword
+deactivate PasswordEncoder
+
+UserService -> User: setPassword(encodedPassword)
+activate User
+deactivate User
+
+UserService -> UserDao: saveUser(updatedUser)
+activate UserDao
+UserDao --> UserService: updatedUser
+deactivate UserDao
+
+UserService -> User: toDto()
+activate User
+User -> UserDto: UserDto()
+activate UserDto
+deactivate UserDto
+return updatedUserDto
+
+UserService --> StaffController: updatedUserDto
+deactivate UserService
+StaffController -> StaffRegResDto: StaffRegResDto()
+activate StaffRegResDto
+StaffRegResDto -> StaffRegResDto: setPassword(password)
+StaffRegResDto -> StaffRegResDto: setStaff(createdStaff)
+StaffRegResDto --> StaffController: response
+deactivate StaffRegResDto
+StaffController --> StaffAdmin: ResponseEntity<StaffRegResDto>
+deactivate StaffController
+
+@enduml
