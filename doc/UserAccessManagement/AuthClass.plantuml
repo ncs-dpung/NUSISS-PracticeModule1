@@ -1,0 +1,44 @@
+@startuml
+class AuthenticationController {
+  - authenticationService: AuthenticationService
+  + loginUser(body: LoginReqDto)
+}
+
+interface AuthenticationService {
+  + loginUser(username: String, password: String)
+}
+
+class AuthenticationServiceImpl implements AuthenticationService {
+  - authenticationManager: AuthenticationManager
+  - tokenService: TokenService
+  + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
+  + loginUser(username: String, password: String)
+}
+
+interface AuthenticationManager {
+  authenticate(Authentication authentication)
+}
+
+interface TokenService {
+  + generateJwt(Authentication authentication)
+}
+
+class Authentication {
+  + getAuthorities()
+  + getCredentials()
+  + getDetails()
+  + getPrincipal()
+  + isAuthenticated()
+  + setAuthenticated(boolean isAuthenticated)
+}
+
+AuthenticationServiceImpl ..> AuthenticationManager
+AuthenticationServiceImpl ..> TokenService
+AuthenticationManager --> Authentication
+TokenService --> Authentication
+AuthenticationController ..> AuthenticationService
+
+note left of Authentication::getPrincipal
+  returns UserDetails
+end note
+@enduml

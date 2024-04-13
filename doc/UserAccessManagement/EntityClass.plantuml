@@ -1,0 +1,119 @@
+@startuml
+class BaseAuditEntity {
+  - createdAt: Date
+  - updatedAt: Date
+  - createdBy: String
+  - updatedBy: String
+}
+
+interface UserDetails {
+  {abstract} + isAccountNonExpired(): boolean
+  {abstract} + isAccountNonLocked(): boolean
+  {abstract} + isCredentialsNonExpired(): boolean
+  {abstract} + isEnabled(): boolean
+  {abstract} + getAuthorities(): Collection<GrantedAuthority>
+}
+
+interface GrantedAuthority {
+  {abstract} + getAuthority(): String
+}
+
+class User extends BaseAuditEntity implements UserDetails {
+  - id: Long
+  - username: String
+  - email: String
+  - password: String
+  - staff: Staff
+  - roles: Set<Role>
+
+  + User()
+  + User(username: String, password: String, email: String)
+  + toDto(): UserDto
+  + getAuthorities(): Collection<GrantedAuthority>
+}
+
+class Staff extends BaseAuditEntity {
+  - id: Long
+  - firstName: String
+  - lastName: String
+  - user: User
+
+  + Staff()
+  + toDto(): StaffDto
+}
+
+class Role extends BaseAuditEntity implements GrantedAuthority {
+  - id: Long
+  - name: String
+  - users: Set<User>
+  - actions: Set<AuthorisedAction>
+
+  + Role(name: String)
+  + toDto(): RoleDto
+}
+
+class AuthorisedAction extends BaseAuditEntity implements GrantedAuthority {
+  - id: Long
+  - authority: String
+  - roles: Set<Role>
+
+  + AuthorisedAction(authority: String)
+  + toDto(): AuthorisedActionDto
+}
+
+class AuthorisedActionDto {
+  - id: Long
+  - authority: String
+
+  + toEntity(): AuthorisedAction
+}
+
+class UserDto {
+  - id: Long
+  - username: String
+  - email: String
+  - roles: Set<RoleDto>
+
+  + toEntity(): User
+}
+
+class StaffDto {
+  - id: Long
+  - firstName: String
+  - lastName: String
+  - user: UserDto
+
+  + toEntity(): Staff
+}
+
+class RoleDto {
+  - id: Long
+  - name: String
+  - actions: Set<AuthorisedActionDto>
+
+  + toEntity(): Role
+}
+
+
+Staff -- StaffDto
+User -- UserDto
+Role -- RoleDto
+AuthorisedAction -- AuthorisedActionDto
+
+Staff "1" -- "1" User
+User "1" --o "0.." Role
+Role "1" --o "0.." AuthorisedAction
+
+note bottom of User
+  public Collection<GrantedAuthority> getAuthorities() {
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+      for (AuthorisedAction action : role.getActions()) {
+        authorities.add(new SimpleGrantedAuthority(action.getAuthority()));
+      }
+    }
+    return authorities;
+  }
+end note
+@enduml
