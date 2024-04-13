@@ -1,7 +1,5 @@
 package com.nusiss.inventory.backend.service.impl;
 
-import com.nusiss.inventory.backend.dao.RoleDao;
-import com.nusiss.inventory.backend.dao.UserDao;
 import com.nusiss.inventory.backend.dto.LoginResDto;
 import com.nusiss.inventory.backend.service.AuthenticationService;
 import com.nusiss.inventory.backend.service.TokenService;
