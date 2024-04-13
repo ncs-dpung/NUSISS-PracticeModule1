@@ -1,0 +1,80 @@
+@startuml
+
+actor Staff
+boundary AuthenticationController
+control AuthenticationServiceImpl
+entity UsernamePasswordAuthenticationToken
+control AuthenticationManager
+entity Authentication
+entity User
+control TokenService
+entity UserDto
+entity LoginResDto
+control JwtEncoder
+entity JwtClaimsSet
+entity JwtEncoderParameters
+
+Staff -> AuthenticationController: loginUser(username, password)
+activate AuthenticationController
+AuthenticationController -> AuthenticationServiceImpl: loginUser(username, password)
+activate AuthenticationServiceImpl
+
+AuthenticationServiceImpl -> UsernamePasswordAuthenticationToken ** : (username, password)
+
+AuthenticationServiceImpl -> AuthenticationManager: authenticate(UsernamePasswordAuthenticationToken)
+activate AuthenticationManager
+AuthenticationManager -> Authentication **: instantiate
+AuthenticationManager --> AuthenticationServiceImpl: Authentication
+deactivate AuthenticationManager
+AuthenticationServiceImpl -> TokenService: generateJwt(auth)
+activate TokenService
+
+TokenService -> Authentication: getName()
+activate Authentication
+return username
+
+TokenService -> Authentication: getAuthorities()
+activate Authentication
+return Collection<? extends GrantedAuthority>
+
+TokenService -> Authentication: getPrincipal()
+activate Authentication
+return User
+
+TokenService -> User: getId()
+activate User
+return user_id
+
+TokenService -> User: getStaff().getId()
+activate User
+return staff_id
+
+TokenService -> JwtEncoder: encode(JwtEncoderParameters)
+activate JwtEncoder
+JwtEncoder -> JwtClaimsSet: build()
+activate JwtClaimsSet
+JwtClaimsSet --> JwtEncoder: claims
+deactivate JwtClaimsSet
+JwtEncoder -> JwtEncoderParameters ** : from(claims)
+JwtEncoder --> TokenService: encoded
+deactivate JwtEncoder
+
+TokenService --> AuthenticationServiceImpl: token
+deactivate TokenService
+
+AuthenticationServiceImpl -> Authentication: getPrincipal()
+activate Authentication
+return User
+
+AuthenticationServiceImpl -> User: toDto()
+activate User
+User -> UserDto ** : instantiate
+User --> AuthenticationServiceImpl: UserDto
+deactivate User
+
+AuthenticationServiceImpl -> LoginResDto ** : LoginResDto(UserDto, token)
+AuthenticationServiceImpl --> AuthenticationController: LoginResDto
+deactivate AuthenticationServiceImpl
+AuthenticationController --> Staff: LoginResDto
+
+@enduml
