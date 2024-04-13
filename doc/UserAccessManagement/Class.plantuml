@@ -7,7 +7,6 @@ class AuthenticationController {
 
 class AuthenticationServiceImpl implements AuthenticationService {
   - authenticationManager: AuthenticationManager
-  - passwordEncoder: PasswordEncoder
   - tokenService: TokenService
   + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
   + loginUser(username: String, password: String)
