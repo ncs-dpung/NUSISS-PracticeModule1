@@ -4,10 +4,7 @@ import com.nusiss.inventory.backend.components.OrderConverter;
 import com.nusiss.inventory.backend.dto.OrderDto;
 import com.nusiss.inventory.backend.dto.OrderItemDto;
 import com.nusiss.inventory.backend.entity.*;
-import com.nusiss.inventory.backend.repository.CustomerRepository;
-import com.nusiss.inventory.backend.repository.OrderRepository;
-import com.nusiss.inventory.backend.repository.ProductRepository;
-import com.nusiss.inventory.backend.repository.UserRepository;
+import com.nusiss.inventory.backend.repository.*;
 import com.nusiss.inventory.backend.strategies.OrderUpdateStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
 
   private final OrderRepository orderRepository;
-  private final UserRepository userRepository;
+  private final StaffRepository staffRepository;
   private final CustomerRepository customerRepository;
   private final ProductRepository productRepository;
 
@@ -28,12 +25,12 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
   @Autowired
   public PendingOrderUpdateStrategy(
       OrderRepository orderRepository,
-      UserRepository userRepository,
+      StaffRepository staffRepository,
       CustomerRepository customerRepository,
       ProductRepository productRepository,
       OrderConverter orderConverter) {
     this.orderRepository = orderRepository;
-    this.userRepository = userRepository;
+    this.staffRepository = staffRepository;
     this.customerRepository = customerRepository;
     this.productRepository = productRepository;
     this.orderConverter = orderConverter;
@@ -42,11 +39,14 @@ public class PendingOrderUpdateStrategy implements OrderUpdateStrategy {
   @Override
   @Transactional
   public OrderDto updateOrder(Order order, OrderDto orderDto) {
-    // TODO: Uncomment the following line when user management is implemented
-    //        User user = userRepository.findById(orderDto.getUserId())
-    //                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " +
-    // orderDto.getUserId()));
-    //        order.setUser(user);
+    Staff staff =
+        staffRepository
+            .findById(orderDto.getStaffId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Staff not found with ID: " + orderDto.getStaffId()));
+    order.setStaff(staff);
 
     Customer customer =
         customerRepository

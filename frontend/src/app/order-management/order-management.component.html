@@ -76,38 +76,34 @@
           <form (ngSubmit)="onSubmit()" #addItemForm="ngForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="itemName">Name:</label>
-                <input type="text" id="itemName" [(ngModel)]="newItem.name" name="name" placeholder="Item Name" required>
+                <label for="itemName">Order ID:</label>
+                <input type="text" id="order_id" [(ngModel)]="newOrder.order_id" name="order_id" placeholder="Order ID" required>
               </div>
               <div class="form-group">
-                <label for="itemCondition">Condition:</label>
-                <select id="itemCondition" [(ngModel)]="newItem.condition" name="condition" required>
-                  <option value="new">New</option>
-                  <option value="used">Used</option>
-                  <option value="refurbished">Refurbished</option>
-                </select>
+                <label for="itemName">Customer ID:</label>
+                <input type="text" id="customer_id" [(ngModel)]="newOrder.customer_id" name="customer_id" placeholder="Customer ID" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemAvailable">Available:</label>
-                <input type="number" id="itemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <label for="itemAvailable">Status:</label>
+                <input type="text" id="order_status_id" [(ngModel)]="newOrder.order_status_id" name="order_status_id" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Reserved:</label>
-                <input type="number" id="itemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <label for="itemReserved">Staff ID:</label>
+                <input type="text" id="staff_id" [(ngModel)]="newOrder.staff_id" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemPrice">Price:</label>
-                <input type="text" id="itemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <label for="itemPrice">Order Date:</label>
+                <input type="date" id="date_placed" [(ngModel)]="newOrder.date_placed" name="dateO" required>
               </div>
               <div class="form-group">
-                <label for="itemModified">Modified:</label>
-                <input type="date" id="itemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <label for="itemModified">Shippment Date:</label>
+                <input type="date" id="date_shipped" [(ngModel)]="newOrder.date_shipped" name="dateS" required>
               </div>
             </div>
 
@@ -125,38 +121,34 @@
           <form (submit)="onUpdateItem()">
             <div class="form-row">
               <div class="form-group">
-                <label for="updateItemName">Name:</label>
-                <input type="text" id="updateItemName" [(ngModel)]="selectedItem.name" name="name" placeholder="Item Name" required>
+                <label for="updateItemName">Order ID:</label>
+                <input type="text" id="updateItemName" [(ngModel)]="newOrder.order_id" name="order_id" placeholder="Item Name" required>
               </div>
               <div class="form-group">
-                <label for="itemCondition">Condition:</label>
-                <select id="upDateItemCondition" [(ngModel)]="newItem.condition" name="condition" required>
-                  <option value="new">New</option>
-                  <option value="used">Used</option>
-                  <option value="refurbished">Refurbished</option>
-                </select>
+                <label for="itemName">Customer ID:</label>
+                <input type="text" id="Ucustomer_id" [(ngModel)]="newOrder.customer_id" name="customer_id" placeholder="Customer ID" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemAvailable">Available:</label>
-                <input type="number" id="updateItemAvailable" [(ngModel)]="newItem.available" name="available" required>
+                <label for="itemAvailable">Status:</label>
+                <input type="text" id="Uorder_status_id" [(ngModel)]="newOrder.order_status_id" name="order_status_id" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Reserved:</label>
-                <input type="number" id="updateItemReserved" [(ngModel)]="newItem.reserved" name="reserved" required>
+                <label for="itemReserved">Staff ID:</label>
+                <input type="text" id="updateItemReserved" [(ngModel)]="newOrder.staff_id" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemPrice">Price:</label>
-                <input type="text" id="updateItemPrice" [(ngModel)]="newItem.price" name="price" required>
+                <label for="itemPrice">Order Date:</label>
+                <input type="date" id="updatedate_shipped" [(ngModel)]="newOrder.date_placed" name="date_place" required>
               </div>
               <div class="form-group">
-                <label for="itemModified">Modified:</label>
-                <input type="date" id="updateItemModified" [(ngModel)]="newItem.modified" name="modified" required>
+                <label for="itemModified">Shippment Date:</label>
+                <input type="date" id="updatedate_shipped" [(ngModel)]="newOrder.date_shipped" name="date_shipped" required>
               </div>
             </div>
             <button type="submit" class="btn-add">Update Item</button>
