@@ -44,7 +44,6 @@ class UserUpdateDto {
 }
 
 interface AuthenticationService {
-  + registerUser(username: String, password: String, email: String)
   + loginUser(username: String, password: String)
 }
 
@@ -140,7 +139,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
   - tokenService: TokenService
   - userDao: UserDao
   + AuthenticationServiceImpl(authenticationManager: AuthenticationManager, passwordEncoder: PasswordEncoder, roleDao: RoleDao, tokenService: TokenService, userDao: UserDao)
-  + registerUser(username: String, password: String, email: String)
   + loginUser(username: String, password: String)
 }
 

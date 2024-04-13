@@ -46,19 +46,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     this.userDao = userDao;
   }
 
-  public UserDto registerUser(String username, String password, String email) {
-    String encodedPassword = passwordEncoder.encode(password);
-    Role userRole = roleDao.findByName(GlobalConstants.ROLE_USER).get();
-
-    User user = new User();
-    user.setUsername(username);
-    user.setPassword(encodedPassword);
-    user.setEmail(email);
-    user.getRoles().add(userRole);
-
-    return userDao.saveUser(user).toDto();
-  }
-
   public LoginResDto loginUser(String username, String password) {
     try {
       Authentication auth =
