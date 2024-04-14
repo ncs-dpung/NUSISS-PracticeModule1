@@ -56,7 +56,7 @@
         <button (click)="navigate('user-access-management')" class="active">Access</button>
         <button (click)="navigate('customer-management')">Customer</button>
         <button (click)="navigate('supplier-management')">Supplier</button>
-        <button (click)="navigate('supplier-order-management')">Supply Order</button>
+      <!--<button (click)="navigate('supplier-order-management')">Supply Order</button>-->
       </div>
       <div class="user-info">Display Username</div>
     </div>
@@ -77,11 +77,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">User First Name:</label>
-                <input type="text" id="FName" [(ngModel)]="newStaff.first_name" name="name" placeholder="First Name" required>
+                <input type="text" id="FName" [(ngModel)]="newStaff.firstName" name="name" placeholder="First Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">User Last Name:</label>
-                <input type="text" id="LName" [(ngModel)]="newStaff.last_name" name="name" placeholder="Last Name" required>
+                <input type="text" id="LName" [(ngModel)]="newStaff.lastName" name="name" placeholder="Last Name" required>
               </div>
             </div>
 
@@ -151,15 +151,15 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Staff</h2>
-          <form (submit)="onUpdateStaff(selectedStaff.staff_id!)" #updateUserForm="ngForm">
+          <form (submit)="onUpdateStaff(selectedStaff.id!)" #updateUserForm="ngForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">User First Name:</label>
-                <input type="text" id="UFName" [(ngModel)]="selectedStaff.first_name" name="name" placeholder="First Name" required>
+                <input type="text" id="UFName" [(ngModel)]="selectedStaff.firstName" name="name" placeholder="First Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">User Last Name:</label>
-                <input type="text" id="ULName" [(ngModel)]="selectedStaff.last_name" name="name" placeholder="Last Name" required>
+                <input type="text" id="ULName" [(ngModel)]="selectedStaff.lastName" name="name" placeholder="Last Name" required>
               </div>
             </div>
 
@@ -244,9 +244,9 @@
         <tbody>
         <!-- Example Product Row -->
         <tr *ngFor="let staff of staffs; let i = index">
-          <td><input type="checkbox" name="selectedStaff" [value]="staff.staff_id"></td>
+          <td><input type="checkbox" name="selectedStaff" [value]="staff.id"></td>
           <td>{{ i + 1 }}</td>
-          <td>{{ staff.first_name +' '+ staff.last_name }} </td>
+          <td>{{ staff.firstName +' '+ staff.lastName }} </td>
           <td>{{ staff.position }}</td>
           <td>{{ staff.department }}</td>
           <td>{{ staff.email }}</td>
@@ -256,7 +256,7 @@
           <td>{{ staff.created_by }}</td>
           <td>
             <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
-            <button class="btn-action delete-btn" (click)="deleteStaff(selectedStaff.staff_id!)">Delete</button>
+            <button class="btn-action delete-btn" (click)="deleteStaff(selectedStaff.id!)">Delete</button>
           </td>
         </tr>
 

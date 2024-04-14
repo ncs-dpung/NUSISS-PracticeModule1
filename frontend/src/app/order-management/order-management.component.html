@@ -56,7 +56,7 @@
         <button (click)="navigate('user-access-management')">Access</button>
         <button (click)="navigate('customer-management')">Customer</button>
         <button (click)="navigate('supplier-management')">Supplier</button>
-        <button (click)="navigate('supplier-order-management')">Supply Order</button>
+<!--<button (click)="navigate('supplier-order-management')">Supply Order</button>-->
       </div>
       <div class="user-info">Display Username</div>
     </div>
@@ -77,11 +77,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">Order ID:</label>
-                <input type="text" id="order_id" [(ngModel)]="newOrder.order_id" name="order_id" placeholder="Order ID" required>
+                <input type="text" id="orderId" [(ngModel)]="newOrder.orderId" name="orderId" placeholder="Order ID" required>
               </div>
               <div class="form-group">
                 <label for="itemName">Customer ID:</label>
-                <input type="text" id="customer_id" [(ngModel)]="newOrder.customer_id" name="customer_id" placeholder="Customer ID" required>
+                <input type="text" id="customerId" [(ngModel)]="newOrder.customerId" name="customerId" placeholder="Customer ID" required>
               </div>
             </div>
 
@@ -91,19 +91,19 @@
                 <input type="text" id="order_status_id" [(ngModel)]="newOrder.order_status_id" name="order_status_id" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Staff ID:</label>
-                <input type="text" id="staff_id" [(ngModel)]="newOrder.staff_id" name="reserved" required>
+                <label for="itemReserved">Staff First Name:</label>
+                <input type="text" id="staffFirstName" [(ngModel)]="newOrder.staffFirstName" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Order Date:</label>
-                <input type="date" id="date_placed" [(ngModel)]="newOrder.date_placed" name="dateO" required>
+                <input type="date" id="datePlaced" [(ngModel)]="newOrder.datePlaced" name="dateO" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Shippment Date:</label>
-                <input type="date" id="date_shipped" [(ngModel)]="newOrder.date_shipped" name="dateS" required>
+                <input type="date" id="dateShipped" [(ngModel)]="newOrder.dateShipped" name="dateS" required>
               </div>
             </div>
 
@@ -118,40 +118,40 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Inventory Item</h2>
-          <form (submit)="onUpdateItem()">
+          <form (submit)="onUpdateOrder(selectedOrder.orderId!)">
             <div class="form-row">
               <div class="form-group">
                 <label for="updateItemName">Order ID:</label>
-                <input type="text" id="updateItemName" [(ngModel)]="newOrder.order_id" name="order_id" placeholder="Item Name" required>
+                <input type="text" id="updateItemName" [(ngModel)]="selectedOrder.orderId" name="orderId" placeholder="Item Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">Customer ID:</label>
-                <input type="text" id="Ucustomer_id" [(ngModel)]="newOrder.customer_id" name="customer_id" placeholder="Customer ID" required>
+                <input type="text" id="UcustomerId" [(ngModel)]="selectedOrder.customerId" name="customerId" placeholder="Customer ID" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Status:</label>
-                <input type="text" id="Uorder_status_id" [(ngModel)]="newOrder.order_status_id" name="order_status_id" required>
+                <input type="text" id="Uorder_status_id"  name="order_status_id" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Staff ID:</label>
-                <input type="text" id="updateItemReserved" [(ngModel)]="newOrder.staff_id" name="reserved" required>
+                <label for="itemReserved">Staff First Name:</label>
+                <input type="text" id="updateItemReserved" [(ngModel)]="selectedOrder.staffFirstName" name="reserved" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Order Date:</label>
-                <input type="date" id="updatedate_shipped" [(ngModel)]="newOrder.date_placed" name="date_place" required>
+                <input type="date" id="updatedateShipped" [(ngModel)]="selectedOrder.datePlaced" name="date_place" required>
               </div>
               <div class="form-group">
                 <label for="itemModified">Shippment Date:</label>
-                <input type="date" id="updatedate_shipped" [(ngModel)]="newOrder.date_shipped" name="date_shipped" required>
+                <input type="date" id="updatedateShipped" [(ngModel)]="selectedOrder.dateShipped" name="dateShipped" required>
               </div>
             </div>
-            <button type="submit" class="btn-add">Update Item</button>
+            <button type="submit" class="btn-add">Update Order</button>
           </form>
         </div>
       </div>
@@ -163,29 +163,31 @@
         <tr>
           <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
           <th>No.</th>
-          <th>NAME</th>
-          <th>CONDITION</th>
-          <th>AVAILABLE</th>
-          <th>RESERVED</th>
+          <th>ID</th>
+          <th>CUSTOMER</th>
+          <th>PRODUCT</th>
+          <th>STATUS</th>
+          <th>PlACE</th>
+          <th>SHIPPED</th>
           <th>PRICE</th>
-          <th>MODIFIED</th>
           <th>ACTIONS</th>
         </tr>
         </thead>
         <tbody>
         <!-- Example Product Row -->
-        <tr>
-          <td><input type="checkbox" name="selectedItem" value="128GB_SD_card"></td>
-          <td>1</td>
-          <td>128GB SD card</td>
-          <td>New</td>
-          <td>3,546</td>
-          <td>3,354</td>
-          <td>$10.13</td>
-          <td>03/13/2017</td>
+        <tr *ngFor="let order of orders; let i = index">
+          <td><input type="checkbox" name="selectedOrder" [value]="order.orderId"></td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ order.orderId }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.items[0]?.productName }}</td>
+          <td>{{ order.status[0]?.name }}</td>
+          <td>{{ order.datePlaced | date:'medium' }}</td>
+          <td>{{ order.dateShipped | date:'medium' }}</td>
+          <td>S$ {{ order.total }}</td>
           <td>
             <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
-            <button class="btn-action delete-btn">Delete</button>
+            <button class="btn-action delete-btn" (click)="deleteProduct(order.orderId!)" >Delete</button>
           </td>
         </tr>
 

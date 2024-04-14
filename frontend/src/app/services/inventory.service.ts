@@ -7,34 +7,38 @@ import { Product } from '../inventory-management/product.model';
   providedIn: 'root'
 })
 export class InventoryService {
-  private apiUrl = 'http://localhost:8080/products';
-
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  };
+  private apiUrl = 'http://localhost:8080/api/products';
 
   constructor(private http: HttpClient) { }
 
+   
+    private getHttpOptions() {
+      const token = localStorage.getItem('auth_token'); 
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      });
+      return { headers: headers };
+    }
+
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(this.apiUrl, this.getHttpOptions());
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    return this.http.get<Product>(`${this.apiUrl}/${id}`, this.getHttpOptions());
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+    return this.http.post<Product>(this.apiUrl, product, this.getHttpOptions());
   }
 
   updateProduct(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product, this.getHttpOptions());
   }
 
   deleteProduct(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, this.getHttpOptions());
   }
 
 

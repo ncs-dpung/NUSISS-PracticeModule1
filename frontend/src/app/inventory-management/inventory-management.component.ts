@@ -27,21 +27,31 @@ export class InventoryManagementComponent implements OnInit {
   products: Product[] = [];
 
   newProduct: Product = {
-    product_id: null,
-    category_id: null,
+    id: null,
+    categoryId: null,
     name: '',
     price: 1.00,
-    quantity: 1,
-    batch_no: '',
+    quantityAvailable: 1,
+    categoryName:'',
+    batchNo: '',
+    reorderLevel:0,
+    stockLevel:'',
+    supplierName:'',
+    supplierId:0
   };
 
   selectedProduct: Product = {
-    product_id: null,
-    category_id: null,
+    id: null,
+    categoryId: null,
     name: '',
-    price: 1,
-    quantity: 1,
-    batch_no: '',
+    price: 1.00,
+    quantityAvailable: 1,
+    categoryName:'',
+    batchNo: '',
+    reorderLevel:0,
+    stockLevel:'',
+    supplierName:'',
+    supplierId:0
   };
 
   constructor(private router: Router, private inventoryService: InventoryService) { }
@@ -93,7 +103,7 @@ export class InventoryManagementComponent implements OnInit {
 
   onUpdateProduct(productId:number) {
     // Find the supplier in the array
-    const productToUpdate = this.products.find(s => s.product_id === productId);
+    const productToUpdate = this.products.find(s => s.id === productId);
 
     // If supplier is found, proceed with update
     if (productToUpdate) {
@@ -110,7 +120,7 @@ export class InventoryManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this product?')) {
       this.inventoryService.deleteProduct(productId).subscribe({
         next: (response) => {
-          this.products = this.products.filter(product => product.product_id !== productId);
+          this.products = this.products.filter(product => product.id !== productId);
           console.log('Product deleted successfully', response);
         },
         error: (error) => {

@@ -1,7 +1,7 @@
 export interface Staff {
-  staff_id?: number | null | undefined;
-  first_name: string;
-  last_name: string;
+  id?: number | null | undefined;
+  firstName: string;
+  lastName: string;
   position: string;
   department: string;
   email: string;

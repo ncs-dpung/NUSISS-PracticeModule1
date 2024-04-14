@@ -29,21 +29,35 @@ export class OrderManagementComponent implements OnInit{
   orders: Order[] = [];
 
   newOrder: Order = {
-    order_id: null,
-    staff_id: null,
-    customer_id: null,
-    date_placed: new Date('01/01/2000'),
-    date_shipped: new Date('01/01/2000'),
+    orderId: null,
+    customerId: null,
+    datePlaced: new Date('01/01/2000'),
+    dateShipped: new Date('01/01/2000'),
     order_status_id: null,
+    customerName:'',
+    items:[],
+    total:0,
+    staffFirstName:'',
+    staffLastName:'',
+    status: [{ id: 5, name: 'PENDING' }],
+
+
+
   };
 
-  selectedProduct: Order = {
-    order_id: null,
-    staff_id: null,
-    customer_id: null,
-    date_placed: new Date('01/01/2000'),
-    date_shipped: new Date('01/01/2000'),
+  selectedOrder: Order = {
+    orderId: null,
+    customerId: null,
+    datePlaced: new Date('01/01/2000'),
+    dateShipped: new Date('01/01/2000'),
     order_status_id: null,
+    customerName:'',
+    items:[],
+    total:0,
+    staffFirstName:'',
+    staffLastName:'',
+    status:[],
+
   };
 
 
@@ -85,5 +99,34 @@ export class OrderManagementComponent implements OnInit{
   onUpdateItem() {
 
     this.toggleUpdateModal(false); // Hide modal after update
+  }
+
+  onUpdateOrder(orderId:number) {
+    // Find the supplier in the array
+    const orderToUpdate = this.orders.find(s => s.orderId === orderId);
+
+    // If supplier is found, proceed with update
+    if (orderToUpdate) {
+      this.selectedOrder = { ...orderToUpdate }; // Make a copy of the supplier to be updated
+      this.toggleUpdateModal(true);// Show the modal for updating
+    } else {
+      console.error(`Supplier with ID ${orderId} not found.`);
+    }
+    console.log(this.selectedOrder);
+    this.toggleUpdateModal(false); // Hide modal after update
+  }
+
+  deleteProduct(orderId: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.orderService.deleteOrder(orderId).subscribe({
+        next: (response) => {
+          this.orders = this.orders.filter(order => order.orderId !== orderId);
+          console.log('Product deleted successfully', response);
+        },
+        error: (error) => {
+          console.error('Error deleting Product', error);
+        }
+      });
+    }
   }
 }

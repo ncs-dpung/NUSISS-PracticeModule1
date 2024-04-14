@@ -24,9 +24,9 @@ export class UserAccessManagementComponent implements OnInit {
   staffs: Staff[] = [];
 
   newStaff: Staff = {
-    staff_id: null,
-    first_name: '',
-    last_name: '',
+    id: null,
+    firstName: '',
+    lastName: '',
     position: '',
     department: '',
     email: '',
@@ -39,9 +39,9 @@ export class UserAccessManagementComponent implements OnInit {
   };
 
   selectedStaff: Staff = {
-    staff_id: null,
-    first_name: '',
-    last_name: '',
+    id: null,
+    firstName: '',
+    lastName: '',
     position: '',
     department: '',
     email: '',
@@ -67,7 +67,7 @@ export class UserAccessManagementComponent implements OnInit {
 
   onUpdateStaff(staffId: number) {
     // Find the supplier in the array
-    const staffToUpdate = this.staffs.find(s => s.staff_id === staffId);
+    const staffToUpdate = this.staffs.find(s => s.id === staffId);
 
     // If supplier is found, proceed with update
     if (staffToUpdate) {
@@ -83,7 +83,7 @@ export class UserAccessManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this staff?')) {
       this.staffService.deleteStaff(staffId).subscribe({
         next: (response) => {
-          this.staffs = this.staffs.filter(staff => staff.staff_id !== staffId);
+          this.staffs = this.staffs.filter(staff => staff.id !== staffId);
           console.log('Staff deleted successfully', response);
         },
         error: (error) => {
