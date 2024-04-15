@@ -7,3 +7,5 @@ RUN mkdir /be
 WORKDIR /be
 
 ADD docker-entrypoint.dev.sh ./
+
+RUN sed -i -e 's/\r$//' docker-entrypoint.dev.sh
