@@ -102,18 +102,26 @@ export class OrderManagementComponent implements OnInit{
   }
 
   onUpdateOrder(orderId:number) {
-    // Find the supplier in the array
-    const orderToUpdate = this.orders.find(s => s.orderId === orderId);
-
-    // If supplier is found, proceed with update
-    if (orderToUpdate) {
-      this.selectedOrder = { ...orderToUpdate }; // Make a copy of the supplier to be updated
-      this.toggleUpdateModal(true);// Show the modal for updating
-    } else {
-      console.error(`Supplier with ID ${orderId} not found.`);
+    if (orderId === undefined) {
+      console.error('Cannot update a Order without an ID');
+      return;
     }
-    console.log(this.selectedOrder);
-    this.toggleUpdateModal(false); // Hide modal after update
+    this.orderService.updateOrder(orderId,this.selectedOrder).subscribe({
+      next: (updatedOrder) => {
+        // Find the index of the customer in the array
+        const index = this.orders.findIndex(order => order.orderId === updatedOrder.orderId);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.orders[index] = updatedOrder;
+        }
+
+        this.showUpdateModal = false;
+        this.loadAllOrders();
+      },
+      error: (error) => {
+        console.error('Error updating Orders', error);
+      }
+    });
   }
 
   deleteProduct(orderId: number): void {

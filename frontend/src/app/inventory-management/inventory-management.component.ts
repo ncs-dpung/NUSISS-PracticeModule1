@@ -77,6 +77,7 @@ export class InventoryManagementComponent implements OnInit {
         });
 
     this.showModal = false;
+    this.loadProducts();
 
   }
 
@@ -102,18 +103,27 @@ export class InventoryManagementComponent implements OnInit {
   }
 
   onUpdateProduct(productId:number) {
-    // Find the supplier in the array
-    const productToUpdate = this.products.find(s => s.id === productId);
 
-    // If supplier is found, proceed with update
-    if (productToUpdate) {
-      this.selectedProduct = { ...productToUpdate }; // Make a copy of the supplier to be updated
-      this.showModal = true; // Show the modal for updating
-    } else {
-      console.error(`Supplier with ID ${productId} not found.`);
+    if (productId === undefined) {
+      console.error('Cannot update a Product without an ID');
+      return;
     }
-    console.log(this.selectedProduct);
-    this.toggleUpdateModal(false); // Hide modal after update
+    this.inventoryService.updateProduct(productId,this.selectedProduct).subscribe({
+      next: (updatedProduct) => {
+        // Find the index of the customer in the array
+        const index = this.products.findIndex(product => product.id === updatedProduct.id);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.products[index] = updatedProduct;
+        }
+
+        this.showUpdateModal = false;
+        this.loadProducts();
+      },
+      error: (error) => {
+        console.error('Error updating Products', error);
+      }
+    });
   }
 
   deleteProduct(productId: number): void {
