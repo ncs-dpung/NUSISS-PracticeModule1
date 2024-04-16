@@ -58,17 +58,27 @@ export class SupplierManagementComponent implements OnInit {
     this.toggleUpdateModal(true);
   }
 
-  onUpdateSupplier(supplierId: number): void {
-    // Find the supplier in the array
-    const supplierToUpdate = this.suppliers.find(s => s.id === supplierId);
-
-    // If supplier is found, proceed with update
-    if (supplierToUpdate) {
-      this.selectedSupplier = { ...supplierToUpdate }; // Make a copy of the supplier to be updated
-      this.showModal = true; // Show the modal for updating
-    } else {
-      console.error(`Supplier with ID ${supplierId} not found.`);
+  onUpdateSupplier(): void {
+    if (this.selectedSupplier.id === undefined) {
+      console.error('Cannot update a Order without an ID');
+      return;
     }
+    this.supplierService.updateSupplier(this.selectedSupplier).subscribe({
+      next: (updatedSupplier) => {
+        // Find the index of the customer in the array
+        const index = this.suppliers.findIndex(supplier => supplier.id === updatedSupplier.id);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.suppliers[index] = updatedSupplier;
+        }
+
+        this.showUpdateModal = false;
+        this.loadSuppliers();
+      },
+      error: (error) => {
+        console.error('Error updating Orders', error);
+      }
+    });
   }
 
   onDeleteSupplier(supplierId: number): void {

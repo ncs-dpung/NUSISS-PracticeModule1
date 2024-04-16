@@ -69,8 +69,8 @@ export class UserAccessManagementComponent implements OnInit {
     });
   }
 
-  onUpdateStaff(staffId: number) {
-    if (staffId === undefined) {
+  onUpdateStaff() {
+    if (this.selectedStaff.id === undefined) {
       console.error('Cannot update an account without an ID');
       return;
     }
@@ -131,6 +131,11 @@ export class UserAccessManagementComponent implements OnInit {
 
   toggleUpdateModal(show: boolean): void {
     this.showUpdateModal = show;
+  }
+
+  selectStaffForUpdate(staff: Staff): void {
+    this.selectedStaff = { ...staff };
+    this.toggleUpdateModal(true);
   }
 
 

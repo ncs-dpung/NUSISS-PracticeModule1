@@ -102,13 +102,13 @@ export class InventoryManagementComponent implements OnInit {
     });
   }
 
-  onUpdateProduct(productId:number) {
+  onUpdateProduct() {
 
-    if (productId === undefined) {
+    if (this.selectedProduct.id === undefined) {
       console.error('Cannot update a Product without an ID');
       return;
     }
-    this.inventoryService.updateProduct(productId,this.selectedProduct).subscribe({
+    this.inventoryService.updateProduct(this.selectedProduct.id!,this.selectedProduct).subscribe({
       next: (updatedProduct) => {
         // Find the index of the customer in the array
         const index = this.products.findIndex(product => product.id === updatedProduct.id);

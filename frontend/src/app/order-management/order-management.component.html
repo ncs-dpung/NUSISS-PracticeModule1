@@ -118,7 +118,7 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Inventory Item</h2>
-          <form (submit)="onUpdateOrder(selectedOrder.orderId!)">
+          <form (submit)="onUpdateOrder()">
             <div class="form-row">
               <div class="form-group">
                 <label for="updateItemName">Order ID:</label>
@@ -186,7 +186,7 @@
           <td>{{ order.dateShipped | date:'medium' }}</td>
           <td>S$ {{ order.total }}</td>
           <td>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
+            <button class="btn-action update-btn" (click)="selectOrderForUpdate(order)">Update</button>
             <button class="btn-action delete-btn" (click)="deleteProduct(order.orderId!)" >Delete</button>
           </td>
         </tr>

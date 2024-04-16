@@ -151,7 +151,7 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Staff</h2>
-          <form (submit)="onUpdateStaff(selectedStaff.id!)" #updateUserForm="ngForm">
+          <form (submit)="onUpdateStaff()" #updateUserForm="ngForm">
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">User First Name:</label>
@@ -253,8 +253,8 @@
           <td>{{ staff.user.roles[0]?.name }}</td>
 
           <td>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
-            <button class="btn-action delete-btn" (click)="deleteStaff(selectedStaff.id!)">Delete</button>
+            <button class="btn-action update-btn" (click)="selectStaffForUpdate(staff)">Update</button>
+            <button class="btn-action delete-btn" (click)="deleteStaff(staff.id!)">Delete</button>
           </td>
         </tr>
 

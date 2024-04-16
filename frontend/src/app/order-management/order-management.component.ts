@@ -101,12 +101,12 @@ export class OrderManagementComponent implements OnInit{
     this.toggleUpdateModal(false); // Hide modal after update
   }
 
-  onUpdateOrder(orderId:number) {
-    if (orderId === undefined) {
+  onUpdateOrder() {
+    if (this.selectedOrder.orderId === undefined) {
       console.error('Cannot update a Order without an ID');
       return;
     }
-    this.orderService.updateOrder(orderId,this.selectedOrder).subscribe({
+    this.orderService.updateOrder(this.selectedOrder.orderId!,this.selectedOrder).subscribe({
       next: (updatedOrder) => {
         // Find the index of the customer in the array
         const index = this.orders.findIndex(order => order.orderId === updatedOrder.orderId);
@@ -137,4 +137,10 @@ export class OrderManagementComponent implements OnInit{
       });
     }
   }
+
+  selectOrderForUpdate(order: Order): void {
+    this.selectedOrder = { ...order };
+    this.toggleUpdateModal(true);
+  }
+
 }
