@@ -29,21 +29,35 @@ export class OrderManagementComponent implements OnInit{
   orders: Order[] = [];
 
   newOrder: Order = {
-    order_id: null,
-    staff_id: null,
-    customer_id: null,
-    date_placed: new Date('01/01/2000'),
-    date_shipped: new Date('01/01/2000'),
+    orderId: null,
+    customerId: null,
+    datePlaced: new Date('01/01/2000'),
+    dateShipped: new Date('01/01/2000'),
     order_status_id: null,
+    customerName:'',
+    items:[],
+    total:0,
+    staffFirstName:'',
+    staffLastName:'',
+    status: [{ id: 5, name: 'PENDING' }],
+
+
+
   };
 
-  selectedProduct: Order = {
-    order_id: null,
-    staff_id: null,
-    customer_id: null,
-    date_placed: new Date('01/01/2000'),
-    date_shipped: new Date('01/01/2000'),
+  selectedOrder: Order = {
+    orderId: null,
+    customerId: null,
+    datePlaced: new Date('01/01/2000'),
+    dateShipped: new Date('01/01/2000'),
     order_status_id: null,
+    customerName:'',
+    items:[],
+    total:0,
+    staffFirstName:'',
+    staffLastName:'',
+    status:[],
+
   };
 
 
@@ -86,4 +100,47 @@ export class OrderManagementComponent implements OnInit{
 
     this.toggleUpdateModal(false); // Hide modal after update
   }
+
+  onUpdateOrder() {
+    if (this.selectedOrder.orderId === undefined) {
+      console.error('Cannot update a Order without an ID');
+      return;
+    }
+    this.orderService.updateOrder(this.selectedOrder.orderId!,this.selectedOrder).subscribe({
+      next: (updatedOrder) => {
+        // Find the index of the customer in the array
+        const index = this.orders.findIndex(order => order.orderId === updatedOrder.orderId);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.orders[index] = updatedOrder;
+        }
+
+        this.showUpdateModal = false;
+        this.loadAllOrders();
+      },
+      error: (error) => {
+        console.error('Error updating Orders', error);
+      }
+    });
+  }
+
+  deleteProduct(orderId: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.orderService.deleteOrder(orderId).subscribe({
+        next: (response) => {
+          this.orders = this.orders.filter(order => order.orderId !== orderId);
+          console.log('Product deleted successfully', response);
+        },
+        error: (error) => {
+          console.error('Error deleting Product', error);
+        }
+      });
+    }
+  }
+
+  selectOrderForUpdate(order: Order): void {
+    this.selectedOrder = { ...order };
+    this.toggleUpdateModal(true);
+  }
+
 }

@@ -56,7 +56,7 @@
         <button (click)="navigate('user-access-management')" class="active">Access</button>
         <button (click)="navigate('customer-management')">Customer</button>
         <button (click)="navigate('supplier-management')">Supplier</button>
-        <button (click)="navigate('supplier-order-management')">Supply Order</button>
+      <!--<button (click)="navigate('supplier-order-management')">Supply Order</button>-->
       </div>
       <div class="user-info">Display Username</div>
     </div>
@@ -76,19 +76,56 @@
           <form (ngSubmit)="onSubmitStaff()" #addItemForm="ngForm">
             <div class="form-row">
               <div class="form-group">
+                <label for="updateUserEmail">User ID:</label>
+                <input type="text" id="createUserEmail" [(ngModel)]="newStaff.id" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="updateUserContact">Action:</label>
+                <input type="text" id="createupdateUserContact" [(ngModel)]="newStaff.user.roles[0].actions" name="contact" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
                 <label for="itemName">User First Name:</label>
-                <input type="text" id="FName" [(ngModel)]="newStaff.first_name" name="name" placeholder="First Name" required>
+                <input type="text" id="createUFName" [(ngModel)]="newStaff.firstName" name="name" placeholder="First Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">User Last Name:</label>
-                <input type="text" id="LName" [(ngModel)]="newStaff.last_name" name="name" placeholder="Last Name" required>
+                <input type="text" id="createULName" [(ngModel)]="newStaff.lastName" name="name" placeholder="Last Name" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemCondition">User Role:</label>
+                <select id="createUposition" [(ngModel)]="newStaff.user.roles[0].name" name="position" required>
+                  <option value="new">Admin</option>
+                  <option value="new">Warehouse Manager</option>
+                  <option value="new">Procurement Officer</option>
+                  <option value="used">Sales Representative</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="updateUserEmail">Email:</label>
+                <input type="text" id="createUserEmail" [(ngModel)]="newStaff.user.email" name="email" required>
+              </div>
+            </div>
+            <!--<div class="form-row">
+              <div class="form-group">
+                <label for="itemName">User First Name:</label>
+                <input type="text" id="FName" [(ngModel)]="newStaff.firstName" name="name" placeholder="First Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemName">User Last Name:</label>
+                <input type="text" id="LName" [(ngModel)]="newStaff.lastName" name="name" placeholder="Last Name" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemCondition">Position:</label>
-                <select id="position" [(ngModel)]="newStaff.position" name="position" required>
+                <select id="position" [(ngModel)]="newStaff.user.roles[0].name" name="position" required>
                   <option value="new">Admin</option>
                   <option value="new">Warehouse Manager</option>
                   <option value="new">Procurement Officer</option>
@@ -97,7 +134,7 @@
               </div>
               <div class="form-group">
                 <label for="itemCondition">Department:</label>
-                <select id="department" [(ngModel)]="newStaff.department" name="department" required>
+                <select id="department"  name="department" required>
                   <option value="new">IT</option>
                   <option value="new">Engineering</option>
                   <option value="new">Security</option>
@@ -110,11 +147,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Email:</label>
-                <input type="text" id="itemAvailable" [(ngModel)]="newStaff.email" name="email" required>
+                <input type="text" id="itemAvailable" [(ngModel)]="newStaff.user.email" name="email" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Contact:</label>
-                <input type="text" id="itemReserved" [(ngModel)]="newStaff.phone_number" name="contact" required>
+                <label for="itemReserved">Username:</label>
+                <input type="text" id="itemReserved"  [(ngModel)]="newStaff.user.username" name="contact" required>
               </div>
             </div>
 
@@ -138,7 +175,7 @@
                 <label for="itemModified">Last Update:</label>
                 <input type="date" id="lastModified" [(ngModel)]="newStaff.updated_at" name="modified" required>
               </div>
-            </div>
+            </div>-->
 
             <button type="submit" class="btn-add">Add User</button>
           </form>
@@ -151,22 +188,34 @@
         <div class="modal-content">
           <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
           <h2>Update Staff</h2>
-          <form (submit)="onUpdateStaff(selectedStaff.staff_id!)" #updateUserForm="ngForm">
+          <form (submit)="onUpdateStaff()" #updateUserForm="ngForm">
+
             <div class="form-row">
               <div class="form-group">
-                <label for="itemName">User First Name:</label>
-                <input type="text" id="UFName" [(ngModel)]="selectedStaff.first_name" name="name" placeholder="First Name" required>
+                <label for="updateUserEmail">User ID:</label>
+                <input type="text" id="updateUserEmail" [(ngModel)]="selectedStaff.id" name="email" required>
               </div>
               <div class="form-group">
-                <label for="itemName">User Last Name:</label>
-                <input type="text" id="ULName" [(ngModel)]="selectedStaff.last_name" name="name" placeholder="Last Name" required>
+                <label for="updateUserContact">Action:</label>
+                <input type="text" id="updateUserContact" [(ngModel)]="selectedStaff.user.roles[0].actions" name="contact" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="itemCondition">Position:</label>
-                <select id="Uposition" [(ngModel)]="selectedStaff.position" name="position" required>
+                <label for="itemName">User First Name:</label>
+                <input type="text" id="UFName" [(ngModel)]="selectedStaff.firstName" name="name" placeholder="First Name" required>
+              </div>
+              <div class="form-group">
+                <label for="itemName">User Last Name:</label>
+                <input type="text" id="ULName" [(ngModel)]="selectedStaff.lastName" name="name" placeholder="Last Name" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemCondition">User Role:</label>
+                <select id="Uposition" [(ngModel)]="selectedStaff.user.roles[0].name" name="position" required>
                   <option value="new">Admin</option>
                   <option value="new">Warehouse Manager</option>
                   <option value="new">Procurement Officer</option>
@@ -174,29 +223,14 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="itemCondition">Department:</label>
-                <select id="Udepartment" [(ngModel)]="selectedStaff.department" name="department" required>
-                  <option value="new">IT</option>
-                  <option value="new">Engineering</option>
-                  <option value="new">Security</option>
-                  <option value="new">Finance</option>
-                  <option value="used">Human Resource</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
                 <label for="updateUserEmail">Email:</label>
-                <input type="text" id="updateUserEmail" [(ngModel)]="selectedStaff.email" name="email" required>
-              </div>
-              <div class="form-group">
-                <label for="updateUserContact">Contact:</label>
-                <input type="text" id="updateUserContact" [(ngModel)]="selectedStaff.phone_number" name="contact" required>
+                <input type="text" id="updateUserEmail" [(ngModel)]="selectedStaff.user.email" name="email" required>
               </div>
             </div>
 
-            <div class="form-row">
+
+
+            <!--<div class="form-row">
               <div class="form-group">
                 <label for="itemPrice">Address:</label>
                 <input type="text" id="staffAddress" [(ngModel)]="selectedStaff.address" name="staffAddress" required>
@@ -216,7 +250,7 @@
                 <label for="itemModified">Last Update:</label>
                 <input type="date" id="UlastModified" [(ngModel)]="selectedStaff.updated_at" name="modified" required>
               </div>
-            </div>
+            </div>-->
             <button type="submit" class="btn-add">Update Staff</button>
           </form>
         </div>
@@ -244,19 +278,17 @@
         <tbody>
         <!-- Example Product Row -->
         <tr *ngFor="let staff of staffs; let i = index">
-          <td><input type="checkbox" name="selectedStaff" [value]="staff.staff_id"></td>
+          <td><input type="checkbox" name="selectedStaff" [value]="staff.id"></td>
           <td>{{ i + 1 }}</td>
-          <td>{{ staff.first_name +' '+ staff.last_name }} </td>
-          <td>{{ staff.position }}</td>
-          <td>{{ staff.department }}</td>
-          <td>{{ staff.email }}</td>
-          <td>{{ staff.phone_number }}</td>
-          <td>{{ staff.address }}</td>
-          <td>{{ staff.created_at }}</td>
-          <td>{{ staff.created_by }}</td>
+          <td>{{ staff.firstName +' '+ staff.lastName }} </td>
+          <td>{{ staff.id }}</td>
+          <td>{{ staff.user.email }}</td>
+          <td>{{ staff.user.username }}</td>
+          <td>{{ staff.user.roles[0].name }}</td>
+
           <td>
-            <button class="btn-action update-btn" (click)="toggleUpdateModal(true)">Update</button>
-            <button class="btn-action delete-btn" (click)="deleteStaff(selectedStaff.staff_id!)">Delete</button>
+            <button class="btn-action update-btn" (click)="selectStaffForUpdate(staff)">Update</button>
+            <button class="btn-action delete-btn" (click)="deleteStaff(staff.id!)">Delete</button>
           </td>
         </tr>
 

@@ -56,7 +56,7 @@
           <button (click)="navigate('user-access-management')">Access</button>
           <button (click)="navigate('customer-management')">Customer</button>
           <button (click)="navigate('supplier-management')">Supplier</button>
-          <button (click)="navigate('supplier-order-management')">Supply Order</button>
+     <!--<button (click)="navigate('supplier-order-management')">Supply Order</button>-->
         </div>
         <div class="user-info">Display Username</div>
       </div>
@@ -92,11 +92,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemAvailable">Available:</label>
-                  <input type="number" id="itemAvailable" [(ngModel)]="newProduct.quantity" name="available" required>
+                  <input type="number" id="itemAvailable" [(ngModel)]="newProduct.quantityAvailable" name="available" required>
                 </div>
                 <div class="form-group">
-                  <label for="itemReserved">Batch No:</label>
-                  <input type="text" id="itemReserved" [(ngModel)]="newProduct.batch_no" name="reserved" required>
+                  <label for="itemReserved">Category Name:</label>
+                  <input type="text" id="itemReserved" [(ngModel)]="newProduct.categoryName" name="reserved" required>
                 </div>
               </div>
 
@@ -107,7 +107,7 @@
                 </div>
                 <div class="form-group">
                   <label for="itemModified">Last Restock:</label>
-                  <input type="date" id="itemModified" [(ngModel)]="newProduct.batch_no" name="batch_no" required>
+                  <input type="date" id="itemModified" [(ngModel)]="newProduct.batchNo" name="batchNo" required>
                 </div>
               </div>
 
@@ -122,7 +122,7 @@
           <div class="modal-content">
             <span class="close" (click)="toggleUpdateModal(false)">&times;</span>
             <h2>Update Inventory Item</h2>
-            <form (submit)="onUpdateProduct(selectedProduct.product_id!)">
+            <form (submit)="onUpdateProduct()">
               <div class="form-row">
                 <div class="form-group">
                   <label for="updateItemName">Name:</label>
@@ -141,11 +141,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="itemAvailable">Available:</label>
-                  <input type="number" id="updateItemAvailable" [(ngModel)]="newProduct.quantity" name="available" required>
+                  <input type="text" id="updateItemAvailable" [(ngModel)]="newProduct.quantityAvailable" name="available" required>
                 </div>
                 <div class="form-group">
                   <label for="itemReserved">Batch No:</label>
-                  <input type="number" id="updateItemReserved"  [(ngModel)]="newProduct.batch_no" name="reserved" required>
+                  <input type="text" id="updateItemReserved"  [(ngModel)]="newProduct.batchNo" name="reserved" required>
                 </div>
               </div>
 
@@ -155,8 +155,8 @@
                   <input type="text" id="updateItemPrice" [(ngModel)]="newProduct.price" name="price" required>
                 </div>
                 <div class="form-group">
-                  <label for="itemModified">Batch Date:</label>
-                  <input type="date" id="updateItemModified" name="modified" required>
+                  <label for="itemModified">Category Name:</label>
+                  <input type="date" id="updateItemModified"   [(ngModel)]="newProduct.categoryName" name="modified" required>
                 </div>
               </div>
               <button type="submit" class="btn-add">Update Item</button>
@@ -175,25 +175,25 @@
               <th>PRICE</th>
               <th>STOCK</th>
               <th>BATCH NO.</th>
-              <th>PRICE</th>
-              <th>MODIFIED</th>
+              <th>Category</th>
+              <th>Supplier</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             <!-- Example Product Row -->
             <tr *ngFor="let product of products; let i = index">
-              <td><input type="checkbox" name="selectedProduct" [value]="product.product_id"></td>
+              <td><input type="checkbox" name="selectedProduct" [value]="product.id"></td>
               <td>{{ i + 1 }}</td>
               <td>{{ product.name }}</td>
               <td>{{ product.price }}</td>
-              <td>{{ product.quantity }}</td>
-              <td>{{ product.batch_no }}</td>
-              <td>$10.13</td>
-              <td>03/13/2017</td>
+              <td>{{ product.quantityAvailable }}</td>
+              <td>{{ product.batchNo }}</td>
+              <td>{{ product.categoryName }}</td>
+              <td>{{ product.supplierName }}</td>
               <td>
                 <button class="btn-action update-btn" (click)="selectProductForUpdate(product)">Update</button>
-                <button class="btn-action delete-btn" (click)="deleteProduct(product.product_id!)" >Delete</button>
+                <button class="btn-action delete-btn" (click)="deleteProduct(product.id!)" >Delete</button>
               </td>
             </tr>
 

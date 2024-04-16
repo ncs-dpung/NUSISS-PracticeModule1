@@ -1,8 +1,13 @@
 export interface Product {
-    product_id?: number | null | undefined;
-    category_id?: number | null | undefined;
+    id?: number | null | undefined;
+    categoryId?: number | null | undefined;
+    categoryName:  string;
     name: string;
     price: number;
-    quantity:number;
-    batch_no:string;
+    quantityAvailable:number;
+    reorderLevel:number;
+    stockLevel:string;
+    batchNo:string;
+    supplierName:string;
+    supplierId:number;
   }

@@ -27,21 +27,31 @@ export class InventoryManagementComponent implements OnInit {
   products: Product[] = [];
 
   newProduct: Product = {
-    product_id: null,
-    category_id: null,
+    id: null,
+    categoryId: null,
     name: '',
     price: 1.00,
-    quantity: 1,
-    batch_no: '',
+    quantityAvailable: 1,
+    categoryName:'',
+    batchNo: '',
+    reorderLevel:0,
+    stockLevel:'',
+    supplierName:'',
+    supplierId:0
   };
 
   selectedProduct: Product = {
-    product_id: null,
-    category_id: null,
+    id: null,
+    categoryId: null,
     name: '',
-    price: 1,
-    quantity: 1,
-    batch_no: '',
+    price: 1.00,
+    quantityAvailable: 1,
+    categoryName:'',
+    batchNo: '',
+    reorderLevel:0,
+    stockLevel:'',
+    supplierName:'',
+    supplierId:0
   };
 
   constructor(private router: Router, private inventoryService: InventoryService) { }
@@ -67,6 +77,7 @@ export class InventoryManagementComponent implements OnInit {
         });
 
     this.showModal = false;
+    this.loadProducts();
 
   }
 
@@ -91,26 +102,35 @@ export class InventoryManagementComponent implements OnInit {
     });
   }
 
-  onUpdateProduct(productId:number) {
-    // Find the supplier in the array
-    const productToUpdate = this.products.find(s => s.product_id === productId);
+  onUpdateProduct() {
 
-    // If supplier is found, proceed with update
-    if (productToUpdate) {
-      this.selectedProduct = { ...productToUpdate }; // Make a copy of the supplier to be updated
-      this.showModal = true; // Show the modal for updating
-    } else {
-      console.error(`Supplier with ID ${productId} not found.`);
+    if (this.selectedProduct.id === undefined) {
+      console.error('Cannot update a Product without an ID');
+      return;
     }
-    console.log(this.selectedProduct);
-    this.toggleUpdateModal(false); // Hide modal after update
+    this.inventoryService.updateProduct(this.selectedProduct.id!,this.selectedProduct).subscribe({
+      next: (updatedProduct) => {
+        // Find the index of the customer in the array
+        const index = this.products.findIndex(product => product.id === updatedProduct.id);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.products[index] = updatedProduct;
+        }
+
+        this.showUpdateModal = false;
+        this.loadProducts();
+      },
+      error: (error) => {
+        console.error('Error updating Products', error);
+      }
+    });
   }
 
   deleteProduct(productId: number): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.inventoryService.deleteProduct(productId).subscribe({
         next: (response) => {
-          this.products = this.products.filter(product => product.product_id !== productId);
+          this.products = this.products.filter(product => product.id !== productId);
           console.log('Product deleted successfully', response);
         },
         error: (error) => {

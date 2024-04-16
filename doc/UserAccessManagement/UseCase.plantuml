@@ -1,0 +1,23 @@
+@startuml
+
+actor Admin
+actor Staff
+
+rectangle {
+  (CRUD Action Management) as action
+  (Authorisation Management) as authorisationMgmt
+  (Staff Management) as staffMgmt 
+  
+  action <|-- authorisationMgmt
+  action <|-- staffMgmt
+}
+
+(Use Application) as (app)
+
+Staff <|-- Admin
+Staff -> app
+Admin --> authorisationMgmt
+Admin --> staffMgmt
+
+
+@enduml

@@ -1,0 +1,155 @@
+@startuml
+
+class LoginReqDto {
+  - username: String
+  - password: String
+}
+
+class LoginResDto {
+  - user: User
+  - jwt: String
+}
+
+class StaffRegResDto {
+  - password: String
+  - staff: StaffDto
+}
+
+class StaffUpdateDto {
+  - firstName: String
+  - lastName: String
+  - userUpdateDto: UserUpdateDto
+
+  + getFirstName(): String
+  + setFirstName(firstName: String): void
+  + getLastName(): String
+  + setLastName(lastName: String): void
+  + getUserUpdateDto(): UserUpdateDto
+  + setUserUpdateDto(userUpdateDto: UserUpdateDto): void
+}
+
+class UserPasswordUpdateDto {
+  - oldPassword: String
+  - newPassword: String
+}
+
+class UserUpdateDto {
+  - username: String
+  - email: String
+
+  + getUsername(): String
+  + setUsername(username: String): void
+  + getEmail(): String
+  + setEmail(email: String): void
+}
+
+interface StaffService {
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + createAdminStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, staffDto: StaffUpdateDto)
+  + deleteStaffById(id: Long)
+  + getAllStaff()
+}
+
+interface UserDetailService {
+  {abstract} + loadUserByUsername(username: String)
+}
+
+note right of UserDetailService::loadUserByUsername
+  returns UserDetails
+end note
+
+interface UserService extends UserDetailService {
+  + getUserById(id: Long)
+  + createUser(user: User)
+  + updateUser(id: Long, userDto: UserDto)
+  + updateUserPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteUserById(id: Long)
+  + getAllUsers()
+}
+
+interface StaffDao {
+  + findById(id: Long): Optional<Staff>
+  + saveStaff(user: Staff): Staff
+  + saveAdminStaff(user: Staff): Staff
+  + deleteStaffById(id: Long): void
+  + findAllStaff(): List<Staff>
+}
+
+interface UserDao {
+  + findById(id: Long): Optional<User>
+  + findByUsername(username: String): Optional<User>
+  + saveUser(user: User): User
+  + deleteUserById(id: Long): void
+  + findAllUsers(): List<User>
+}
+
+class StaffController {
+  - staffService: StaffService
+  - userService: UserService
+  + getAllStaff()
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, updateDto: StaffUpdateDto)
+  + updateStaffPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteStaff(id: Long)
+}
+
+class StaffServiceImpl implements StaffService {
+  - staffDao: StaffDao
+  - objectMapper: ObjectMapper
+  + StaffServiceImpl(staffDao: StaffDao, objectMapper: ObjectMapper)
+  + getStaffById(id: Long)
+  + createStaff(staffDto: StaffDto)
+  + createAdminStaff(staffDto: StaffDto)
+  + updateStaff(id: Long, updateDto: StaffUpdateDto)
+  + deleteStaffById(id: Long)
+  + getAllStaff()
+}
+
+class UserServiceImpl implements UserService {
+  - userDao: UserDao
+  - passwordEncoder: PasswordEncoder
+  - objectMapper: ObjectMapper
+  + UserServiceImpl(userDao: UserDao, passwordEncoder: PasswordEncoder, objectMapper: ObjectMapper)
+  + getUserById(id: Long)
+  + createUser(user: User)
+  + updateUser(id: Long, userDto: UserDto)
+  + updateUserPassword(id: Long, updateDto: UserPasswordUpdateDto)
+  + deleteUserById(id: Long)
+  + getAllUsers()
+  + loadUserByUsername(username: String)
+}
+
+class UserDaoImpl implements UserDao {
+  - userRepository: UserRepository
+  - roleRepository: RoleRepository
+  + UserDaoImpl(roleRepository: RoleRepository, userRepository: UserRepository)
+  + findById(id: Long): Optional<User>
+  + findByUsername(username: String): Optional<User>
+  + saveUser(user: User): User
+  + deleteUserById(id: Long): void
+  + findAllUsers(): List<User>
+}
+
+class StaffDaoImpl implements StaffDao {
+  - staffRepository: StaffRepository
+  - userRepository: UserRepository
+  - roleRepository: RoleRepository
+  + StaffDaoImpl(roleRepository: RoleRepository, staffRepository: StaffRepository, userRepository: UserRepository)
+  + findById(id: Long): Optional<Staff>
+  + saveStaff(staff: Staff): Staff
+  + saveAdminStaff(staff: Staff): Staff
+  + deleteStaffById(id: Long): void
+  + findAllStaff(): List<Staff>
+}
+
+StaffController ..> StaffService
+StaffController ..> UserService
+StaffServiceImpl ..> StaffDao
+UserServiceImpl ..> UserDao
+
+StaffUpdateDto "1" --* "1" UserUpdateDto
+
+@enduml

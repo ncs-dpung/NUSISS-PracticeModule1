@@ -124,6 +124,25 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+        </executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -135,10 +154,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-dev.properties</include>
-						</includes>
+						<directory>src/main/resources/dev</directory>
 					</resource>
 				</resources>
 			</build>
@@ -148,10 +164,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-test.properties</include>
-						</includes>
+						<directory>src/main/resources/test</directory>
 					</resource>
 				</resources>
 			</build>
@@ -161,10 +174,7 @@
 			<build>
 				<resources>
 					<resource>
-						<directory>src/main/resources</directory>
-						<includes>
-							<include>application-prod.properties</include>
-						</includes>
+						<directory>src/main/resources/prod</directory>
 					</resource>
 				</resources>
 			</build>

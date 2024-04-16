@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from '../order-management/order.model';
 import { Order_Items } from '../order-management/order_items.model';
@@ -10,37 +10,45 @@ import { Order_Status } from '../order-management/order_status.model';
 })
 export class OrderService {
 
-  private apiUrl = 'http://your-api-url/api/orders';
+  private apiUrl = 'http://localhost:8080/api/orders';
 
   constructor(private http: HttpClient) { }
 
+  private getHttpOptions() {
+    const token = localStorage.getItem('auth_token'); 
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` 
+    });
+    return { headers: headers };
+  }
   
   getOrderById(orderId: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${orderId}`);
+    return this.http.get<Order>(`${this.apiUrl}/${orderId}`,this.getHttpOptions());
   }
 
   createOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+    return this.http.post<Order>(this.apiUrl, order,this.getHttpOptions());
   }
 
   updateOrder(orderId: number, order: Order): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}/${orderId}`, order);
+    return this.http.put<Order>(`${this.apiUrl}/${orderId}`, order,this.getHttpOptions());
   }
 
   deleteOrder(orderId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${orderId}`);
+    return this.http.delete<void>(`${this.apiUrl}/${orderId}`,this.getHttpOptions());
   }
 
   updateOrderStatus(orderId: number, status: any): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}/${orderId}/status`, status);
+    return this.http.put<Order>(`${this.apiUrl}/${orderId}/status`, status,this.getHttpOptions());
   }
 
   getAllOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/all`);
+    return this.http.get<Order[]>(`${this.apiUrl}/all`,this.getHttpOptions());
   }
 
   getPendingProcessedOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/pending processed`);
+    return this.http.get<Order[]>(`${this.apiUrl}/pending processed`,this.getHttpOptions());
   }
 
 }

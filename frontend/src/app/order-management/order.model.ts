@@ -1,8 +1,25 @@
 export interface Order {
-    order_id?: number | null | undefined;
-    staff_id?: number | null | undefined;
-    customer_id?: number | null | undefined;
-    date_placed: Date;
-    date_shipped: Date;
-    order_status_id?: number | null | undefined;
-  }
+  orderId?: number | null | undefined;
+  customerId?: number | null | undefined;
+  customerName: string;
+  datePlaced: Date;
+  dateShipped: Date;
+  order_status_id?: number | null | undefined;
+  items: OrderItem[];
+  total: number;
+  staffFirstName: string;
+  staffLastName: string;
+  status: OrderStatus[];
+}
+
+export interface OrderItem {
+  productId: number;
+  productName: string;
+  quantity: number;
+  price: number;
+}
+
+export interface OrderStatus {
+  id: number;
+  name: string;
+}

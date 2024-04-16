@@ -1,6 +1,6 @@
 
 <!-- temporary for navigation during development-->
-<div class="top-bar">
+<!--<div class="top-bar">
     <div class="tab">
         <button (click)="navigate('inventory-management')" class="active">Inventory</button>
         <button (click)="navigate('order-management')">Orders</button>
@@ -8,7 +8,7 @@
         <button (click)="navigate('user-access-management')">Access</button>
     </div>
     <div class="user-info">Display Username</div>
-</div>
+</div>-->
 
 
 <div class="auth-page">
@@ -19,14 +19,17 @@
     <div class="login-container">
         <div class="login-form">
             <h1>Login</h1>
-            <form>
+            <form (ngSubmit)="login()">
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                    {{ errorMessage }}
+                </div>
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" class="form-control" placeholder="Enter username">
+                    <input type="text" [(ngModel)]="username" name="username" id="username" class="form-control" placeholder="Enter username">
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter password">
+                    <input type="password" [(ngModel)]="password" name="password" id="password" class="form-control" placeholder="Enter password">
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>

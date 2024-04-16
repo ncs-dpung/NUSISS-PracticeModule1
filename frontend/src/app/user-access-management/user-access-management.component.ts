@@ -22,11 +22,14 @@ export class UserAccessManagementComponent implements OnInit {
   showUserModal = false;
 
   staffs: Staff[] = [];
+  selectedStaff: Staff = {} as Staff;
+  newStaff: Staff = {} as Staff;
+  
 
-  newStaff: Staff = {
-    staff_id: null,
-    first_name: '',
-    last_name: '',
+ /* newStaff: Staff = {
+    id: null,
+    firstName: '',
+    lastName: '',
     position: '',
     department: '',
     email: '',
@@ -39,9 +42,9 @@ export class UserAccessManagementComponent implements OnInit {
   };
 
   selectedStaff: Staff = {
-    staff_id: null,
-    first_name: '',
-    last_name: '',
+    id: null,
+    firstName: '',
+    lastName: '',
     position: '',
     department: '',
     email: '',
@@ -52,6 +55,7 @@ export class UserAccessManagementComponent implements OnInit {
     created_by: '',
     updated_by: '',
   };
+  */
 
   constructor(private router: Router, private staffService: StaffService) { }
 
@@ -65,17 +69,25 @@ export class UserAccessManagementComponent implements OnInit {
     });
   }
 
-  onUpdateStaff(staffId: number) {
-    // Find the supplier in the array
-    const staffToUpdate = this.staffs.find(s => s.staff_id === staffId);
-
-    // If supplier is found, proceed with update
-    if (staffToUpdate) {
-      this.selectedStaff = { ...staffToUpdate }; // Make a copy of the supplier to be updated
-    } else {
-      console.error(`Supplier with ID ${staffId} not found.`);
+  onUpdateStaff() {
+    if (this.selectedStaff.id === undefined) {
+      console.error('Cannot update an account without an ID');
+      return;
     }
-    console.log(this.selectedStaff);
+    this.staffService.updateStaff(this.selectedStaff).subscribe({
+      next: (updatedStaff) => {
+        // Find the index of the customer in the array
+        const index = this.staffs.findIndex(staff => staff.id === updatedStaff.id);
+        if (index !== -1) {
+          // Update the customer in the array
+          this.staffs[index] = updatedStaff;
+        }
+        this.loadSaffs();
+      },
+      error: (error) => {
+        console.error('Error updating staff', error);
+      }
+    });
     this.toggleUpdateModal(false); // Hide modal after update
   }
 
@@ -83,7 +95,7 @@ export class UserAccessManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this staff?')) {
       this.staffService.deleteStaff(staffId).subscribe({
         next: (response) => {
-          this.staffs = this.staffs.filter(staff => staff.staff_id !== staffId);
+          this.staffs = this.staffs.filter(staff => staff.id !== staffId);
           console.log('Staff deleted successfully', response);
         },
         error: (error) => {
@@ -112,9 +124,6 @@ export class UserAccessManagementComponent implements OnInit {
     });
 
 
-
-
-
   }
 
 
@@ -122,6 +131,11 @@ export class UserAccessManagementComponent implements OnInit {
 
   toggleUpdateModal(show: boolean): void {
     this.showUpdateModal = show;
+  }
+
+  selectStaffForUpdate(staff: Staff): void {
+    this.selectedStaff = { ...staff };
+    this.toggleUpdateModal(true);
   }
 
 
