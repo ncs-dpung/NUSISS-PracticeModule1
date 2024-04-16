@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS tbl_product (
    FOREIGN KEY (category_id) REFERENCES tbl_category(category_id),
    FOREIGN KEY (supplier_id) REFERENCES tbl_supplier(supplier_id)
 );
---
+
 -- Create Customer Table
 CREATE TABLE IF NOT EXISTS tbl_customer (
     customer_id BIGINT PRIMARY KEY NOT NULL UNIQUE AUTO_INCREMENT,
