@@ -3,11 +3,11 @@
 title CI/CD Processes
 autonumber
 
-actor       Developer   as dev
-participant GitHub      as gh
-participant "CI Runner" as ci
-participant "DockerHub" as dh
-participant "AWS EC2"   as ec2
+actor       Developer           as dev
+participant GitHub              as gh
+participant "GitHub Runner"     as ci
+participant "DockerHub"         as dh
+participant "AWS EC2 Runner"    as ec2
 
 dev -> gh   : push
 activate gh
@@ -15,7 +15,11 @@ activate gh
 gh  -> ci   : triggers
 activate ci
 
-autonumber 3.1
+ci  -> gh   : clone repository & checkout commit
+activate gh
+deactivate gh
+
+autonumber 4.1
 group security
     ci  -> ci   : dependency scan
     activate ci
@@ -24,7 +28,7 @@ group security
     deactivate ci
 end
 
-autonumber 4.1
+autonumber 5.1
 group build & test
     ci  -> ci   : code formatter
     activate ci
@@ -38,7 +42,7 @@ group build & test
     ci  --> gh  : put artifacts/logs
     deactivate ci
     
-autonumber 4.5.1
+autonumber 5.5.1
 alt build & test success
     ci  -> ci   : build image
     activate ci
@@ -50,24 +54,47 @@ alt build & test success
 end
 
 deactivate ci
-deactivate gh
 end
-== main branch ==
+== main branch & image pushed ==
 
-autonumber 5
-dev -> gh   : deploy
-activate gh
+autonumber 6
 
 gh  -> ec2  : connect to application runner
 activate ec2
 
-ec2 ->x ec2 : delete old container
-activate ec2
-deactivate ec2
+ec2  -> gh  : clone repository & checkout commit
+activate gh
+deactivate gh
 
 ec2 -> dh   : pull image
 activate dh
 deactivate dh
 
+group integration test
+    ec2 -> ec2  : start integration container from image
+    activate ec2
+
+    ec2 -> ec2  : run integration tests
+    activate ec2
+    deactivate ec2
+
+    ec2 ->x ec2 : stop & delete integration container
+    activate ec2
+    deactivate ec2
+    deactivate ec2
+end
+
+ec2 ->x ec2 : stop & delete old application container
+activate ec2
+deactivate ec2
+note left
+    deployment: only if integration test passed
+end note
+
+
 ec2 -> ec2  : run application container from image
+activate ec2
+deactivate ec2
+
+deactivate gh
 @enduml

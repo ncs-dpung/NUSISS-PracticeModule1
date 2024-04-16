@@ -6,6 +6,7 @@ RUN microdnf install procps-ng ; microdnf clean all
 RUN mkdir /be
 WORKDIR /be
 
-ADD docker-entrypoint.dev.sh ./
+ADD ./bin/docker-entrypoint.dev.sh ./
 
-RUN sed -i -e 's/\r$//' docker-entrypoint.dev.sh
+RUN sed -i -e 's/\r$//' ./bin/docker-entrypoint.dev.sh
+
