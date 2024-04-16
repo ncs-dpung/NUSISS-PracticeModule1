@@ -86,11 +86,11 @@ jobs:
     runs-on: self-hosted
     needs: docker
     env:
-      DB_URL=${{ secrets.DB_URL }}
-      DB_PORT=${{ secrets.DB_PORT }}
-      DB_NAME=${{ secrets.DB_NAME }}
-      DB_USERNAME=${{ secrets.DB_USERNAME }}
-      DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     defaults:
       run:
         working-directory: ./backend
