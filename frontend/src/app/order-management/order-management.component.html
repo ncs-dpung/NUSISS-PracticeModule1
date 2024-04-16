@@ -125,18 +125,18 @@
                 <input type="text" id="updateItemName" [(ngModel)]="selectedOrder.orderId" name="orderId" placeholder="Item Name" required>
               </div>
               <div class="form-group">
-                <label for="itemName">Customer ID:</label>
-                <input type="text" id="UcustomerId" [(ngModel)]="selectedOrder.customerId" name="customerId" placeholder="Customer ID" required>
+                <label for="itemName">Customer Name:</label>
+                <input type="text" id="UcustomerName" [(ngModel)]="selectedOrder.customerName" name="customerId" placeholder="Customer ID" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Status:</label>
-                <input type="text" id="Uorder_status_id"  name="order_status_id" required>
+                <input type="text" id="Uorder_status_id" [(ngModel)]="selectedOrder.status[0].name"  name="order_status_id" required>
               </div>
               <div class="form-group">
-                <label for="itemReserved">Staff First Name:</label>
+                <label for="itemReserved">Staff Incharge:</label>
                 <input type="text" id="updateItemReserved" [(ngModel)]="selectedOrder.staffFirstName" name="reserved" required>
               </div>
             </div>
@@ -151,6 +151,19 @@
                 <input type="date" id="updatedateShipped" [(ngModel)]="selectedOrder.dateShipped" name="dateShipped" required>
               </div>
             </div>
+
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemPrice">Items:</label>
+                <input type="text" id="testOrderName" [(ngModel)]="selectedOrder.items[0].productName" name="date_place" required>
+              </div>
+              <div class="form-group">
+                <label for="itemModified"> Quantity:</label>
+                <input type="text" id="testOrderQuatily" [(ngModel)]="selectedOrder.items[0].quantity" name="dateShipped" required>
+              </div>
+            </div>
+
             <button type="submit" class="btn-add">Update Order</button>
           </form>
         </div>
@@ -174,14 +187,13 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Example Product Row -->
         <tr *ngFor="let order of orders; let i = index">
           <td><input type="checkbox" name="selectedOrder" [value]="order.orderId"></td>
           <td>{{ i + 1 }}</td>
           <td>{{ order.orderId }}</td>
           <td>{{ order.customerName }}</td>
-          <td>{{ order.items[0]?.productName }}</td>
-          <td>{{ order.status[0]?.name }}</td>
+          <td>{{ order.items[0].productName }}</td>
+          <td>{{ order.status[0].name }}</td>
           <td>{{ order.datePlaced | date:'medium' }}</td>
           <td>{{ order.dateShipped | date:'medium' }}</td>
           <td>S$ {{ order.total }}</td>
