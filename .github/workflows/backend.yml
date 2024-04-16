@@ -110,6 +110,7 @@ jobs:
       - name: Run integration test
         run: bin/integration.sh http://localhost 8081 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
       - name: Deploy
+        run: |
           docker stop nusisspm1be || true
           docker rm nusisspm1be || true
           docker run -d -p 8080:8080 --name nusisspm1be --env-file ./env/prod-subst.env ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
