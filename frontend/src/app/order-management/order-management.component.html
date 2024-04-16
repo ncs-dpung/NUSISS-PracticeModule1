@@ -88,7 +88,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Status:</label>
-                <input type="text" id="order_status_id" [(ngModel)]="newOrder.order_status_id" name="order_status_id" required>
+                <input type="text" id="order_status_id" [(ngModel)]="newOrder.status.name" name="order_status_id" required>
               </div>
               <div class="form-group">
                 <label for="itemReserved">Staff First Name:</label>
@@ -133,7 +133,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="itemAvailable">Status:</label>
-                <input type="text" id="Uorder_status_id" [(ngModel)]="selectedOrder.status[0].name"  name="order_status_id" required>
+                <input type="text" id="Uorder_status_id" [(ngModel)]="selectedOrder.status.name"  name="order_status_id" required>
               </div>
               <div class="form-group">
                 <label for="itemReserved">Staff Incharge:</label>
@@ -193,7 +193,7 @@
           <td>{{ order.orderId }}</td>
           <td>{{ order.customerName }}</td>
           <td>{{ order.items[0].productName }}</td>
-          <td>{{ order.status[0].name }}</td>
+          <td>{{ order.status.name }}</td>
           <td>{{ order.datePlaced | date:'medium' }}</td>
           <td>{{ order.dateShipped | date:'medium' }}</td>
           <td>S$ {{ order.total }}</td>

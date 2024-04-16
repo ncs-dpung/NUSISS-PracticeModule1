@@ -35,14 +35,17 @@ export class OrderManagementComponent implements OnInit{
     dateShipped: new Date('01/01/2000'),
     order_status_id: null,
     customerName:'',
-    items:[],
+    items:[{
+      productId: null,
+  productName: '',
+  quantity: 0,
+  price: 0,
+
+    }],
     total:0,
     staffFirstName:'',
     staffLastName:'',
-    status: [{ id: 5, name: 'PENDING' }],
-
-
-
+    status: { id: 0, name: 'PENDING' }
   };
 
   selectedOrder: Order = {
@@ -52,12 +55,17 @@ export class OrderManagementComponent implements OnInit{
     dateShipped: new Date('01/01/2000'),
     order_status_id: null,
     customerName:'',
-    items:[],
+    items:[{
+      productId: null,
+  productName: '',
+  quantity: 0,
+  price: 0,
+
+    }],
     total:0,
     staffFirstName:'',
     staffLastName:'',
-    status:[],
-
+    status: { id: null, name: 'PENDING' }
   };
 
 

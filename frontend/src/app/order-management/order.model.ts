@@ -9,17 +9,17 @@ export interface Order {
   total: number;
   staffFirstName: string;
   staffLastName: string;
-  status: OrderStatus[];
+  status: OrderStatus;
 }
 
 export interface OrderItem {
-  productId: number;
+  productId?: number | null | undefined;
   productName: string;
   quantity: number;
   price: number;
 }
 
 export interface OrderStatus {
-  id: number;
+  id?: number | null | undefined;
   name: string;
 }
