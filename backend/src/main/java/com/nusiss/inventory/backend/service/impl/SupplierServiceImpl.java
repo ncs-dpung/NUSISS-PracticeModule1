@@ -39,8 +39,9 @@ public class SupplierServiceImpl implements SupplierService {
 
   @Override
   public SupplierDto getSupplierById(Long id) {
-    return supplierRepository.findById(id).orElse(null).toDto();
+    return supplierRepository.findById(id).map(Supplier::toDto).orElse(null);
   }
+
 
   @Override
   @Transactional
@@ -84,7 +85,11 @@ public class SupplierServiceImpl implements SupplierService {
     return suppliers.stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
-  private SupplierDto convertToDto(Supplier supplier) {
+  public SupplierDto convertToDto(Supplier supplier) {
+    if (supplier == null) {
+      throw new IllegalArgumentException("Supplier cannot be null");
+    }
+
     SupplierDto dto = new SupplierDto();
     dto.setId(supplier.getId());
     dto.setSupplierName(supplier.getSupplierName());

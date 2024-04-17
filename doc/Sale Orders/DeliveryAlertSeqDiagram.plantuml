@@ -1,0 +1,52 @@
+@startuml Delivery Alert 
+' actor User as "SalesRep / Inventory Manager"
+' participant "OrderController" as Controller
+participant "OrderService" as ServiceInterface
+' participant "OrderUpdateStrategy" as StrategyInterface
+' participant "PendingOrderUpdateStrategy" as PendingStrategy
+' participant "ProcessedOrderUpdateStrategy" as ProcessedStrategy
+participant "Order" as OrderEntity
+participant "OrderRepository" as Repo
+participant "OrderStatusObserver" as ObserverInterface
+participant "CustomerDeliveryStatusObserver" as DeliveryObserver
+participant "NotificationService" as NotificationInterface
+participant "EmailNotificationService" as Notification
+participant "OrderCheckScheduler" as Scheduler
+participant "StaffPendingOrderNotificationObserver" as PendingObserver
+
+' User -> Controller : updateOrder(orderId, orderDetails)
+' Controller -> ServiceInterface : updateOrder(orderId, orderDetails)
+' ServiceInterface -> OrderEntity : getState()
+' OrderEntity --> ServiceInterface : currentState
+
+' alt if state is Pending
+'     ServiceInterface -> StrategyInterface : getStrategy(currentState)
+'     StrategyInterface -> PendingStrategy : updateOrder(order, orderDto)
+'     PendingStrategy -> Repo : save(order)
+' else if state is Processed
+'     ServiceInterface -> StrategyInterface : getStrategy(currentState)
+'     StrategyInterface -> ProcessedStrategy : updateOrder(order, orderDto)
+'     ProcessedStrategy -> Repo : save(order)
+' end
+Repo --> ServiceInterface : orderSaved
+ServiceInterface -> OrderEntity : getState()
+OrderEntity --> ServiceInterface : currentState
+
+alt if order status is Delivered
+    ServiceInterface -> ObserverInterface : notifyObservers(order)
+    ObserverInterface -> DeliveryObserver : notify(order)
+    DeliveryObserver -> NotificationInterface : sendNotification(customerDetails, message)
+    NotificationInterface -> Notification : sendNotification(customerDetails, message)
+end
+
+== Scheduled Order Checks ==
+
+Scheduler -> Repo : findPendingOrdersOlderThanDays(2)
+Repo --> Scheduler : pendingOrders
+Scheduler -> ObserverInterface : notifyObservers(pendingOrders)
+ObserverInterface -> PendingObserver : notify(pendingOrders)
+PendingObserver -> NotificationInterface : sendNotification(salesRepDetails, message)
+NotificationInterface -> Notification : sendNotification(salesRepDetails, message)
+
+
+@enduml
