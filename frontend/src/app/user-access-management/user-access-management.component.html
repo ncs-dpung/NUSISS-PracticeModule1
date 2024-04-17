@@ -264,14 +264,11 @@
         <tr>
           <th><input type="checkbox"></th> <!-- Checkbox in header for select all (optional) -->
           <th>No.</th>
+          <th>ID</th>
           <th>STAFF</th>
-          <th>POSITION</th>
-          <th>DEPARTMENT</th>
           <th>EMAIL</th>
-          <th>PHONE</th>
-          <th>ADDRESS</th>
-          <th>CREATE DATE</th>
-          <th>CREATEOR</th>
+          <th>ACCOUNT</th>
+          <th>ROLE</th>
           <th>ACTIONS</th>
         </tr>
         </thead>
@@ -280,12 +277,11 @@
         <tr *ngFor="let staff of staffs; let i = index">
           <td><input type="checkbox" name="selectedStaff" [value]="staff.id"></td>
           <td>{{ i + 1 }}</td>
-          <td>{{ staff.firstName +' '+ staff.lastName }} </td>
           <td>{{ staff.id }}</td>
+          <td>{{ staff.firstName +' '+ staff.lastName }} </td>
           <td>{{ staff.user.email }}</td>
           <td>{{ staff.user.username }}</td>
           <td>{{ staff.user.roles[0].name }}</td>
-
           <td>
             <button class="btn-action update-btn" (click)="selectStaffForUpdate(staff)">Update</button>
             <button class="btn-action delete-btn" (click)="deleteStaff(staff.id!)">Delete</button>

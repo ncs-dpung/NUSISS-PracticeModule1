@@ -147,7 +147,6 @@ export class UserAccessManagementComponent implements OnInit {
       this.showUserModal = false;
     });
 
-
   }
 
 

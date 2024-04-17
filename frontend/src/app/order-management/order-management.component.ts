@@ -83,13 +83,19 @@ export class OrderManagementComponent implements OnInit{
     this.showModal = !this.showModal;
   }
 
-  onSubmit() {
+  onSubmitOrder() {
+    console.log('New Order:', this.newOrder);
 
-    // Close the modal
-    this.showModal = false;
-    // Reset the new item or do whatever is needed post-submission
-    //this.newOrder = {};
+    this.orderService.createOrder(this.newOrder).subscribe(order => {
+      this.orders.push(order);
+      this.showModal = false;
+    });
   }
+
+  calculateTotal() {
+    this.selectedOrder.total = this.selectedOrder.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  }
+  
 
 
   navigate(path: string): void {
