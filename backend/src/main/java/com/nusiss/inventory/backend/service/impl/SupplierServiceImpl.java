@@ -42,7 +42,6 @@ public class SupplierServiceImpl implements SupplierService {
     return supplierRepository.findById(id).map(Supplier::toDto).orElse(null);
   }
 
-
   @Override
   @Transactional
   public SupplierDto createSupplier(SupplierDto supplierDto) {
