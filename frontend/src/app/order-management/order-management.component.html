@@ -176,6 +176,9 @@
             </div>
             <!--test display items-->
             <h3>Items</h3>
+            <div class="form-row">
+              <button type="button" (click)="addItem()">Add Item</button>
+            </div>
             <table>
               <thead>
                 <tr>
@@ -185,21 +188,47 @@
                   <th>Price</th>
                   <th>Quantity</th>
                   <th>Total Amount (SGD)</th>
+                  <th>ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of selectedOrder.items; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ item.productId }}</td>
-                  <td>{{ item.productName }}</td>
-                  <td>{{ item.price }}</td>
+                  <td >{{ i + 1 }}</td>
                   <td>
-                    <input class="modal-number-input" type="number" [(ngModel)]="item.quantity" (change)="calculateTotal()" [name]="'quantity' + i">
+                    <input type="number" class="modal-number-input" [(ngModel)]="item.productId" name="productId{{i}}" disabled>
                   </td>
+                  <td>
+                    <select #productSelect (change)="onProductSelected(i, productSelect.value)"
+                      [(ngModel)]="item.productName" name="productName">
+                    <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="number"  class="modal-number-input" [(ngModel)]="item.price" name="productPrice{{i}}" disabled>
+                  </td>
+                  <td>
+                    <input class="modal-number-input" type="number" [(ngModel)]="item.quantity"
+                      (change)="calculateTotal()" [name]="'quantity' + i" />
+                  </td>
+                  <!--<td>{{ item.productId }}</td>
+                  <td>{{ item.productName }}</td>
+                  <td>{{ item.price }}</td>-->
                   <td>{{ item.price * item.quantity }}</td>
+                  <td>
+                    <button class="btn-action delete-btn" type="button" (click)="deleteItem(i)">Delete </button>
+                  </td>
                 </tr>
               </tbody>
               <tfoot>
+                <div class="new-item-details">
+                  <h3>Add New Item</h3>
+                  <div class="form-row">
+                    <input type="text" [(ngModel)]="tempItem.productName" placeholder="Product Name" />
+                    <input type="number" [(ngModel)]="tempItem.quantity" placeholder="Quantity" />
+                    <input type="number" [(ngModel)]="tempItem.price" placeholder="Price" />
+                    <button type="button" (click)="addItem()">Add Item</button>
+                  </div>
+                </div>
                 <tr>
                   <td colspan="5" class="text-right">Total Cost:</td>
                   <td>S$ {{ selectedOrder.total }}</td>
