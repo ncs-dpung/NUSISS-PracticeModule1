@@ -12,16 +12,21 @@ ADD ./package.json .
 RUN npm install
 
 # Copy the Angular project files into the container
-COPY . .
+ADD ./src ./src
+
+ADD ./*.json ./
 
 # Build the Angular application for production
 RUN ng build
 
 ## Use the Nginx base image for serving the built Angular app
-FROM nginx:1.21
+FROM nginx:alpine
 
-# Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# # Copy the Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/nginx.conf
 
 # Copy the built Angular app from the builder stage to the Nginx directory
-COPY --from=builder /app/dist/advanced-inventory-management-system /usr/share/nginx/html
+COPY --from=builder /app/dist/advanced-inventory-management-system/browser /usr/share/nginx/html
+
+EXPOSE 80
+

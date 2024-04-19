@@ -57,6 +57,42 @@ services:
       dev-be:
         condition: service_healthy
 
+  be:
+    # just for testing prod container in local
+    # (change env path to prod to test with prod db)
+    # Steps performed in ci before docker build:
+    # 1. mvn --batch-mode --update-snapshots verify -Pprod 
+    # 2. mkdir staging && cp target/*.jar staging
+    container_name: nusisspm1be
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - springapimysql-net
+      - app
+    env_file:
+      - path: ./backend/env/env.dev
+        required: true
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail http://localhost:8080/api/healthcheck || exit 1
+      timeout: 15s
+      retries: 20
+      start_period: 30s
+
+  fe:
+    # nginx prod fe in local
+    container_name: nusisspm1fe
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - app
+
   umlserver:
     container_name: uml
     image: plantuml/plantuml-server:tomcat
@@ -65,3 +101,4 @@ services:
 
 networks:
     springapimysql-net:
+    app:
