@@ -7,7 +7,7 @@ on:
       - .github/workflows/frontend.yml
 
 jobs:
-  ci:
+  fe-ci:
     runs-on: ubuntu-latest
 
     defaults:
@@ -44,9 +44,58 @@ jobs:
       - name: Test
         run: npm test -- --watch=false --browsers=ChromeHeadless
 
-  # TODO: AWS
-  # deploy:
-  #   if: success() && github.ref_name == 'main'
-  #   runs-on: ubuntu-latest
-  #   needs: ci
+  docker:
+    name: Docker Build & Push
+    needs: fe-ci
+    if: github.event_name == 'push' && github.event_name != 'pull_request' && success()
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME}}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/} -f Dockerfile .
+      - name: Push Docker Image
+        run: |
+          if [[ $GITHUB_REF == refs/heads/main ]]; then
+            docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
+          fi
+
+  deploy:
+    if: success() && github.ref_name == 'main'
+    runs-on: self-hosted
+    needs: docker
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          spare-checkout: |
+            frontend/bin
+            frontend/hurl
+      - name: Pull docker image
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
+      - name: Run connectivity test
+        run: bin/integration.sh http://localhost 80 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
+      - name: Deploy
+        run: |
+          docker stop nusisspm1fe || true
+          docker rm nusisspm1fe || true
+          docker run -d -p 80:80 --name nusisspm1fe ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
 
