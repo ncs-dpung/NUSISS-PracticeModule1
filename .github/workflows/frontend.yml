@@ -46,7 +46,7 @@ jobs:
 
   docker:
     name: Docker Build & Push
-    needs: be-ci
+    needs: fe-ci
     if: github.event_name == 'push' && github.event_name != 'pull_request' && success()
     runs-on: ubuntu-latest
     defaults:
