@@ -2,12 +2,10 @@ package com.nusiss.inventory.backend.components;
 
 import com.nusiss.inventory.backend.dto.OrderDto;
 import com.nusiss.inventory.backend.dto.OrderItemDto;
-import com.nusiss.inventory.backend.entity.Customer;
-import com.nusiss.inventory.backend.entity.Order;
-import com.nusiss.inventory.backend.entity.OrderItem;
-import com.nusiss.inventory.backend.entity.Product;
+import com.nusiss.inventory.backend.entity.*;
 import com.nusiss.inventory.backend.repository.CustomerRepository;
 import com.nusiss.inventory.backend.repository.ProductRepository;
+import com.nusiss.inventory.backend.repository.StaffRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,12 +20,14 @@ public class OrderConverter {
 
   private final CustomerRepository customerRepository;
   private final ProductRepository productRepository;
+  private final StaffRepository staffRepository;
 
   @Autowired
   public OrderConverter(
-      CustomerRepository customerRepository, ProductRepository productRepository) {
+      CustomerRepository customerRepository, ProductRepository productRepository, StaffRepository staffRepository){
     this.customerRepository = customerRepository;
     this.productRepository = productRepository;
+    this.staffRepository = staffRepository;
   }
 
   public Order convertOrderDtoToEntity(OrderDto orderDto) {
@@ -45,6 +45,15 @@ public class OrderConverter {
                     new EntityNotFoundException(
                         "Customer not found with ID: " + orderDto.getCustomerId()));
     order.setCustomer(customer);
+
+    Staff staff =
+        staffRepository
+            .findById(orderDto.getStaffId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Staff not found with ID: " + orderDto.getStaffId()));
+    order.setStaff(staff);
 
     // Set other simple fields
     order.setDatePlaced(orderDto.getDatePlaced() == null ? new Date() : orderDto.getDatePlaced());
