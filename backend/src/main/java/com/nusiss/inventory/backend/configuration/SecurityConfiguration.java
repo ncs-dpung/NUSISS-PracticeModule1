@@ -100,7 +100,7 @@ public class SecurityConfiguration {
       public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOrigins("http://localhost:4200")
+            .allowedOrigins("http://localhost", "http://localhost:4200")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
       }
     };
