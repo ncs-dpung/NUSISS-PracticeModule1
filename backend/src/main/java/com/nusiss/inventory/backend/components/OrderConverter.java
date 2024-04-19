@@ -24,7 +24,9 @@ public class OrderConverter {
 
   @Autowired
   public OrderConverter(
-      CustomerRepository customerRepository, ProductRepository productRepository, StaffRepository staffRepository){
+      CustomerRepository customerRepository,
+      ProductRepository productRepository,
+      StaffRepository staffRepository) {
     this.customerRepository = customerRepository;
     this.productRepository = productRepository;
     this.staffRepository = staffRepository;

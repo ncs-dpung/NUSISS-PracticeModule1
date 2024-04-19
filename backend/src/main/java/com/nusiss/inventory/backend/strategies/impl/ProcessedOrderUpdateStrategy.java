@@ -27,11 +27,10 @@ public class ProcessedOrderUpdateStrategy implements OrderUpdateStrategy {
 
     // Update other fields
     order.setStatus(orderDto.getStatus());
-    if (order.getStatus().getName().equals("Delivered")){
-      if(order.getDateShipped() == null) order.setDateShipped(new Date());
+    if (order.getStatus().getName().equals("Delivered")) {
+      if (order.getDateShipped() == null) order.setDateShipped(new Date());
       else order.setDateShipped(orderDto.getDateShipped());
-    }
-    else{
+    } else {
       order.setDateShipped(null);
     }
     orderRepository.save(order);
