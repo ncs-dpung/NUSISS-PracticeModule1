@@ -4,7 +4,6 @@ import com.nusiss.inventory.backend.entity.Order;
 import com.nusiss.inventory.backend.observers.impl.StaffPendingOrderNotificationObserver;
 import com.nusiss.inventory.backend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;

@@ -5,7 +5,6 @@ import com.nusiss.inventory.backend.dto.ProductDto;
 import com.nusiss.inventory.backend.observers.InventoryObserver;
 import com.nusiss.inventory.backend.observers.InventorySubject;
 import com.nusiss.inventory.backend.repository.ProductRepository;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
