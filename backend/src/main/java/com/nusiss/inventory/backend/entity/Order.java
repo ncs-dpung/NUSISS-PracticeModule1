@@ -38,6 +38,10 @@ public class Order {
   @JoinColumn(name = "order_status_id")
   private OrderStatus status;
 
-  @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(
+      mappedBy = "order",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private Collection<OrderItem> items;
 }

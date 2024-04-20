@@ -1,32 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {NgClass} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import { NgClass } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { Order } from '../order-management/order.model';
+import { Product } from '../inventory-management/product.model';
 import { Order_Items } from '../order-management/order_items.model';
 import { Order_Status } from '../order-management/order_status.model';
 import { OrderService } from '../services/order.service';
+import { InventoryService } from '../services/inventory.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-order-management',
   standalone: true,
   imports: [
-      NgClass,
-      FormsModule,
-      CommonModule],
+    NgClass,
+    FormsModule,
+    CommonModule],
   templateUrl: './order-management.component.html',
   styleUrl: './order-management.component.scss'
 })
-export class OrderManagementComponent implements OnInit{
+export class OrderManagementComponent implements OnInit {
 
   showModal: boolean = false;
-  
+
   showUpdateModal = false;
 
-  constructor(private router: Router, private orderService: OrderService) {}
+  constructor(private router: Router, private orderService: OrderService, private inventoryService: InventoryService) { }
 
   orders: Order[] = [];
+  products: Product[] = [];
 
   newOrder: Order = {
     orderId: null,
@@ -34,15 +37,18 @@ export class OrderManagementComponent implements OnInit{
     datePlaced: new Date('01/01/2000'),
     dateShipped: new Date('01/01/2000'),
     order_status_id: null,
-    customerName:'',
-    items:[],
-    total:0,
-    staffFirstName:'',
-    staffLastName:'',
-    status: [{ id: 5, name: 'PENDING' }],
+    customerName: '',
+    items: [{
+      productId: null,
+      productName: '',
+      quantity: 0,
+      price: 0,
 
-
-
+    }],
+    total: 0,
+    staffFirstName: '',
+    staffLastName: '',
+    status: { id: 0, name: 'PENDING' }
   };
 
   selectedOrder: Order = {
@@ -51,13 +57,18 @@ export class OrderManagementComponent implements OnInit{
     datePlaced: new Date('01/01/2000'),
     dateShipped: new Date('01/01/2000'),
     order_status_id: null,
-    customerName:'',
-    items:[],
-    total:0,
-    staffFirstName:'',
-    staffLastName:'',
-    status:[],
+    customerName: '',
+    items: [{
+      productId: null,
+      productName: '',
+      quantity: 0,
+      price: 0,
 
+    }],
+    total: 0,
+    staffFirstName: '',
+    staffLastName: '',
+    status: { id: null, name: 'PENDING' }
   };
 
 
@@ -69,19 +80,33 @@ export class OrderManagementComponent implements OnInit{
     this.orderService.getAllOrders().subscribe(orders => {
       this.orders = orders;
     });
+
+    this.inventoryService.getProducts().subscribe((products) => {
+      this.products = products;
+    });
   }
 
   toggleModal() {
     this.showModal = !this.showModal;
   }
 
-  onSubmit() {
+  onSubmitOrder() {
+    console.log('New Order:', this.newOrder);
 
-    // Close the modal
-    this.showModal = false;
-    // Reset the new item or do whatever is needed post-submission
-    //this.newOrder = {};
+    this.orderService.createOrder(this.newOrder).subscribe(order => {
+      this.orders.push(order);
+      this.showModal = false;
+    });
   }
+
+  calculateTotal() {
+    this.selectedOrder.total = this.selectedOrder.items.reduce((acc, item) => {
+      const quantity = item.quantity || 0;
+      const price = item.price || 0;
+      return acc + (price * quantity);
+    }, 0);
+  }
+
 
 
   navigate(path: string): void {
@@ -106,7 +131,7 @@ export class OrderManagementComponent implements OnInit{
       console.error('Cannot update a Order without an ID');
       return;
     }
-    this.orderService.updateOrder(this.selectedOrder.orderId!,this.selectedOrder).subscribe({
+    this.orderService.updateOrder(this.selectedOrder.orderId!, this.selectedOrder).subscribe({
       next: (updatedOrder) => {
         // Find the index of the customer in the array
         const index = this.orders.findIndex(order => order.orderId === updatedOrder.orderId);
@@ -141,6 +166,43 @@ export class OrderManagementComponent implements OnInit{
   selectOrderForUpdate(order: Order): void {
     this.selectedOrder = { ...order };
     this.toggleUpdateModal(true);
+  }
+
+  addItem() {
+
+    this.selectedOrder.items.push({ ...this.tempItem });
+
+    this.tempItem = {
+      productId: null,
+      productName: '',
+      quantity: 1,
+      price: 0
+    };
+
+    this.calculateTotal();
+  }
+
+  deleteItem(index: number) {
+
+    this.selectedOrder.items.splice(index, 1);
+
+    this.calculateTotal();
+  }
+
+  // Temporary item object for new item details
+  tempItem: any = {
+    productId: null,
+    productName: '',
+    quantity: 1,
+    price: 0
+  };
+
+  onProductSelected(itemIndex: number, selectedProductName: string) {
+    const product = this.products.find(product => product.name === selectedProductName);
+    if (product) {
+      this.selectedOrder.items[itemIndex].productId = product.id;
+      this.selectedOrder.items[itemIndex].price = product.price;
+    }
   }
 
 }

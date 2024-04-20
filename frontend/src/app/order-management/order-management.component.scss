@@ -200,6 +200,24 @@ body {
   font-size: 16px;
 }
 
+.modal-number-input {
+  width: 60px; /* Adjust this value based on your design and font size */
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid #ccc; /* Example border, adjust as needed */
+  border-radius: 4px; /* Adds rounded corners */
+  text-align: left; /* Centers the text/digits inside the input */
+}
+.modal-total-input {
+  width: 170px; /* Adjust this value based on your design and font size */
+  box-sizing: border-box;
+  padding: 3px;
+  border: 1px solid #ccc; /* Example border, adjust as needed */
+  border-radius: 4px; /* Adds rounded corners */
+  text-align: left; /* Centers the text/digits inside the input */
+}
+
+
 .btn-add {
   background-color: #5cb85c;
   color: white;

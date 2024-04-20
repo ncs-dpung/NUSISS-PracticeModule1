@@ -1,5 +1,6 @@
 package com.nusiss.inventory.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nusiss.inventory.backend.entity.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDto {
   private Long orderId;
   private Long staffId;

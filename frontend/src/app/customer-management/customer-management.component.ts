@@ -72,7 +72,7 @@ export class CustomerManagementComponent implements OnInit {
 
        }
      });
-     this.loadCustomers();
+     //this.loadCustomers();
    }
 
    onUpdateCustomer(): void {
@@ -126,11 +126,6 @@ export class CustomerManagementComponent implements OnInit {
     this.toggleUpdateModal(true);
   }
 
-  onUpdateUser(): void {
-
-    // After updating, you might want to close the modal
-    this.showUpdateModal = false;
-  }
 
   showOrderHistoryModal = false;
   customerOrders = [

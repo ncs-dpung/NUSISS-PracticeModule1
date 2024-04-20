@@ -22,8 +22,32 @@ export class UserAccessManagementComponent implements OnInit {
   showUserModal = false;
 
   staffs: Staff[] = [];
-  selectedStaff: Staff = {} as Staff;
-  newStaff: Staff = {} as Staff;
+  selectedStaff1: Staff = {} as Staff;
+  newStaff1: Staff = {} as Staff;
+
+  newStaff: Staff ={
+    id: null,
+    firstName: '',
+    lastName: '',
+    user:  {
+      id: null,
+      username: '',
+      email: '',
+      roles: [{ id:null, name: '', actions: [] }],
+    },
+  }
+
+  selectedStaff: Staff ={
+    id: null,
+    firstName: '',
+    lastName: '',
+    user:  {
+      id: null,
+      username: '',
+      email: '',
+      roles: [{ id:null, name: '', actions: [] }],
+    },
+  }
   
 
  /* newStaff: Staff = {
@@ -122,7 +146,6 @@ export class UserAccessManagementComponent implements OnInit {
       this.staffs.push(staff);
       this.showUserModal = false;
     });
-
 
   }
 

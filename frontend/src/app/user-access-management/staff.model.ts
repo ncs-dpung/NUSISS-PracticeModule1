@@ -14,20 +14,20 @@
 }*/
 
 export interface User {
-  id: number;
+  id?: number | null | undefined;
   username: string;
   email: string;
   roles: Role[];
 }
 
 export interface Role {
-  id: number;
+  id?: number | null | undefined;
   name: string;
   actions: any[]; // Replace 'any' with more specific type if possible
 }
 
 export interface Staff {
-  id: number;
+  id?: number | null | undefined;
   firstName: string;
   lastName: string;
   user: User;

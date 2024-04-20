@@ -8,5 +8,5 @@ WORKDIR /be
 
 ADD ./bin/docker-entrypoint.dev.sh ./
 
-RUN sed -i -e 's/\r$//' ./bin/docker-entrypoint.dev.sh
+RUN sed -i -e 's/\r$//' ./docker-entrypoint.dev.sh
 
