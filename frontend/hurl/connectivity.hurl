@@ -6,14 +6,14 @@ HTTP 200
 xpath "string(//html/head/title)" == "AdvancedInventoryManagementSystem"
 
 # BE Healthcheck (through FE/nginx proxy)
-GET {{host}}/healthcheck
+GET {{host}}/api/healthcheck
 
 HTTP 200
 [Asserts]
 body contains "HEALTHY"
 
 # Admin Login & get token
-POST {{host}}/auth/login
+POST {{host}}/api/auth/login
 {
   "username": "admin",
   "password": "password"
@@ -24,7 +24,7 @@ HTTP 200
 jwt: jsonpath "$.jwt"
 
 # Admin Get Staff
-GET {{host}}/staff
+GET {{host}}/api/staff
 Authorization: Bearer {{jwt}}
 
 HTTP 200
