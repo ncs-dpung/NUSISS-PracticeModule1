@@ -15,9 +15,10 @@ wait_for_url () {
 url="$1:$2"
 image="$3"
 healthcheck="$url"
+appnw="$APP_NETWORK"
 
 echo "Starting container"
-docker run --rm -d -p "$2:80" --name integration-fe $image
+docker run --network=$appnw --rm -d -p "$2:80" --name integration-fe $image
 
 echo "Waiting server to be ready"
 wait_for_url $healthcheck 60
