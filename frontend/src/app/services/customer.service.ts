@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CustomerService {
-  private apiUrl = 'http://localhost:8080/customer';
+  private apiUrl = '/api/customer';
 
   constructor(private http: HttpClient) { }
 

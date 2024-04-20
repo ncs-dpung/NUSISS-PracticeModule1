@@ -70,7 +70,7 @@ public class SecurityConfiguration {
     http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
             auth -> {
-              auth.requestMatchers("/api/healthcheck").permitAll();
+              auth.requestMatchers("/healthcheck").permitAll();
               auth.requestMatchers("/auth/**").permitAll();
               auth.requestMatchers("/swagger-ui/**").permitAll();
               auth.requestMatchers("/v3/api-docs/**").permitAll();

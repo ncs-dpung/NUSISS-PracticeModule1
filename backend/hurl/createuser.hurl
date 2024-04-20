@@ -1,5 +1,5 @@
 # Healthcheck
-GET {{host}}/api/healthcheck
+GET {{host}}/healthcheck
 
 HTTP 200
 [Asserts]

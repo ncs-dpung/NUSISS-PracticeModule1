@@ -8,7 +8,7 @@ import { Staff } from '../user-access-management/staff.model';
 })
 export class StaffService {
 
-  private apiBaseUrl = 'http://localhost:8080/staff';
+  private apiBaseUrl = '/api/staff';
 
   constructor(private http: HttpClient) { }
 

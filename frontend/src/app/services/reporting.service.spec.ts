@@ -50,7 +50,7 @@ fdescribe('ReportingService', () => {
 
     // Set up the HttpTestingController to expect a GET request
     const req = httpMock.expectOne(
-      `http://localhost:8080/api/reports/monthly-report?year=${year}&month=${month}`
+      `/api/reports/monthly-report?year=${year}&month=${month}`
     );
     expect(req.request.method).toBe('GET');
 
