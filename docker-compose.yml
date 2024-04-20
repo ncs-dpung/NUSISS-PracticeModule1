@@ -37,11 +37,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    healthcheck:
-      test: curl --fail http://localhost:8080/api/healthcheck || exit 1
-      timeout: 15s
-      retries: 20
-      start_period: 30s
 
   dev-fe:
     container_name: dev_fe
@@ -50,13 +45,26 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "4200:4200"
+    networks:
+      - app
     volumes:
       - ./frontend/src:/app/src
     command: ng serve --host 0.0.0.0
-    depends_on:
-      dev-be:
-        condition: service_healthy
 
+  dev:
+    container_name: dev_nginx
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    ports:
+      - "80:80"
+    depends_on:
+      dev-fe:
+        condition: service_healthy
+    networks:
+      - springapimysql-net
+      - app
+            
   be:
     # just for testing prod container in local
     # (change env path to prod to test with prod db)
