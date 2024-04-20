@@ -26,4 +26,4 @@ echo "Running Hurl tests"
 hurl --variable host=$url --test hurl/connectivity.hurl
 
 echo "Stopping container"
-docker stop integration-be
+docker stop integration-fe
