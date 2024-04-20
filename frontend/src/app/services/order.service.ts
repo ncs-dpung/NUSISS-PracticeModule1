@@ -10,7 +10,7 @@ import { OrderStatus } from '../order-management/order_status.model';
 })
 export class OrderService {
 
-  private apiUrl = 'http://localhost:8080/api/orders';
+  private apiUrl = '/api/orders';
 
   constructor(private http: HttpClient) { }
 

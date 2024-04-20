@@ -8,7 +8,7 @@ import { Staff, User } from '../user-access-management/staff.model';
 })
 export class StaffService {
 
-  private apiBaseUrl = 'http://localhost:8080/staff';
+  private apiBaseUrl = '/api/staff';
 
   private apiBaseUrlUser = 'http://localhost:8080/users';
 

@@ -1,5 +1,5 @@
 # Healthcheck
-GET {{host}}/api/healthcheck
+GET {{host}}/healthcheck
 
 HTTP 200
 [Asserts]
@@ -17,7 +17,7 @@ HTTP 200
 jwt: jsonpath "$.jwt"
 
 # Get Orders
-GET {{host}}/api/orders/all
+GET {{host}}/orders/all
 Authorization: Bearer {{jwt}}
 
 HTTP 200

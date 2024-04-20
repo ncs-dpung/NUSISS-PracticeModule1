@@ -23,10 +23,10 @@ RUN ng build
 FROM nginx:alpine
 
 # # Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the built Angular app from the builder stage to the Nginx directory
-COPY --from=builder /app/dist/advanced-inventory-management-system/browser /usr/share/nginx/html
+COPY --from=builder /app/dist/advanced-inventory-management-system/browser /usr/share/nginx/html/aims
 
 EXPOSE 80
 
