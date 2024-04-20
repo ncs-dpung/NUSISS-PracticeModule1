@@ -10,9 +10,6 @@ export class StaffService {
 
   private apiBaseUrl = '/api/staff';
 
-  private apiBaseUrlUser = 'http://localhost:8080/users';
-
-
   constructor(private http: HttpClient) { }
 
   private getHttpOptions() {
