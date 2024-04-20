@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Staff } from '../user-access-management/staff.model';
+import { Staff, User } from '../user-access-management/staff.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,10 @@ export class StaffService {
     getAllStaff(): Observable<Staff[]> {
       return this.http.get<Staff[]>(this.apiBaseUrl, this.getHttpOptions());
     }
+
+    /*getAllUser(): Observable<User[]> {
+      return this.http.get<User[]>(this.apiBaseUrlUser, this.getHttpOptions());
+    }*/
   
 
     getStaffById(id: number): Observable<Staff> {

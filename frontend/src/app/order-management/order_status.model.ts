@@ -1,4 +1,4 @@
-export interface Order_Status {
-    order_status_id:number;
-    status_name: string;
-  }
+export interface OrderStatus {
+  id?: number | null | undefined;
+  name: string;
+}

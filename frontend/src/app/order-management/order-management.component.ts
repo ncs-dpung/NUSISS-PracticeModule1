@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { Order } from '../order-management/order.model';
 import { Product } from '../inventory-management/product.model';
 import { Order_Items } from '../order-management/order_items.model';
-import { Order_Status } from '../order-management/order_status.model';
+import { OrderStatus } from '../order-management/order_status.model';
 import { OrderService } from '../services/order.service';
 import { InventoryService } from '../services/inventory.service';
 import { CommonModule } from '@angular/common';
@@ -26,20 +26,28 @@ export class OrderManagementComponent implements OnInit {
 
   showUpdateModal = false;
 
+  displayDatePlaced: string = '';
+  displayDateShipped: string = '';
+
   constructor(private router: Router, private orderService: OrderService, private inventoryService: InventoryService) { }
 
   orders: Order[] = [];
   products: Product[] = [];
+  orderStatus:OrderStatus={
+    id:3,
+    name:'Delivered'
+  };
 
   newOrder: Order = {
-    orderId: null,
-    customerId: null,
-    datePlaced: new Date('01/01/2000'),
-    dateShipped: new Date('01/01/2000'),
+    orderId: 0,
+    customerId: 0,
+    staffId:0,
+    datePlaced: 1714521600000,
+    dateShipped: null,
     order_status_id: null,
     customerName: '',
     items: [{
-      productId: null,
+      productId: 1,
       productName: '',
       quantity: 0,
       price: 0,
@@ -48,14 +56,15 @@ export class OrderManagementComponent implements OnInit {
     total: 0,
     staffFirstName: '',
     staffLastName: '',
-    status: { id: 0, name: 'PENDING' }
+    status: { id: 1, name: 'PENDING' }
   };
 
   selectedOrder: Order = {
     orderId: null,
     customerId: null,
-    datePlaced: new Date('01/01/2000'),
-    dateShipped: new Date('01/01/2000'),
+    staffId:null,
+    datePlaced: 1714521600000,
+    dateShipped: 1714521600000,
     order_status_id: null,
     customerName: '',
     items: [{
@@ -68,12 +77,13 @@ export class OrderManagementComponent implements OnInit {
     total: 0,
     staffFirstName: '',
     staffLastName: '',
-    status: { id: null, name: 'PENDING' }
+    status: { id: 1, name: 'PENDING' }
   };
 
 
   ngOnInit() {
     this.loadAllOrders();
+    this.loadProducts();
   }
 
   loadAllOrders(): void {
@@ -81,9 +91,24 @@ export class OrderManagementComponent implements OnInit {
       this.orders = orders;
     });
 
+  }
+
+  loadProducts() {
     this.inventoryService.getProducts().subscribe((products) => {
       this.products = products;
     });
+  }
+
+  convertTimestampToDate(timestamp: number | string): string {
+    if (!timestamp) {
+      return ''; // Return an empty string or some default value if the input is null, undefined, or empty
+    }
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0];
+  }
+
+  trackByItems(index: number, item: any): number {
+    return item.productId;
   }
 
   toggleModal() {
@@ -99,13 +124,13 @@ export class OrderManagementComponent implements OnInit {
     });
   }
 
-  calculateTotal() {
-    this.selectedOrder.total = this.selectedOrder.items.reduce((acc, item) => {
-      const quantity = item.quantity || 0;
-      const price = item.price || 0;
-      return acc + (price * quantity);
-    }, 0);
-  }
+
+    calculateTotal() {
+      this.selectedOrder.total = this.selectedOrder.items.reduce((acc, item) => {
+        return acc + (item.quantity || 0) * (item.price || 0);
+      }, 0);
+    }
+  
 
 
 
@@ -115,9 +140,6 @@ export class OrderManagementComponent implements OnInit {
 
   toggleUpdateModal(show: boolean) {
     this.showUpdateModal = show;
-    if (show) {
-      //this.selectedItem = {...item}; // Assuming `item` is the item to update
-    }
 
   }
 
@@ -127,11 +149,23 @@ export class OrderManagementComponent implements OnInit {
   }
 
   onUpdateOrder() {
+
     if (this.selectedOrder.orderId === undefined) {
       console.error('Cannot update a Order without an ID');
       return;
     }
-    this.orderService.updateOrder(this.selectedOrder.orderId!, this.selectedOrder).subscribe({
+      // Assuming displayDatePlaced and displayDateShipped are in 'YYYY-MM-DD' format
+      const datePlacedTimestamp = this.displayDatePlaced ? new Date(this.displayDatePlaced).getTime() : null;
+      const dateShippedTimestamp = this.displayDateShipped ? new Date(this.displayDateShipped).getTime() : null;
+
+  // Assign the timestamps to the selectedOrder object
+  const updatedOrder: Order = {
+    ...this.selectedOrder,
+    datePlaced: datePlacedTimestamp,
+    dateShipped: dateShippedTimestamp,
+  };
+
+    this.orderService.updateOrder(updatedOrder.orderId!, updatedOrder).subscribe({
       next: (updatedOrder) => {
         // Find the index of the customer in the array
         const index = this.orders.findIndex(order => order.orderId === updatedOrder.orderId);
@@ -150,35 +184,75 @@ export class OrderManagementComponent implements OnInit {
   }
 
   deleteProduct(orderId: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
+    if (confirm('Are you sure you want to delete this Order?')) {
       this.orderService.deleteOrder(orderId).subscribe({
         next: (response) => {
           this.orders = this.orders.filter(order => order.orderId !== orderId);
-          console.log('Product deleted successfully', response);
+          console.log('Order deleted successfully', response);
         },
         error: (error) => {
-          console.error('Error deleting Product', error);
+          console.error('Error deleting Order', error);
+          if (error.status === 500) {
+            alert(error.error.message); 
+          } else {
+            alert('An unexpected error occurred.'); 
+          }
+        }
+      });
+    }
+  }
+
+  updateOrderStatus(orderId: number): void {
+    if (confirm('Are you sure you want to Complete this Order?')) {
+      let newStatus = {
+        status: {
+          id: 3, // Assuming '3' corresponds to 'Delivered'
+          name: "Delivered"
+        },
+        deliveryDate: new Date().toISOString() // Sets the current date and time
+      };
+      this.orderService.updateOrderStatus(orderId, newStatus).subscribe({
+        next: (response) => {
+          console.log('Order Complete', response);
+  
+          // Find the order in the orders array and update its status
+          const orderIndex = this.orders.findIndex(order => order.orderId === orderId);
+          if (orderIndex !== -1) {
+            this.orders[orderIndex].status = newStatus.status;
+            this.orders[orderIndex].dateShipped = Date.parse(newStatus.deliveryDate);
+          }
+        },
+        error: (error) => {
+          console.error('Error Completing Order', error);
         }
       });
     }
   }
 
   selectOrderForUpdate(order: Order): void {
+    this.displayDatePlaced = order.datePlaced ? this.convertTimestampToDate(order.datePlaced) : '';
+    this.displayDateShipped = order.dateShipped ? this.convertTimestampToDate(order.dateShipped) : '';
+    
+  
     this.selectedOrder = { ...order };
-    this.toggleUpdateModal(true);
+      this.toggleUpdateModal(true);
+      this.calculateTotal();
+    
   }
 
   addItem() {
 
-    this.selectedOrder.items.push({ ...this.tempItem });
-
+    this.selectedOrder.items.push({
+      ...this.tempItem
+    });
+  
     this.tempItem = {
       productId: null,
       productName: '',
       quantity: 1,
       price: 0
     };
-
+  
     this.calculateTotal();
   }
 
@@ -198,11 +272,21 @@ export class OrderManagementComponent implements OnInit {
   };
 
   onProductSelected(itemIndex: number, selectedProductName: string) {
-    const product = this.products.find(product => product.name === selectedProductName);
+    const product = this.products.find(p => p.name === selectedProductName);
     if (product) {
-      this.selectedOrder.items[itemIndex].productId = product.id;
-      this.selectedOrder.items[itemIndex].price = product.price;
+      this.selectedOrder.items[itemIndex] = {
+        ...this.selectedOrder.items[itemIndex],
+        productId: product.id,
+        price: product.price
+      };
+    } else {
+      this.selectedOrder.items[itemIndex] = {
+        ...this.selectedOrder.items[itemIndex],
+        productId: null,
+        price: 0
+      };
     }
+    this.calculateTotal();
   }
 
 }

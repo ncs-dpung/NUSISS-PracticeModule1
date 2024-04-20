@@ -77,38 +77,38 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserEmail">User ID:</label>
-                <input type="text" id="createUserEmail" [(ngModel)]="newStaff.id" name="email" required>
+                <input type="text" id="createnewStaffId"  name="newStaffId" required readonly>
               </div>
               <div class="form-group">
-                <label for="updateUserContact">Action:</label>
-                <input type="text" id="createupdateUserContact" [(ngModel)]="newStaff.user.roles[0].actions" name="contact" required>
+                <label for="updateUserContact">Account Name:</label>
+                <input type="text" id="createnewaccountname" [(ngModel)]="newStaff.user.username" name="newAccountname" required>
               </div>
             </div>
             
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">User First Name:</label>
-                <input type="text" id="createUFName" [(ngModel)]="newStaff.firstName" name="name" placeholder="First Name" required>
+                <input type="text" id="createUFName" [(ngModel)]="newStaff.firstName" name="addFname" placeholder="First Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">User Last Name:</label>
-                <input type="text" id="createULName" [(ngModel)]="newStaff.lastName" name="name" placeholder="Last Name" required>
+                <input type="text" id="createULName" [(ngModel)]="newStaff.lastName" name="addLname" placeholder="Last Name" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemCondition">User Role:</label>
-                <select id="createUposition" [(ngModel)]="newStaff.user.roles[0].name" name="position" required>
-                  <option value="new">Admin</option>
-                  <option value="new">Warehouse Manager</option>
-                  <option value="new">Procurement Officer</option>
-                  <option value="used">Sales Representative</option>
+                <select id="createUposition" [(ngModel)]="newStaff.user.roles[0].name" name="newRole" required>
+                  <option value="ADMIN">Admin</option>
+                  <option value="USER">Warehouse Manager</option>
+                  <option value="USER">Procurement Officer</option>
+                  <option value="USER">Sales Representative</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="updateUserEmail">Email:</label>
-                <input type="text" id="createUserEmail" [(ngModel)]="newStaff.user.email" name="email" required>
+                <input type="text" id="createUserEmail" [(ngModel)]="newStaff.user.email" name="creatNewemail" required>
               </div>
             </div>
             <!--<div class="form-row">
@@ -193,38 +193,38 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="updateUserEmail">User ID:</label>
-                <input type="text" id="updateUserID" [(ngModel)]="selectedStaff.id" name="email" required>
+                <input type="text" id="updateUserID" [(ngModel)]="selectedStaff.id" name="updateStaffId" required>
               </div>
               <div class="form-group">
-                <label for="updateUserContact">Action:</label>
-                <input type="text" id="updateUserContact" [(ngModel)]="selectedStaff.user.roles[0].actions" name="contact" required>
+                <label for="updateUserContact">Account Name::</label>
+                <input type="text" id="updateUseraccount" [(ngModel)]="selectedStaff.user.username" name="updateAccountname" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemName">User First Name:</label>
-                <input type="text" id="UFName" [(ngModel)]="selectedStaff.firstName" name="name" placeholder="First Name" required>
+                <input type="text" id="UpFName" [(ngModel)]="selectedStaff.firstName" name="UFName" placeholder="First Name" required>
               </div>
               <div class="form-group">
                 <label for="itemName">User Last Name:</label>
-                <input type="text" id="ULName" [(ngModel)]="selectedStaff.lastName" name="name" placeholder="Last Name" required>
+                <input type="text" id="UpLName" [(ngModel)]="selectedStaff.lastName" name="ULName" placeholder="Last Name" required>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label for="itemCondition">User Role:</label>
-                <select id="Uposition" [(ngModel)]="selectedStaff.user.roles[0].name" name="position" required>
-                  <option value="new">Admin</option>
-                  <option value="new">Warehouse Manager</option>
-                  <option value="new">Procurement Officer</option>
-                  <option value="used">Sales Representative</option>
+                <select id="UpRole" [(ngModel)]="selectedStaff.user.roles[0].name" name="updateRole" required>
+                  <option value="ADMIN">Admin</option>
+                  <option value="USER">Warehouse Manager</option>
+                  <option value="USER">Procurement Officer</option>
+                  <option value="USER">Sales Representative</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="updateUserEmail">Email:</label>
-                <input type="text" id="updateUserEmail" [(ngModel)]="selectedStaff.user.email" name="email" required>
+                <input type="text" id="updateUserEmail" [(ngModel)]="selectedStaff.user.email" name="UpdateEmail" required>
               </div>
             </div>
 
@@ -256,7 +256,9 @@
         </div>
       </div>
 
-
+      <div *ngIf="accessDenied" class="access-denied-message">
+        You Do Not have access to this component
+      </div>
 
       <!-- Table of Products -->
       <table>
@@ -273,7 +275,7 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Example Product Row -->
+        
         <tr *ngFor="let staff of staffs; let i = index">
           <td><input type="checkbox" name="selectedStaff" [value]="staff.id"></td>
           <td>{{ i + 1 }}</td>
@@ -287,7 +289,6 @@
             <button class="btn-action delete-btn" (click)="deleteStaff(staff.id!)">Delete</button>
           </td>
         </tr>
-
         </tbody>
       </table>
     </div>
