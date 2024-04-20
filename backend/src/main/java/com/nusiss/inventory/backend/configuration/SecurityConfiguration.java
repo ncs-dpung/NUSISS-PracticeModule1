@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -42,6 +43,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfiguration {
 
   private final RSAKeyProperties keys;
+
+  @Value("${app.server.ip:''}")
+  private String SERVER_IP;
 
   @Autowired
   public SecurityConfiguration(RSAKeyProperties rsaKeyProperties) {
@@ -100,7 +104,7 @@ public class SecurityConfiguration {
       public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOrigins("http://localhost", "http://localhost:4200")
+            .allowedOrigins("http://localhost", "http://localhost:4200", SERVER_IP)
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
       }
     };
