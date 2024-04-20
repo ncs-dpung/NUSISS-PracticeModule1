@@ -72,7 +72,7 @@ export class CustomerManagementComponent implements OnInit {
 
        }
      });
-     //this.loadCustomers();
+     this.loadCustomers();
    }
 
    onUpdateCustomer(): void {

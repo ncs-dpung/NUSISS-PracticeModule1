@@ -3,7 +3,7 @@ import { HttpClient , HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from '../order-management/order.model';
 import { Order_Items } from '../order-management/order_items.model';
-import { Order_Status } from '../order-management/order_status.model';
+import { OrderStatus } from '../order-management/order_status.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,7 @@ export class OrderService {
   updateOrder(orderId: number, order: Order): Observable<Order> {
     return this.http.put<Order>(`${this.apiUrl}/${orderId}`, order,this.getHttpOptions());
   }
+
 
   deleteOrder(orderId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${orderId}`,this.getHttpOptions());

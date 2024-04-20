@@ -29,6 +29,17 @@ body {
   margin-bottom: 5px;
 }
 
+.access-denied-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Take up full viewport height
+  background-color: #ccc; // A gray background
+  color: #333;
+  font-size: 36px;
+  text-align: center;
+}
+
 .filter-section input,
 .filter-section select {
   width: 100%;
@@ -228,21 +239,30 @@ body {
 }
 
 .product-list .delete-btn {
-  background-color: #d9534f; /* Bootstrap's btn-danger color */
+  background-color: #d9534f; 
   color: white;
 }
 
 .product-list .delete-btn:hover {
-  background-color: #c9302c; /* Darker shade for hover */
+  background-color: #c9302c; 
 }
 
 .product-list .update-btn {
-  background-color: #f0ad4e; /* Bootstrap's btn-warning color */
+  background-color: #f0ad4e; 
   color: white;
 }
 
 .product-list .update-btn:hover {
-  background-color: #ec971f; /* Darker shade for hover */
+  background-color: #ec971f; 
+}
+
+.product-list .complete-btn {
+  background-color: #5cb85c; 
+  color: white;
+}
+
+.product-list .complete-btn:hover {
+  background-color: #4cae4c; 
 }
 
 .modal-content .form-row {

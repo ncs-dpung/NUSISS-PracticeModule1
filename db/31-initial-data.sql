@@ -25,6 +25,8 @@ INSERT INTO tbl_product (name, category_id, price, batch_no, supplier_id, quanti
 -- Insert Customers
 INSERT INTO tbl_customer (customer_name, contact_info) VALUES ('John Doe', 'john.doe@example.com');
 INSERT INTO tbl_customer (customer_name, contact_info) VALUES ('Jane Smith', 'jane.smith@example.com');
+INSERT INTO tbl_customer (customer_name, contact_info) VALUES ('Soul William', 'sa.will@example.com');
+
 
 -- Insert OrderStatus
 INSERT INTO tbl_order_status (status_name) VALUES ('Pending');

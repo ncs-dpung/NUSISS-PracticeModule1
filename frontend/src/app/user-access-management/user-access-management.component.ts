@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Staff } from '../user-access-management/staff.model';
+import { Staff,User } from '../user-access-management/staff.model';
 import { StaffService } from '../services/staff.service';
 import { CommonModule } from '@angular/common';
 
@@ -19,35 +19,42 @@ import { CommonModule } from '@angular/common';
 })
 export class UserAccessManagementComponent implements OnInit {
 
+  accessDenied: boolean = false;
+
   showUserModal = false;
 
   staffs: Staff[] = [];
   selectedStaff1: Staff = {} as Staff;
   newStaff1: Staff = {} as Staff;
+  updateUser:User = {} as User;
+  users: User[] = [];
 
   newStaff: Staff ={
-    id: null,
     firstName: '',
     lastName: '',
     user:  {
-      id: null,
       username: '',
       email: '',
-      roles: [{ id:null, name: '', actions: [] }],
-    },
+      roles: [{name: "ADMIN",
+      actions: []
+    }]
+    }
   }
 
   selectedStaff: Staff ={
-    id: null,
+
     firstName: '',
     lastName: '',
     user:  {
-      id: null,
+
       username: '',
       email: '',
-      roles: [{ id:null, name: '', actions: [] }],
-    },
+      roles: [{ name: 'admin', actions: [
+      ] }],
+    }
   }
+
+
   
 
  /* newStaff: Staff = {
@@ -85,12 +92,33 @@ export class UserAccessManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSaffs();
+   
   }
 
   loadSaffs() {
-    this.staffService.getAllStaff().subscribe((staffs) => {
-      this.staffs = staffs;
+    this.staffService.getAllStaff().subscribe({
+      next: (staffs) => {
+        this.staffs = staffs;
+        this.accessDenied = false; 
+      },
+      error: (error) => {
+        if (error.status === 403) {
+         
+          this.accessDenied = true;
+        } else {
+          console.error('Error loading staff', error);
+        }
+      }
     });
+  }
+
+  
+  loadUsers() {
+    this.staffService.getAllUser().subscribe((users) => {
+      this.users = users;
+    });
+    console.log("users: " ,this.users)
+
   }
 
   onUpdateStaff() {
@@ -98,6 +126,7 @@ export class UserAccessManagementComponent implements OnInit {
       console.error('Cannot update an account without an ID');
       return;
     }
+    console.log('update item:', this.selectedStaff);
     this.staffService.updateStaff(this.selectedStaff).subscribe({
       next: (updatedStaff) => {
         // Find the index of the customer in the array
@@ -143,8 +172,9 @@ export class UserAccessManagementComponent implements OnInit {
     console.log('New item:', this.newStaff);
     // Close the modal
     this.staffService.addStaff(this.newStaff).subscribe(staff => {
-      this.staffs.push(staff);
+   
       this.showUserModal = false;
+      this.loadSaffs();
     });
 
   }

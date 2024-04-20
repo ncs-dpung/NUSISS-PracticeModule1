@@ -153,7 +153,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: auto;
-  max-width: 600px;
+  max-width: 700px;
+  
 }
 
 .close {
@@ -201,20 +202,45 @@ body {
 }
 
 .modal-number-input {
-  width: 60px; /* Adjust this value based on your design and font size */
+  width: 60px;
   box-sizing: border-box;
   padding: 3px;
   border: 1px solid #ccc; /* Example border, adjust as needed */
   border-radius: 4px; /* Adds rounded corners */
-  text-align: left; /* Centers the text/digits inside the input */
+  text-align: left; 
 }
 .modal-total-input {
-  width: 170px; /* Adjust this value based on your design and font size */
+  width: 170px; 
   box-sizing: border-box;
   padding: 3px;
   border: 1px solid #ccc; /* Example border, adjust as needed */
   border-radius: 4px; /* Adds rounded corners */
-  text-align: left; /* Centers the text/digits inside the input */
+  text-align: left; 
+}
+
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem; 
+}
+
+.items-title {
+  margin: 0; 
+}
+
+.add-item-btn:hover {
+  background-color: #4cae4c;
+}
+
+.add-item-btn {
+  padding: 10px 20px;
+  background-color: #5cb85c; 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 
@@ -230,6 +256,20 @@ body {
   width: 100%;
   margin-top: 20px;
 }
+
+.product-list .update-btn.btn-disabled {
+  background-color: #ccc; 
+  color: #666; 
+  cursor: not-allowed; 
+}
+
+.product-list .complete-btn.btn-disabled {
+  background-color: #ccc; 
+  color: #666; 
+  cursor: not-allowed; 
+}
+
+
 
 .btn-add:hover {
   background-color: #4cae4c;
@@ -255,12 +295,20 @@ body {
 }
 
 .product-list .update-btn {
-  background-color: #f0ad4e; /* Bootstrap's btn-warning color */
+  background-color: #f0ad4e; 
   color: white;
 }
 
 .product-list .update-btn:hover {
-  background-color: #ec971f; /* Darker shade for hover */
+  background-color: #ec971f; 
+}
+.product-list .complete-btn {
+  background-color: #5cb85c; 
+  color: white;
+}
+
+.product-list .complete-btn:hover {
+  background-color: #4cae4c; 
 }
 
 .modal-content .form-row {
@@ -270,7 +318,7 @@ body {
 }
 
 .modal-content .form-group {
-  flex-basis: calc(50% - 20px); /* Adjust the percentage and spacing between columns */
+  flex-basis: calc(50% - 20px); 
 }
 
 @media (max-width: 768px) {

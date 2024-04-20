@@ -1,10 +1,50 @@
 <div class="dashboard">
-  <aside class="sidebar">
-    <!-- Sidebar: Filter Section -->
-    <div class="filter-section">
-      <h3>No Filter</h3>
-    </div> 
-  </aside>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <!-- Sidebar: Filter Section -->
+      <div class="filter-section">
+        <h3>Filter Products</h3>
+        <input type="text" placeholder="Search by name">
+  
+        <!-- Category Dropdown -->
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+          <option value="all">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="accessories">Accessories</option>
+          <option value="apparel">Apparel</option>
+          <!-- Add more categories as needed -->
+        </select>
+  
+        <!-- Condition Checkboxes -->
+        <fieldset class="filter-section">
+          <legend>Condition:</legend>
+          <div class="checkbox-group">
+            <input type="checkbox" id="new" name="condition" value="new">
+            <label for="new">New</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="used" name="condition" value="used">
+            <label for="used">Used</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="refurbished" name="condition" value="refurbished">
+            <label for="refurbished">Refurbished</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="vintage" name="condition" value="refurbished">
+            <label for="refurbished">Vintage</label>
+          </div>
+        </fieldset>
+  
+        <!-- Date Filter -->
+        <label for="fromDate">From</label>
+        <input type="date" id="fromDate" name="fromDate">
+  
+        <label for="toDate">To</label>
+        <input type="date" id="toDate" name="toDate">
+      </div>
+    </aside>
 
   <main class="main-content">
     <!-- Main Content: Top Bar -->

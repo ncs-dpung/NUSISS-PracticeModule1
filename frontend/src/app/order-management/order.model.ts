@@ -1,9 +1,10 @@
 export interface Order {
   orderId?: number | null | undefined;
   customerId?: number | null | undefined;
+  staffId?:  number | null | undefined;
   customerName: string;
-  datePlaced: Date;
-  dateShipped: Date;
+  datePlaced: number | null;
+  dateShipped: number | null;
   order_status_id?: number | null | undefined;
   items: OrderItem[];
   total: number;
