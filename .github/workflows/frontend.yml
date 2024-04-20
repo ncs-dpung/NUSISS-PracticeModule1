@@ -92,7 +92,7 @@ jobs:
         run: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
       - name: Run connectivity test
-        run: bin/integration.sh http://localhost 80 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
+        run: bin/integration.sh http://localhost 81 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
       - name: Deploy
         run: |
           docker stop nusisspm1fe || true
