@@ -44,7 +44,7 @@ public class InventoryManager implements InventorySubject {
         productDto -> observers.forEach(observer -> observer.update(productDto)));
   }
 
-  @Scheduled(fixedRate = 60000) // Executes every 1 minutes
+  // @Scheduled(fixedRate = 60000) // Executes every 1 minutes
   public void checkAndNotifyForReorder() {
     notifyObservers();
   }
