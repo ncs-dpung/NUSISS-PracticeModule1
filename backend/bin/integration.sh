@@ -14,7 +14,7 @@ wait_for_url () {
 
 url="$1:$2"
 image="$3"
-healthcheck="$url/api/healthcheck"
+healthcheck="$url/healthcheck"
 
 echo "Starting container"
 docker run --rm -d -p "$2:8080" --name integration-be --env-file ./env/prod-subst.env $image

@@ -8,7 +8,7 @@ import { Supplier } from '../supplier-management/supplier.model';
 })
 export class SupplierService {
 
-  private apiUrl = 'http://localhost:8080'; // Your API base URL
+  private apiUrl = '/api'; // Your API base URL
 
   constructor(private http: HttpClient) { }
   
