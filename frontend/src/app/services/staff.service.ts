@@ -32,9 +32,9 @@ export class StaffService {
       return this.http.get<Staff[]>(this.apiBaseUrl, this.getHttpOptions());
     }
 
-    getAllUser(): Observable<User[]> {
+    /*getAllUser(): Observable<User[]> {
       return this.http.get<User[]>(this.apiBaseUrlUser, this.getHttpOptions());
-    }
+    }*/
   
 
     getStaffById(id: number): Observable<Staff> {

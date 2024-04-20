@@ -114,10 +114,10 @@ export class UserAccessManagementComponent implements OnInit {
 
   
   loadUsers() {
-    this.staffService.getAllUser().subscribe((users) => {
+   /* this.staffService.getAllUser().subscribe((users) => {
       this.users = users;
     });
-    console.log("users: " ,this.users)
+    console.log("users: " ,this.users)*/
 
   }
 
