@@ -8,14 +8,14 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/auth/login';
+  private apiUrl = 'api/auth/login';
 
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<{ jwt: string }> {
     return this.http.post<{ jwt: string }>(this.apiUrl, { username, password }).pipe(
       tap(response => {
- 
+
         localStorage.setItem('auth_token', response.jwt);
       })
     );
