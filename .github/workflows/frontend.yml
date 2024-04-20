@@ -78,6 +78,7 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      APP_NETWORK: ${{ secrets.APP_NW }}
     defaults:
       run:
         working-directory: ./frontend
@@ -97,5 +98,5 @@ jobs:
         run: |
           docker stop nusisspm1fe || true
           docker rm nusisspm1fe || true
-          docker run -d -p 80:80 --name nusisspm1fe ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
+          docker run --network=${{ secrets.APP_NW }} -d -p 80:80 --name nusisspm1fe ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_FE_REPO }}:$GITHUB_SHA-${GITHUB_REF##*/}
 
